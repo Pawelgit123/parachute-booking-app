@@ -1,5 +1,7 @@
 package com.parachute.booking.admin;
 
+import com.parachute.booking.ExceptionNotFound;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,8 @@ public class AdminServiceSearch {
         return adminRepository.findAll();
     }
 
-    Admin fingById(Long id){
+    Admin fingById(Long id) {
         return adminRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ExceptionNotFound("Not found Admin with ID: " + id));
     }
 }

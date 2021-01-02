@@ -1,5 +1,8 @@
 package com.parachute.booking.admin;
 
+import com.parachute.booking.ExceptionBadData;
+import com.parachute.booking.ExceptionBlankSpaces;
+import com.parachute.booking.ExceptionNoData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +11,11 @@ import org.springframework.stereotype.Service;
 public class AdminServiceCreate {
 
     private final AdminRepository adminRepository;
+    private final AdminDataValidate adminDataValidate;
 
     Admin createNewAdmin(AdminDto adminDto) {
+
+        adminDataValidate.validateData(adminDto);
 
         Admin admin = new Admin();
 
