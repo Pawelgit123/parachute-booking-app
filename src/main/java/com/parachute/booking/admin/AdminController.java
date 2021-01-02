@@ -1,33 +1,55 @@
 package com.parachute.booking.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class AdminController {
 
     private final AdminServiceCreate adminServiceCreate;
-    private final AdminServiceGetAll adminServiceGetAll;
-
+    private final AdminServiceSearch adminServiceSearch;
+    private final AdminServiceRemove adminServiceRemove;
+    private final AdminMapper adminMapper;
 
     @PostMapping("/admin")
     ResponseEntity<AdminDto> createNewAdmin(AdminDto adminDto) {
 
-        return null;
+        Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(adminMapper.mapAdminObjectToDto(newAdmin));
     }
-
 
     @GetMapping("/admin")
-    List<AdminDto> getAllAdmins() {
+    Set<AdminDto> getAdminSet() {
 
-        return null;
+        return adminServiceSearch.getAllAdmins()
+                .stream()
+                .map(adminMapper::mapAdminObjectToDto)
+                .collect(Collectors.toSet());
     }
 
+    @GetMapping("/admin/{id}")
+    AdminDto getAdminById(@PathVariable Long id) {
 
+        Admin admin = adminServiceSearch.fingById(id);
+        return adminMapper.mapAdminObjectToDto(admin);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    AdminDto deleteAdminById(@PathVariable Long id) {
+
+        Admin admin = adminServiceSearch.fingById(id);
+        AdminDto adminDto = adminMapper.mapAdminObjectToDto(admin);
+        adminServiceRemove.adminDelete(id);
+        return adminDto;
+    }
 }

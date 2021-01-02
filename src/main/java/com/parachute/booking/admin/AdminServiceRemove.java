@@ -3,15 +3,13 @@ package com.parachute.booking.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class AdminServiceGetAll {
+public class AdminServiceRemove {
 
     private final AdminRepository adminRepository;
 
-    List<Admin> getAllAdmins() {
-        return adminRepository.findAll();
+    void adminDelete(Long id){
+        adminRepository.deleteById(id);
     }
 }
