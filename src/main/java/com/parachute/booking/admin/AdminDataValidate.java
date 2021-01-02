@@ -4,6 +4,7 @@ import com.parachute.booking.ExceptionBadData;
 import com.parachute.booking.ExceptionBlankSpaces;
 import com.parachute.booking.ExceptionNoData;
 
+
 public class AdminDataValidate {
 
     void validateData(AdminDto adminDto) {
@@ -29,10 +30,10 @@ public class AdminDataValidate {
         if (adminDto.getPassword().isBlank()) {
             throw new ExceptionBlankSpaces("Password is blank");
         }
-        if (adminDto.getLogin().length() < 5) {
+        if (adminDto.getLogin().length() <= 5) {
             throw new ExceptionBadData("Login must have more than 5 letters");
         }
-        if (adminDto.getPassword().length() < 5) {
+        if (adminDto.getPassword().length() <= 5) {
             throw new ExceptionBadData("Password must have more than 5 letters");
         }
 
