@@ -1,4 +1,4 @@
-package com.parachute.booking;
+package com.parachute.booking.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "users")
+@Entity(name = "client")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,10 @@ public class User {
     @Column
     private String lastName;
     @Column
-    private Long pesel;
+    private String pesel;
     @Column
     private String phoneNumber;
     @Column
     private String email;
+
 }
