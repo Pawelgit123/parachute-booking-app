@@ -21,4 +21,12 @@ public class AdminServiceSearch {
         return adminRepository.findById(id)
                 .orElseThrow(() -> new ExceptionNotFound("Not found Admin with ID: " + id));
     }
+
+    Admin findByLogin(String login){
+        return null;
+    }
+
+    Admin findByEmail(String email){
+        return null;
+    }
 }

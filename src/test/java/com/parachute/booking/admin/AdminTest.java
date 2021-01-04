@@ -12,34 +12,38 @@ class AdminTest {
     @BeforeEach
     void setup() {
         admin.setLogin("Admin1");
-        admin.setPassword("Secret Code");
+        admin.setPassword("Admin pass");
         admin.setEmail("admin@gmail.com");
     }
 
     @Test
     void emailContainsMonkey() {
-        assertEquals("admin@gmail.com", admin.getEmail());
         assertTrue(admin.getEmail().contains("@"));
     }
 
     @Test
-    void loginHaveMoreThanFiveLetters() {
+    void loginHaveMoreThanFiveLettersOrEquals() {
         assertTrue(admin.getLogin().length() >= 5);
     }
 
     @Test
-    void passwordHaveMoreThanFiveLetters() {
+    void passwordHaveMoreThanFiveLettersOrEquals() {
         assertTrue(admin.getPassword().length() >= 5);
     }
 
     @Test
-    void loginIsNotBlack() {
+    void loginIsNotBlank() {
         assertFalse(admin.getLogin().isBlank());
     }
 
     @Test
-    void passwordIsNotBlack() {
+    void passwordIsNotBlank() {
         assertFalse(admin.getPassword().isBlank());
+    }
+
+    @Test
+    void emailIsNotBlank() {
+        assertFalse(admin.getEmail().isBlank());
     }
 
 }

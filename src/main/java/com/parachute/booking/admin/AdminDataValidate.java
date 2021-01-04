@@ -3,8 +3,11 @@ package com.parachute.booking.admin;
 import com.parachute.booking.ExceptionBadData;
 import com.parachute.booking.ExceptionBlankSpaces;
 import com.parachute.booking.ExceptionNoData;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
-
+@Component
+@NoArgsConstructor
 public class AdminDataValidate {
 
     void validateData(AdminDto adminDto) {
@@ -13,7 +16,7 @@ public class AdminDataValidate {
             throw new ExceptionNoData("No data to create Admin");
         }
         if (adminDto.getPassword().isEmpty()) {
-            throw new ExceptionBadData("Passowrod is empty");
+            throw new ExceptionBadData("Password is empty");
         }
         if (adminDto.getLogin().isEmpty()) {
             throw new ExceptionBadData("Login is empty");

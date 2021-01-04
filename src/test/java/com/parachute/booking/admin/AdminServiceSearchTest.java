@@ -1,7 +1,18 @@
 package com.parachute.booking.admin;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class AdminServiceSearchTest {
+
+    @Mock
+    AdminRepository adminRepository;
+    @InjectMocks
+    AdminServiceSearch adminServiceSearch;
 
 }

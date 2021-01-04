@@ -10,19 +10,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceCreateTestIntegrated {
+class AdminServiceRemoveTestIntegrated {
 
     @Autowired
     AdminRepository adminRepository;
@@ -32,59 +35,62 @@ class AdminServiceCreateTestIntegrated {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void createAdmin_andReturnStatusCode200() throws Exception {
+    void deleteAdmin_andReturnStatusCode200() throws Exception {
         //given
         adminRepository.deleteAll();
-        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+        Admin admin = Admin.builder()
                 .login("Admin1")
                 .password("Admin pass")
                 .email("admin@gmail.com")
+                .id(1L)
                 .build();
 
-        String requestBody = objectMapper.writeValueAsString(adminDto);
-        MockHttpServletRequestBuilder post = post("/admin")
+        adminRepository.save(admin);
+        String requestParam = objectMapper.writeValueAsString(admin.getId());
+
+        MockHttpServletRequestBuilder delete = delete("/admin/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody);
+                .accept(MediaType.APPLICATION_JSON);
+
+//        MockMvcRequestBuilders
+//                .delete("/admin/{id}", "1")
+//                .contentType(MediaType.APPLICATION_JSON)
 
         //when
-        MvcResult result = mockMvc.perform(post).andReturn();
+        MvcResult result = mockMvc.perform(delete).andReturn();
 
         //then
         MockHttpServletResponse response = result.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         List<Admin> admins = adminRepository.findAll();
-        assertThat(admins.size()).isEqualTo(1);
-        assertThat(admins.get(0)).satisfies(admin -> {
-            assertThat(admin.getLogin()).isEqualTo("Admin1");
-            assertThat(admin.getPassword()).isEqualTo("Admin pass");
-            assertThat(admin.getEmail()).isEqualTo("admin@gmail.com");
-        });
+        assertThat(admins.size()).isEqualTo(0);
     }
 
     @Test
-    void createAdmin_andReturnStatusCode400() throws Exception {
+    void deleteAdmin_andReturnStatusCode400() throws Exception {
         //given
         adminRepository.deleteAll();
-        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
-                .login("")
+        Admin admin = Admin.builder()
+                .login("Admin1")
                 .password("Admin pass")
                 .email("admin@gmail.com")
+                .id(1L)
                 .build();
 
-        String requestBody = objectMapper.writeValueAsString(adminDto);
-        MockHttpServletRequestBuilder post = post("/admin")
+        adminRepository.save(admin);
+        int fakeId = 1;
+        String requestParam = objectMapper.writeValueAsString(admin.getId()+fakeId);
+
+        MockHttpServletRequestBuilder delete = delete("/admin/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody);
+                .accept(MediaType.APPLICATION_JSON);
 
         //when
-        MvcResult result = mockMvc.perform(post).andReturn();
+        MvcResult result = mockMvc.perform(delete).andReturn();
 
         //then
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        List<Admin> admins = adminRepository.findAll();
-        assertThat(admins).isEmpty();
     }
-
 
 }

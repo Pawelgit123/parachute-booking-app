@@ -13,6 +13,7 @@ public class AdminServiceCreate {
     Admin createNewAdmin(AdminDto adminDto) {
 
         adminDataValidate.validateData(adminDto);
+        // check if exists login/mail pass is ok
 
         Admin admin = new Admin();
 

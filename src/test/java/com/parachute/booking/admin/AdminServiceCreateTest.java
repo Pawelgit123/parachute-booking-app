@@ -1,5 +1,7 @@
 package com.parachute.booking.admin;
 
+import com.parachute.booking.ExceptionBadData;
+import com.parachute.booking.ExceptionBlankSpaces;
 import com.parachute.booking.ExceptionNoData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
@@ -42,20 +45,65 @@ class AdminServiceCreateTest {
     }
 
     @Test
-    void createAdmin_withNullDto() {
+    void createAdmin_DtoIsNull() {
+        AdminDto adminDto = new AdminDto();
+
+        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
+
+        assertThat(result).isExactlyInstanceOf(ExceptionNoData.class);
 
     }
 
+    @Test
+    void createAdmin_loginIsBlank(){
+        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+                .login("Admin1")
+                .password("   ")
+                .email("admin@gmail.com")
+                .build();
 
-//    @Test
-//    void adminCreate_isNull() {
-//        AdminDto adminDto = new AdminDto();
-//
-//        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
-//
-//        assertThat(result).isExactlyInstanceOf(ExceptionNoData.class);
-//
-//    }
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
+        assertThat(result).isExactlyInstanceOf(ExceptionBlankSpaces.class);
+    }
+
+    @Test
+    void createAdmin_passwordIsBlank(){
+        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+                .login("   ")
+                .password("Admin pass")
+                .email("admin@gmail.com")
+                .build();
+
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
+
+        assertThat(result).isExactlyInstanceOf(ExceptionBlankSpaces.class);
+    }
+
+    @Test
+    void createAdmin_emailIsBlank(){
+        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+                .login("Admin1")
+                .password("Admin pass")
+                .email("  ")
+                .build();
+
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
+
+        assertThat(result).isExactlyInstanceOf(ExceptionBlankSpaces.class);
+    }
+
+    @Test
+    void createAdmin_emailContainsNoMonkey(){
+        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+                .login("Admin1")
+                .password("Admin pass")
+                .email("admin(at)gmail.com")
+                .build();
+
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
+
+        assertThat(result).isExactlyInstanceOf(ExceptionBadData.class);
+    }
 
 }
