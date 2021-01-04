@@ -18,11 +18,12 @@ public class AdminController {
     private final AdminServiceSearch adminServiceSearch;
     private final AdminServiceRemove adminServiceRemove;
     private final AdminMapper adminMapper;
+    private final AdminDataValidate adminDataValidate;
 
     @PostMapping("/admin")
     ResponseEntity<AdminDto> createNewAdmin(AdminDto adminDto) {
 
-        Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto);
+        Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto, adminDataValidate);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(adminMapper.mapAdminObjectToDto(newAdmin));

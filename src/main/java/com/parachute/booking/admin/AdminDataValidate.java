@@ -24,14 +24,17 @@ public class AdminDataValidate {
         if (adminDto.getEmail().isEmpty()) {
             throw new BadRequestException("Email is empty");
         }
-        if (!adminDto.getEmail().contains("@")) {
-            throw new BadRequestException("Email is inappropriate");
-        }
         if (adminDto.getLogin().isBlank()) {
             throw new BlankSpaceException("Login is blank");
         }
         if (adminDto.getPassword().isBlank()) {
             throw new BlankSpaceException("Password is blank");
+        }
+        if (adminDto.getEmail().isBlank()) {
+            throw new BlankSpaceException("Email is blank");
+        }
+        if (!adminDto.getEmail().contains("@")) {
+            throw new BadRequestException("Email is inappropriate");
         }
         if (adminDto.getLogin().length() <= 5) {
             throw new BadRequestException("Login must have more than 5 letters");
