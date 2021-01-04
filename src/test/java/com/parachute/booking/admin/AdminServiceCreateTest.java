@@ -1,8 +1,8 @@
 package com.parachute.booking.admin;
 
-import com.parachute.booking.ExceptionBadData;
-import com.parachute.booking.ExceptionBlankSpaces;
-import com.parachute.booking.ExceptionNoData;
+import com.parachute.booking.exceptions.BadRequestException;
+import com.parachute.booking.exceptions.BlankSpaceException;
+import com.parachute.booking.exceptions.InternalServerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +50,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(ExceptionNoData.class);
+        assertThat(result).isExactlyInstanceOf(InternalServerException.class);
 
     }
 
@@ -64,7 +64,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(ExceptionBlankSpaces.class);
+        assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
     }
 
     @Test
@@ -77,7 +77,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(ExceptionBlankSpaces.class);
+        assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
     }
 
     @Test
@@ -90,7 +90,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(ExceptionBlankSpaces.class);
+        assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
     }
 
     @Test
@@ -103,7 +103,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(ExceptionBadData.class);
+        assertThat(result).isExactlyInstanceOf(BadRequestException.class);
     }
 
 }

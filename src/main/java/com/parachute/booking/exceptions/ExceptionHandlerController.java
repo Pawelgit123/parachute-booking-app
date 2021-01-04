@@ -27,4 +27,10 @@ public class ExceptionHandlerController {
     void badRequestExceptionHandler(BadRequestException badRequestException) {
         log.error(badRequestException.getMessage());
     }
+
+    @ExceptionHandler(BlankSpaceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    void blankSpaceExceptionHandler(BlankSpaceException blankSpaceException) {
+        log.error(blankSpaceException.getMessage());
+    }
 }
