@@ -21,7 +21,7 @@ public class AdminController {
     private final AdminDataValidate adminDataValidate;
 
     @PostMapping("/admin")
-    ResponseEntity<AdminDto> createNewAdmin(AdminDto adminDto) {
+    ResponseEntity<AdminDto> createNewAdmin(@RequestBody AdminDto adminDto) {
 
         Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto, adminDataValidate);
         return ResponseEntity
@@ -53,4 +53,19 @@ public class AdminController {
         adminServiceRemove.adminDelete(id);
         return adminDto;
     }
+//    @GetMapping("/admin/{login}")
+//    AdminDto getAdminByLogin(@PathVariable String login) {
+//
+//        Admin admin = adminServiceSearch.findByLogin(login);
+//        return adminMapper.mapAdminObjectToDto(admin);
+//    }
+//
+//    @GetMapping("/admin/{email}")
+//    AdminDto getAdminByEmail(@PathVariable String email) {
+//
+//        Admin admin = adminServiceSearch.findByEmail(email);
+//        return adminMapper.mapAdminObjectToDto(admin);
+//
+//    }
+
 }

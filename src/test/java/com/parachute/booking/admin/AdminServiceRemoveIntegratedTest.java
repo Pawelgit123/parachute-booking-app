@@ -2,6 +2,7 @@ package com.parachute.booking.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,22 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceRemoveTestIntegrated {
+class AdminServiceRemoveIntegratedTest {
 
     @Autowired
     AdminRepository adminRepository;
@@ -34,19 +30,25 @@ class AdminServiceRemoveTestIntegrated {
     @Autowired
     ObjectMapper objectMapper;
 
+    @BeforeEach
+    void setup(){
+        adminRepository.deleteAll();
+    }
+
+    private Admin createNewAdminForTestA() {
+        Admin admin = new Admin.AdminBuilder()
+                .login("Admin2")
+                .password("Admin pass")
+                .email("admin@gmail.com")
+                .build();
+        return admin;
+    }
+
     @Test
     void deleteAdmin_andReturnStatusCode200() throws Exception {
         //given
-        adminRepository.deleteAll();
-        Admin admin = Admin.builder()
-                .login("Admin1")
-                .password("Admin pass")
-                .email("admin@gmail.com")
-                .id(1L)
-                .build();
-
-        adminRepository.save(admin);
-        String requestParam = objectMapper.writeValueAsString(admin.getId());
+        Admin savedAdmin = adminRepository.save(createNewAdminForTestA());
+        String requestParam = objectMapper.writeValueAsString(savedAdmin.getId());
 
         MockHttpServletRequestBuilder delete = delete("/admin/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -69,17 +71,10 @@ class AdminServiceRemoveTestIntegrated {
     @Test
     void deleteAdmin_andReturnStatusCode400() throws Exception {
         //given
-        adminRepository.deleteAll();
-        Admin admin = Admin.builder()
-                .login("Admin1")
-                .password("Admin pass")
-                .email("admin@gmail.com")
-                .id(1L)
-                .build();
 
-        adminRepository.save(admin);
+        Admin savedAdmin = adminRepository.save(createNewAdminForTestA());
         int fakeId = 1;
-        String requestParam = objectMapper.writeValueAsString(admin.getId()+fakeId);
+        String requestParam = objectMapper.writeValueAsString(savedAdmin.getId()+fakeId);
 
         MockHttpServletRequestBuilder delete = delete("/admin/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,7 +85,7 @@ class AdminServiceRemoveTestIntegrated {
 
         //then
         MockHttpServletResponse response = result.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
 }

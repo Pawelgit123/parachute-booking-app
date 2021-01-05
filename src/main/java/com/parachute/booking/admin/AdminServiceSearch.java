@@ -21,11 +21,11 @@ public class AdminServiceSearch {
                 .orElseThrow(() -> new NotFoundException("Not found Admin with ID: " + id));
     }
 
-    Admin findByLogin(String login){
-        return null;
+    Admin findByLogin(String login) {
+        return adminRepository.findAdminByLogin(login);
     }
 
-    Admin findByEmail(String email){
-        return null;
+    Admin findByEmail(String email) {
+        return adminRepository.findAdminByEmail(email);
     }
 }
