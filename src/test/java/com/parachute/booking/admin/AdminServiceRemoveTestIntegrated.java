@@ -31,8 +31,8 @@ class AdminServiceRemoveTestIntegrated {
     AdminRepository adminRepository;
     @Autowired
     MockMvc mockMvc;
-
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Test
     void deleteAdmin_andReturnStatusCode200() throws Exception {

@@ -28,8 +28,8 @@ class AdminServiceCreateTestIntegrated {
     AdminRepository adminRepository;
     @Autowired
     MockMvc mockMvc;
-
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Test
     void createAdmin_andReturnStatusCode200() throws Exception {

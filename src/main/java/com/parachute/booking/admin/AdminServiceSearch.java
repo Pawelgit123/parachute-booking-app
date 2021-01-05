@@ -16,7 +16,7 @@ public class AdminServiceSearch {
         return adminRepository.findAll();
     }
 
-    Admin fingById(Long id) {
+    Admin findById(Long id) {
         return adminRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found Admin with ID: " + id));
     }

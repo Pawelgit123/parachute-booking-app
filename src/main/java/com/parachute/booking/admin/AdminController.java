@@ -41,14 +41,14 @@ public class AdminController {
     @GetMapping("/admin/{id}")
     AdminDto getAdminById(@PathVariable Long id) {
 
-        Admin admin = adminServiceSearch.fingById(id);
+        Admin admin = adminServiceSearch.findById(id);
         return adminMapper.mapAdminObjectToDto(admin);
     }
 
     @DeleteMapping("/admin/{id}")
     AdminDto deleteAdminById(@PathVariable Long id) {
 
-        Admin admin = adminServiceSearch.fingById(id);
+        Admin admin = adminServiceSearch.findById(id);
         AdminDto adminDto = adminMapper.mapAdminObjectToDto(admin);
         adminServiceRemove.adminDelete(id);
         return adminDto;
