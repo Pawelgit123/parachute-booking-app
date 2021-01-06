@@ -8,4 +8,21 @@ import org.springframework.stereotype.Service;
 public class FlightServiceCreate {
 
     private final FlightRepository flightRepository;
+
+    Flight createNewFlight (FlightDto flightDto, FlightDataValidation flightDataValidation){
+
+        flightDataValidation.validateFlightData(flightDto);
+
+        Flight flight = new Flight();
+
+        flight.setDate(flightDto.getDate());
+        flight.setHour(flightDto.getHour());
+        flight.setPilotLicenseNumber(flightDto.getPilotLicenseNumber());
+        flight.setPlaneNumber(flightDto.getPlaneNumber());
+
+        // czy nie powinien robić pustego flightu a potem Admin robimy mu update/??
+
+        return flightRepository.save(flight);
+
+    }
 }
