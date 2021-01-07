@@ -1,16 +1,15 @@
 package com.parachute.booking.flight;
 
 
+import com.parachute.booking.client.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,5 +26,8 @@ public class Flight {
     private Long pilotLicenseNumber;
     private Date date;
     private Integer hour;
+
+    @OneToMany
+    public Set<Client> clientSet;
 
 }

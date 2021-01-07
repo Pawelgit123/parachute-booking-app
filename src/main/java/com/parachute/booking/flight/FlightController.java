@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,8 +57,50 @@ public class FlightController {
         return flightDto;
     }
 
-    @PostMapping("/flight/update")
-    FlightDto update(){
+    @PostMapping("/flight/{id}/update/plane/{planeId}")
+    FlightDto updateFlightPlane(@PathVariable Long id, @PathVariable Long planeId){
+
+        Flight flightById = flightServiceFind.getFlightById(id);
+
+        return null;
+    }
+
+    @PostMapping("/flight/{id}/update/pilot/{pilotId}")
+    FlightDto updateFlightPilot(@PathVariable Long id, @PathVariable Long pilotId){
+
+        Flight flightById = flightServiceFind.getFlightById(id);
+
+        return null;
+    }
+
+    @PostMapping("/flight/{id}/update/hour/{hour}")
+    FlightDto updateFlightHour(@PathVariable Long id, @PathVariable Integer hour){
+
+        Flight flightById = flightServiceFind.getFlightById(id);
+
+        return null;
+    }
+
+    @PostMapping("/flight/{id}/update/date/{date}")
+    FlightDto updateFlightDate(@PathVariable Long id, @PathVariable Date date){
+
+        Flight flightById = flightServiceFind.getFlightById(id);
+
+        return null;
+    }
+
+    @PostMapping("/flight/{id}/{clientId}")
+    FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId){
+
+        Flight flightById = flightServiceFind.getFlightById(id);
+
+        return null;
+    }
+
+    @DeleteMapping("/flight/{id}/{clientId}")
+    FlightDto removeClientFromFlight(@PathVariable Long id,@PathVariable Long clientId){
+
+        Flight flightById = flightServiceFind.getFlightById(id);
 
         return null;
     }
