@@ -27,4 +27,10 @@ public class ExceptionHandlerController {
     void badRequestExceptionHandler(BadRequestException badRequestException) {
         log.error(badRequestException.getMessage());
     }
+
+    @ExceptionHandler(BlankSpaceException.class)
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    void blankSpaceExceptionHandler(BlankSpaceException blankSpaceException) {
+        log.error(blankSpaceException.getMessage());
+    }
 }
