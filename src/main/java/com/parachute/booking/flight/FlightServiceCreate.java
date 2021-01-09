@@ -20,7 +20,7 @@ public class FlightServiceCreate {
         flight.setPilotLicenseNumber(flightDto.getPilotLicenseNumber());
         flight.setPlaneNumber(flightDto.getPlaneNumber());
 
-        // czy nie powinien robić pustego flightu a potem Admin robimy mu update/??
+        //TODO czy nie powinien robić pustego flightu a potem Admin robi mu update??
 
         return flightRepository.save(flight);
 

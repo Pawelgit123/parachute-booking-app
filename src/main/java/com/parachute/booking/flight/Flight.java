@@ -30,4 +30,8 @@ public class Flight {
     @OneToMany
     public Set<Client> clientSet;
 
+    //TODO tu będzie forecast jeszcze
+    //TODO boolean flight accept?
+    //TODO columns title?
+
 }

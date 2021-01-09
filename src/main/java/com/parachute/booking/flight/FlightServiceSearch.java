@@ -18,7 +18,7 @@ public class FlightServiceSearch {
 
     Flight getFlightById(Long id){
         return flightRepository.findById(id)
-                .orElseThrow(() -> new InternalServerException("No found flight with id: " +id));
+                .orElseThrow(() -> new InternalServerException("No found flight with ID: " +id));
     }
 
 }
