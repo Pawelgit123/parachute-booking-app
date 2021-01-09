@@ -2,11 +2,12 @@ package com.parachute.booking.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,25 +26,19 @@ public class AdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public AdminDto createNewAdmin(@Valid @RequestBody AdminDto adminDto) {
 
-        Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto);
-
-        return adminMapper.mapAdminObjectToDto(newAdmin);
+        return adminServiceCreate.createNewAdmin(adminDto);
     }
 
     @GetMapping
-    public Set<AdminDto> getAdminSet() {
+    public Set<AdminDto> getAdmins() {
 
-        return adminServiceSearch.getAllAdmins()
-                .stream()
-                .map(adminMapper::mapAdminObjectToDto)
-                .collect(Collectors.toSet());
+        return adminServiceSearch.getAllAdmins();
     }
 
     @GetMapping("/{id}")
     public AdminDto getAdminById(@PathVariable Long id) {
 
-        Admin admin = adminServiceSearch.findById(id);
-        return adminMapper.mapAdminObjectToDto(admin);
+        return adminServiceSearch.findById(id);
     }
 
     @DeleteMapping("/{id}")

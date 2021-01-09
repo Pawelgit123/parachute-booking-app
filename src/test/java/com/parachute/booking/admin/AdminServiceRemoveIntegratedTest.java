@@ -1,6 +1,5 @@
 package com.parachute.booking.admin;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +29,8 @@ class AdminServiceRemoveIntegratedTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    private final String requestMappingUrl = "/admins";
+
     @BeforeEach
     void setup(){
         adminRepository.deleteAll();
@@ -50,20 +51,16 @@ class AdminServiceRemoveIntegratedTest {
         Admin savedAdmin = adminRepository.save(createNewAdminForTestA());
         String requestParam = objectMapper.writeValueAsString(savedAdmin.getId());
 
-        MockHttpServletRequestBuilder delete = delete("/admin/{id}", requestParam)
+        MockHttpServletRequestBuilder delete = delete(requestMappingUrl+"/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
-
-//        MockMvcRequestBuilders
-//                .delete("/admin/{id}", "1")
-//                .contentType(MediaType.APPLICATION_JSON)
 
         //when
         MvcResult result = mockMvc.perform(delete).andReturn();
 
         //then
         MockHttpServletResponse response = result.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
         List<Admin> admins = adminRepository.findAll();
         assertThat(admins.size()).isEqualTo(0);
     }
@@ -76,7 +73,7 @@ class AdminServiceRemoveIntegratedTest {
         int fakeId = 1;
         String requestParam = objectMapper.writeValueAsString(savedAdmin.getId()+fakeId);
 
-        MockHttpServletRequestBuilder delete = delete("/admin/{id}", requestParam)
+        MockHttpServletRequestBuilder delete = delete(requestMappingUrl+"/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 

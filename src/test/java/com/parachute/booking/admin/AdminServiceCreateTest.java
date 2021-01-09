@@ -22,6 +22,10 @@ class AdminServiceCreateTest {
     AdminRepository adminRepository;
     @InjectMocks
     AdminServiceCreate adminServiceCreate;
+    @Mock
+    AdminMapper adminMapper;
+    @Mock
+    AdminDataValidate adminDataValidate;
 
     @BeforeEach
     void setup() {
@@ -33,11 +37,13 @@ class AdminServiceCreateTest {
         //given
         when(adminRepository.save(any(Admin.class))).thenReturn(new Admin());
 
+        AdminDataValidate adminDataValidate;
+
         //when
-        Admin newAdmin = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));
+        AdminDto newAdminDto = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));
 
         //then
-        assertThat(newAdmin).isExactlyInstanceOf(Admin.class);
+        assertThat(newAdminDto).isExactlyInstanceOf(AdminDto.class);
         verify(adminRepository).save(any(Admin.class));
     }
 
