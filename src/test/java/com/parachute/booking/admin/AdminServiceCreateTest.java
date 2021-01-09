@@ -31,11 +31,10 @@ class AdminServiceCreateTest {
     @Test
     void createAdmin_saveAdminToRepository() {
         //given
-        AdminDataValidate adminDataValidate = new AdminDataValidate();
         when(adminRepository.save(any(Admin.class))).thenReturn(new Admin());
 
         //when
-        Admin newAdmin = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"), adminDataValidate);
+        Admin newAdmin = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));
 
         //then
         assertThat(newAdmin).isExactlyInstanceOf(Admin.class);
@@ -45,9 +44,8 @@ class AdminServiceCreateTest {
     @Test
     void createAdmin_DtoIsNull() {
         AdminDto adminDto = new AdminDto();
-        AdminDataValidate adminDataValidate = new AdminDataValidate();
 
-        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto, adminDataValidate));
+        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(NullPointerException.class);
 
@@ -60,9 +58,8 @@ class AdminServiceCreateTest {
                 .password("   ")
                 .email("admin@gmail.com")
                 .build();
-        AdminDataValidate adminDataValidate = new AdminDataValidate();
 
-        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto, adminDataValidate));
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
     }
@@ -74,9 +71,8 @@ class AdminServiceCreateTest {
                 .password("Admin pass")
                 .email("admin@gmail.com")
                 .build();
-        AdminDataValidate adminDataValidate = new AdminDataValidate();
 
-        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto, adminDataValidate));
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
     }
@@ -88,9 +84,8 @@ class AdminServiceCreateTest {
                 .password("Admin pass")
                 .email("  ")
                 .build();
-        AdminDataValidate adminDataValidate = new AdminDataValidate();
 
-        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto, adminDataValidate));
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
     }
@@ -102,9 +97,8 @@ class AdminServiceCreateTest {
                 .password("Admin pass")
                 .email("admin(at)gmail.com")
                 .build();
-        AdminDataValidate adminDataValidate = new AdminDataValidate();
 
-        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto, adminDataValidate));
+        Throwable result = catchThrowable(() ->  adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(BadRequestException.class);
     }

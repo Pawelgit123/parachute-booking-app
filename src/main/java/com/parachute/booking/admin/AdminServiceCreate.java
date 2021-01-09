@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 public class AdminServiceCreate {
 
     private final AdminRepository adminRepository;
+    private final AdminDataValidate adminDataValidate;
 
-    Admin createNewAdmin(AdminDto adminDto, AdminDataValidate adminDataValidate) {
+    private final AdminMapper adminMapper;
+
+    Admin createNewAdmin(AdminDto adminDto) {
 
         adminDataValidate.validateData(adminDto);
-        // check if exists login/mail pass is ok
+
+        //TODO check if exists login/mail is not doubled - password is ok
 
         Admin admin = new Admin();
 

@@ -6,31 +6,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @Validated
+@RequestMapping("/admins")
 public class AdminController {
 
     private final AdminServiceCreate adminServiceCreate;
     private final AdminServiceSearch adminServiceSearch;
     private final AdminServiceRemove adminServiceRemove;
     private final AdminMapper adminMapper;
-    private final AdminDataValidate adminDataValidate;
 
-    @PostMapping("/admin")
-    ResponseEntity<AdminDto> createNewAdmin(@RequestBody AdminDto adminDto) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AdminDto createNewAdmin(@Valid @RequestBody AdminDto adminDto) {
 
-        Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto, adminDataValidate);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(adminMapper.mapAdminObjectToDto(newAdmin));
+        Admin newAdmin = adminServiceCreate.createNewAdmin(adminDto);
+
+        return adminMapper.mapAdminObjectToDto(newAdmin);
     }
 
-    @GetMapping("/admin")
-    Set<AdminDto> getAdminSet() {
+    @GetMapping
+    public Set<AdminDto> getAdminSet() {
 
         return adminServiceSearch.getAllAdmins()
                 .stream()
@@ -38,30 +39,29 @@ public class AdminController {
                 .collect(Collectors.toSet());
     }
 
-    @GetMapping("/admin/{id}")
-    AdminDto getAdminById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public AdminDto getAdminById(@PathVariable Long id) {
 
         Admin admin = adminServiceSearch.findById(id);
         return adminMapper.mapAdminObjectToDto(admin);
     }
 
-    @DeleteMapping("/admin/{id}")
-    AdminDto deleteAdminById(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAdminById(@PathVariable Long id) {
 
-        Admin admin = adminServiceSearch.findById(id);
-        AdminDto adminDto = adminMapper.mapAdminObjectToDto(admin);
         adminServiceRemove.adminDelete(id);
-        return adminDto;
     }
-//    @GetMapping("/admin/{login}")
-//    AdminDto getAdminByLogin(@PathVariable String login) {
+
+//    @GetMapping("/{login}")
+//    public AdminDto getAdminByLogin(@PathVariable String login) {
 //
 //        Admin admin = adminServiceSearch.findByLogin(login);
 //        return adminMapper.mapAdminObjectToDto(admin);
 //    }
 //
-//    @GetMapping("/admin/{email}")
-//    AdminDto getAdminByEmail(@PathVariable String email) {
+//    @GetMapping("/{email}")
+//    public AdminDto getAdminByEmail(@PathVariable String email) {
 //
 //        Admin admin = adminServiceSearch.findByEmail(email);
 //        return adminMapper.mapAdminObjectToDto(admin);
