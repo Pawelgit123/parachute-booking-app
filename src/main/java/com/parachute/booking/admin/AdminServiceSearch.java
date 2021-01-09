@@ -12,6 +12,7 @@ public class AdminServiceSearch {
 
     private final AdminRepository adminRepository;
 
+    // List<AdminDto>
     List<Admin> getAllAdmins() {
         return adminRepository.findAll();
     }

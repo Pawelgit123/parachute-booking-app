@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Data
@@ -34,4 +36,6 @@ public class Forecast {
     private int visibility;
     private float probabilityOfPrecipitation;
     private String dateAndTime;
+
+
 }

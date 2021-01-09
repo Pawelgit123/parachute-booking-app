@@ -1,5 +1,8 @@
 package com.parachute.booking.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.parachute.booking.exceptions.BadRequestException;
 import com.parachute.booking.exceptions.BlankSpaceException;
 import com.parachute.booking.exceptions.InternalServerException;
@@ -12,7 +15,10 @@ public class AdminDataValidate {
 
     void validateData(AdminDto adminDto) {
 
+        List<String> errors = new ArrayList<>();
+
         if (adminDto == null) {
+            errors.add("No data to create Admin");
             throw new InternalServerException("No data to create Admin");
         }
         if (adminDto.getPassword().isEmpty()) {
@@ -41,6 +47,10 @@ public class AdminDataValidate {
         }
         if (adminDto.getPassword().length() <= 5) {
             throw new BadRequestException("Password must have more than 5 letters");
+        }
+
+        if (!errors.isEmpty()) {
+            throw new BadRequestException(errors);
         }
 
     }

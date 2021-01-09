@@ -17,6 +17,9 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class ForecastClient {
+
+    private static final String CLIENT_HOST = "api.openweathermap.org/data/2.5/forecast";
+
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final ForecastClientProperties forecastClientProperties;
@@ -24,7 +27,7 @@ public class ForecastClient {
     public Optional<Forecast> getForecast(LocalDateTime localDateTime) {
         String url = UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("api.openweathermap.org/data/2.5/forecast")
+                .host(CLIENT_HOST)
                 .queryParam("id", 3088034)
                 .queryParam("appId", forecastClientProperties.getApiKey())
                 .queryParam("lang", "pl")
@@ -37,7 +40,7 @@ public class ForecastClient {
 
         if (response.getStatusCode().isError()) {
             log.error("Connection error with url: " + url + ", status code: " + response.getStatusCode().value());
-            return Optional.empty()
+            return Optional.empty();
         }
 
         try {
@@ -45,5 +48,6 @@ public class ForecastClient {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return Optional.empty();
     }
 }

@@ -15,6 +15,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @ExtendWith(MockitoExtension.class)
 class AdminServiceCreateTest {
 
@@ -30,6 +33,8 @@ class AdminServiceCreateTest {
 
     @Test
     void createAdmin_saveAdminToRepository() {
+        DateTimeFormatter.ISO_DATE_TIME
+
         //given
         AdminDataValidate adminDataValidate = new AdminDataValidate();
         when(adminRepository.save(any(Admin.class))).thenReturn(new Admin());
@@ -47,7 +52,7 @@ class AdminServiceCreateTest {
         AdminDto adminDto = new AdminDto();
         AdminDataValidate adminDataValidate = new AdminDataValidate();
 
-        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto, adminDataValidate));
+        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(NullPointerException.class);
 

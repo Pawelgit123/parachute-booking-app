@@ -6,10 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 @Data
@@ -19,14 +21,16 @@ import javax.persistence.Id;
 public class Admin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@SequenceGenerator(name = )
     private Long id;
 
-    @NotNull
+    @Column(name = "login")
     private String login;
-    @NotNull
+
+    @Column(name = "password")
     private String password;
-    @NotNull
+
     private String email;
 
 }

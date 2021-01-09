@@ -1,17 +1,21 @@
 package com.parachute.booking.forecast.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Optional;
 
 @Data
+@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 class ForecastResponse {
     @JsonProperty("list")
     private List<SingleForecast> singleForecastList;
 
     @Data
+    @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
     static class SingleForecast {
         @JsonProperty("main")
         private General general;
@@ -20,16 +24,22 @@ class ForecastResponse {
         private Wind wind;
         private int visibility;
         private float pop;
-        private Optional<Rain> rain;
-        private Optional<Snow> snow;
+        private Rain rain;
+        private Snow snow;
         @JsonProperty("dt_txt")
         private String dateAndTime;
 
+        public Optional<Rain> getRain() {
+            return Optional.ofNullable(rain);
+        }
+
         @Data
+        @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
         static class General {
             private float temp;
-            private float feels_like;
-            private int sea_level;
+            @JsonProperty("feels_like")
+            private float feelsLike;
+            private int seaLevel;
             private int grnd_level;
             private int humidity;
         }
