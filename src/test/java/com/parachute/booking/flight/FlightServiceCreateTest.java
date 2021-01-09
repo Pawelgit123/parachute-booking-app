@@ -24,8 +24,7 @@ class FlightServiceCreateTest {
     FlightServiceCreate flightServiceCreate;
 
     @Mock
-    FlightDataValidation flightDataValidation;
-
+    FlightMapper flightMapper;
 
     @Test
     void createNewFlight_saveFlightToRepository() {
@@ -33,17 +32,17 @@ class FlightServiceCreateTest {
         when(flightRepository.save(any(Flight.class))).thenReturn(new Flight());
 
         //when
-        Flight newFlight = flightServiceCreate.createNewFlight(new FlightDto(), flightDataValidation);
+        FlightDto newFlight = flightServiceCreate.createNewFlight(new FlightDto());
 
         //then
-        assertThat(newFlight).isExactlyInstanceOf(Flight.class);
+        assertThat(newFlight).isExactlyInstanceOf(FlightDto.class);
         verify(flightRepository).save(any(Flight.class));
     }
 
     @Test
     void createNewFlight_InternalServerError_byNull() {
         //when
-        Throwable throwable = catchThrowable(() -> flightServiceCreate.createNewFlight(null, new FlightDataValidation()));
+        Throwable throwable = catchThrowable(() -> flightServiceCreate.createNewFlight(null));
 
         //then
         assertThat(throwable).isInstanceOf(InternalServerException.class);

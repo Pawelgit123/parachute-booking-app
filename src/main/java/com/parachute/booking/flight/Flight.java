@@ -22,9 +22,13 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "planeNumber")
     private Long planeNumber;
+    @Column(name = "pilotLicenseNumber")
     private Long pilotLicenseNumber;
+    @Column(name = "date")
     private Date date;
+    @Column(name = "hour")
     private Integer hour;
 
     @OneToMany

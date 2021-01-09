@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +46,7 @@ class FlightServiceSearchTest {
         flightRepository.save(createFlightsForTest());
 
         //when
-        List<Flight> allFlights = flightServiceSearch.getAllFlights();
+        Set<FlightDto> allFlights = flightServiceSearch.getAllFlights();
 
         //then
         assertThat(allFlights).size().isEqualTo(3);

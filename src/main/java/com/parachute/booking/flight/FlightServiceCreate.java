@@ -1,17 +1,23 @@
 package com.parachute.booking.flight;
 
+import com.parachute.booking.exceptions.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FlightServiceCreate {
 
     private final FlightRepository flightRepository;
+    private final FlightMapper flightMapper;
 
-    Flight createNewFlight (FlightDto flightDto, FlightDataValidation flightDataValidation){
+    FlightDto createNewFlight(FlightDto flightDto) {
 
-        flightDataValidation.validateFlightData(flightDto);
+        if (flightDto == null) {
+            throw new InternalServerException("No data to create Flight");
+        }
 
         Flight flight = new Flight();
 
@@ -22,7 +28,9 @@ public class FlightServiceCreate {
 
         //TODO czy nie powinien robić pustego flightu a potem Admin robi mu update??
 
-        return flightRepository.save(flight);
+        Flight save = flightRepository.save(flight);
+
+        return flightMapper.mapFlightToDto(save);
 
     }
 }
