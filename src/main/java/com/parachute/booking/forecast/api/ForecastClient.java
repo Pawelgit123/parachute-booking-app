@@ -17,18 +17,29 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class ForecastClient {
+
+    private static final String HTTP = "http";
+    private static final String HOST = "api.openweathermap.org/data/2.5/forecast";
+    private static final String ID_PARAM = "id";
+    private static final int CITY_ID = 3088034;
+    private static final String APPID_PARAM = "appId";
+    private static final String LANG_PARAM = "lang";
+    private static final String LANG_PL = "pl";
+    private static final String UNITS_PARAM = "units";
+    private static final String UNITS_METRIC = "metric";
+
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final ForecastClientProperties forecastClientProperties;
 
     public Optional<Forecast> getForecast(LocalDateTime localDateTime) {
         String url = UriComponentsBuilder.newInstance()
-                .scheme("http")
-                .host("api.openweathermap.org/data/2.5/forecast")
-                .queryParam("id", 3088034)
-                .queryParam("appId", forecastClientProperties.getApiKey())
-                .queryParam("lang", "pl")
-                .queryParam("units", "metric")
+                .scheme(HTTP)
+                .host(HOST)
+                .queryParam(ID_PARAM, CITY_ID)
+                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
+                .queryParam(LANG_PARAM, LANG_PL)
+                .queryParam(UNITS_PARAM, UNITS_METRIC)
                 .build()
                 .toUriString();
 
@@ -37,7 +48,7 @@ public class ForecastClient {
 
         if (response.getStatusCode().isError()) {
             log.error("Connection error with url: " + url + ", status code: " + response.getStatusCode().value());
-            return Optional.empty()
+            return Optional.empty();
         }
 
         try {
@@ -45,5 +56,6 @@ public class ForecastClient {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return Optional.empty();//todo finish this method
     }
 }
