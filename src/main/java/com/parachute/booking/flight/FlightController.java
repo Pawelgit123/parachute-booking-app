@@ -45,6 +45,8 @@ public class FlightController {
         flightServiceRemove.removeFlightById(id);
     }
 
+    //TODO updates
+
     @PostMapping("/{id}/update/plane/{planeId}")
     public FlightDto updateFlightPlane(@PathVariable Long id, @PathVariable Long planeId) {
 

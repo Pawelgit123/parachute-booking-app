@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class FlightServiceCreate {
 
     private final FlightRepository flightRepository;
-    private final FlightMapper flightMapper;
 
     FlightDto createNewFlight(FlightDto flightDto) {
 
@@ -28,9 +27,9 @@ public class FlightServiceCreate {
 
         //TODO czy nie powinien robić pustego flightu a potem Admin robi mu update??
 
-        Flight save = flightRepository.save(flight);
+        flightRepository.save(flight);
 
-        return flightMapper.mapFlightToDto(save);
+        return flightDto;
 
     }
 }

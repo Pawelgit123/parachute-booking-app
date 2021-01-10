@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaneServiceCreate {
 
     private final PlaneRepository planeRepository;
-    private final PlaneMapper planeMapper;
 
     public PlaneDto createNewPlane(PlaneDto planeDto) {
 
@@ -19,8 +18,8 @@ public class PlaneServiceCreate {
         plane.setPlaneModel(planeDto.getPlaneModel());
         plane.setPlaneNumber(planeDto.getPlaneNumber());
 
-        Plane save = planeRepository.save(plane);
+        planeRepository.save(plane);
 
-        return planeMapper.mapPlaneToDto(save);
+        return planeDto;
     }
 }
