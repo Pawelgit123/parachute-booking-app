@@ -1,6 +1,7 @@
 package com.parachute.booking.forecast;
 
 import com.sun.istack.Nullable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,8 @@ import java.util.Optional;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Forecast {
 
     @Id

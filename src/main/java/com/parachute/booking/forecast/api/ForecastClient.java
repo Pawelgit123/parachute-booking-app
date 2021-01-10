@@ -1,18 +1,18 @@
 package com.parachute.booking.forecast.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.parachute.booking.forecast.Forecast;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import com.parachute.booking.forecast.Forecast;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -30,7 +30,6 @@ public class ForecastClient {
     private static final String UNITS_METRIC = "metric";
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
     private final ForecastClientProperties forecastClientProperties;
 
     public Optional<Forecast> getForecast(LocalDateTime localDateTime) {
@@ -45,17 +44,15 @@ public class ForecastClient {
                 .toUriString();
 
         try {
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            String body = response.getBody();
+            ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
+            ForecastResponse body = response.getBody();
 
-            if (response.getStatusCode().isError()) {
-                log.error("Connection error with url: " + url + ", status code: " + response.getStatusCode().value());
-                return Optional.empty();
-            }
-            ForecastResponse forecastResponse = objectMapper.readValue(body, ForecastResponse.class);
-        } catch (JsonProcessingException e) {
-            log.error("Forecast data could not be retrieved.", e);
-            return Optional.empty();
+//            if (response.getStatusCode().isError()) {
+//                log.error("Connection error with url: " + url + ", status code: " + response.getStatusCode().value());
+//                return Optional.empty();
+//            }
+        } catch (HttpStatusCodeException exp) {
+
         } catch (RestClientException e) {
             log.error("Connection error with the host", e);
             return Optional.empty();

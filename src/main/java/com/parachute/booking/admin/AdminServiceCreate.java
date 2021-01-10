@@ -11,8 +11,12 @@ public class AdminServiceCreate {
 
     private final AdminRepository adminRepository;
     private final AdminDataValidate adminDataValidate;
+    private final AdminMapper adminMapper;
 
     public AdminDto createNewAdmin(AdminDto adminDto) {
+        // adminDto -> Admin
+        // Admin -> save -> Admin with generated fields
+        // Admin with generated fields -> AdminDto
 
         adminDataValidate.validateData(adminDto);
 
@@ -24,8 +28,8 @@ public class AdminServiceCreate {
         admin.setLogin(adminDto.getLogin());
         admin.setEmail(adminDto.getEmail());
 
-        adminRepository.save(admin);
-
-        return adminDto;
+        final Admin savedAdmin = adminRepository.save(admin);
+        
+        return adminMapper.mapAdminObjectToDto(savedAdmin);
     }
 }

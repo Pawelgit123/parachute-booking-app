@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdminMapper {
 
-    AdminDto mapAdminObjectToDto (Admin admin){
+    public AdminDto mapAdminObjectToDto (Admin admin){
         return AdminDto.builder()
                 .email(admin.getEmail())
                 .login(admin.getLogin())

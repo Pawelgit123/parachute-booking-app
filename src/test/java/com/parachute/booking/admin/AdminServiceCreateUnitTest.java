@@ -21,6 +21,8 @@ class AdminServiceCreateUnitTest {
     AdminServiceCreate adminServiceCreate;
     @Mock
     AdminDataValidate adminDataValidate;
+    @Mock
+    private AdminMapper adminMapper;
 
     @BeforeEach
     void setup() {
@@ -31,6 +33,7 @@ class AdminServiceCreateUnitTest {
     void createAdmin_saveAdminToRepository() {
         //given
         when(adminRepository.save(any(Admin.class))).thenReturn(new Admin());
+        when(adminMapper.mapAdminObjectToDto(new Admin())).thenReturn(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));
 
         //when
         AdminDto newAdminDto = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));

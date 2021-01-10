@@ -19,8 +19,8 @@ public class ForecastResponse {
         private Weather weather;
         private Clouds clouds;
         private Wind wind;
-        private int visibility;
-        private float pop;
+        private Integer visibility; // 0
+        private Float pop;
         private Rain rain;
         private Snow snow;
         @JsonProperty("dt_txt")

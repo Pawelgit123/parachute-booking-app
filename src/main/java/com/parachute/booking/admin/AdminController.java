@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 @RequestMapping("/admins")
 public class AdminController {
 
