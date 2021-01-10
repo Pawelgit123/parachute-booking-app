@@ -12,8 +12,6 @@ public class AdminServiceCreate {
     private final AdminRepository adminRepository;
     private final AdminDataValidate adminDataValidate;
 
-    private final AdminMapper adminMapper;
-
     public AdminDto createNewAdmin(AdminDto adminDto) {
 
         adminDataValidate.validateData(adminDto);
@@ -28,6 +26,6 @@ public class AdminServiceCreate {
 
         adminRepository.save(admin);
 
-        return adminMapper.mapAdminObjectToDto(admin);
+        return adminDto;
     }
 }

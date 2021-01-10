@@ -20,7 +20,6 @@ public class AdminController {
     private final AdminServiceCreate adminServiceCreate;
     private final AdminServiceSearch adminServiceSearch;
     private final AdminServiceRemove adminServiceRemove;
-    private final AdminMapper adminMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
