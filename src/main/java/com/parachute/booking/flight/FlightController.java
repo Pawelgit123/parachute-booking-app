@@ -21,7 +21,7 @@ public class FlightController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FlightDto createFlight(@RequestBody FlightDto flightDto) {
+    public FlightDto createFlight(@Valid @RequestBody FlightDto flightDto) {
 
         return flightServiceCreate.createNewFlight(flightDto);
     }
@@ -45,48 +45,67 @@ public class FlightController {
         flightServiceRemove.removeFlightById(id);
     }
 
-    //TODO updates
+    @PutMapping("/{id}")
+    public void updateFlight(@PathVariable Long id, @Valid @RequestBody FlightDto flightDto) {
+        // sprawdz czy flight o 'id' istnieje
+        // jeżeli tak to weź obiekt z bazy ->
+        // zaktualizuj obiekt z bazy polami z flightDto
 
-    @PostMapping("/{id}/update/plane/{planeId}")
-    public FlightDto updateFlightPlane(@PathVariable Long id, @PathVariable Long planeId) {
-
-
-        return null;
+        //
     }
 
-    @PostMapping("/{id}/update/pilot/{pilotId}")
-    public FlightDto updateFlightPilot(@PathVariable Long id, @PathVariable Long pilotId) {
-
-
-        return null;
+    @PatchMapping("/{id}")
+    public void updateFlightPartially(@PathVariable Long id, @RequestBody FlightDto flightDto) {
+        if (flightDto.getDate() != null) {
+            updateDate(...)
+        }
+        if (flightDto.getPlaneNumber() != null) {
+            updatePlateNumber(...);
+        }
     }
 
-    @PostMapping("/{id}/update/hour/{hour}")
-    public FlightDto updateFlightHour(@PathVariable Long id, @PathVariable Integer hour) {
-
-
-        return null;
-    }
-
-    @PostMapping("/{id}/update/date/{date}")
-    public FlightDto updateFlightDate(@PathVariable Long id, @PathVariable Date date) {
-
-
-        return null;
-    }
-
-    @PostMapping("/{id}/{clientId}")
-    public FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId) {
-
-
-        return null;
-    }
-
-    @DeleteMapping("/{id}/{clientId}")
-    public FlightDto removeClientFromFlight(@PathVariable Long id, @PathVariable Long clientId) {
-
-
-        return null;
-    }
+//    //TODO updates
+//
+//    @PostMapping("/{id}/update/plane/{planeId}")
+//    public FlightDto updateFlightPlane(@PathVariable Long id, @PathVariable Long planeId) {
+//
+//
+//        return null;
+//    }
+//
+//    @PostMapping("/{id}/update/pilot/{pilotId}")
+//    public FlightDto updateFlightPilot(@PathVariable Long id, @PathVariable Long pilotId) {
+//
+//
+//        return null;
+//    }
+//
+//    @PostMapping("/{id}/update/hour/{hour}")
+//    public FlightDto updateFlightHour(@PathVariable Long id, @PathVariable Integer hour) {
+//
+//
+//        return null;
+//    }
+//
+//    @PostMapping("/{id}/update/date/{date}")
+//    public FlightDto updateFlightDate(@PathVariable Long id, @PathVariable Date date) {
+//
+//
+//        return null;
+//    }
+//
+//    @PostMapping("/{id}/{clientId}")
+//    public FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId) {
+//
+//
+//        return null;
+//    }
+//
+//    @DeleteMapping("/{id}/{clientId}")
+//    public FlightDto removeClientFromFlight(@PathVariable Long id, @PathVariable Long clientId) {
+//
+//
+//        return null;
+//    }
 
 }
