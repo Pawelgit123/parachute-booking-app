@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 class AdminServiceCreateTest {
 
     @Autowired
@@ -77,32 +77,5 @@ class AdminServiceCreateTest {
         assertThat(result).isExactlyInstanceOf(NullPointerException.class);
 
     }
-
-    //    @Test
-//    void createAdmin_saveAdminToRepository() {
-//        //given
-//        when(adminRepository.save(any(Admin.class))).thenReturn(new Admin());
-//
-//        //when
-//        AdminDto newAdminDto = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));
-//
-//        //then
-//        assertThat(newAdminDto).isExactlyInstanceOf(AdminDto.class);
-//        verify(adminRepository).save(any(Admin.class));
-//    }
-
-    //    @Test
-//    void createAdmin_emailContainsNoMonkey() {
-//        AdminDto adminDto1 = new AdminDto.AdminDtoBuilder()
-//                .login("Admin1")
-//                .password("Admin pass")
-//                .email("admin(at)gmail.com")
-//                .build();
-//
-//        Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto1));
-//
-//        assertThat(result).isExactlyInstanceOf(BadRequestException.class);
-//    }
-//
 
 }
