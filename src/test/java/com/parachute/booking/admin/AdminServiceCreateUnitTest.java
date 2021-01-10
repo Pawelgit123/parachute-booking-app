@@ -21,19 +21,31 @@ class AdminServiceCreateUnitTest {
     AdminServiceCreate adminServiceCreate;
     @Mock
     AdminDataValidate adminDataValidate;
+    @Mock
+    private AdminMapper adminMapper;
 
     @BeforeEach
     void setup() {
         adminRepository.deleteAll();
     }
 
+    private AdminDto createNewAdminDtoForTest() {
+        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+                .login("Admin2")
+                .password("Admin pass")
+                .email("admin@gmail.com")
+                .build();
+        return adminDto;
+    }
+
     @Test
     void createAdmin_saveAdminToRepository() {
         //given
         when(adminRepository.save(any(Admin.class))).thenReturn(new Admin());
+        when(adminMapper.mapAdminDto(new Admin())).thenReturn(createNewAdminDtoForTest());
 
         //when
-        AdminDto newAdminDto = adminServiceCreate.createNewAdmin(new AdminDto(1L, "Admin1", "Admin pass", "admin@gmail.com"));
+        AdminDto newAdminDto = adminServiceCreate.createNewAdmin(createNewAdminDtoForTest());
 
         //then
         assertThat(newAdminDto).isExactlyInstanceOf(AdminDto.class);

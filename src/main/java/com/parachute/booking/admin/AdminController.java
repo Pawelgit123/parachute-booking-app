@@ -2,18 +2,13 @@ package com.parachute.booking.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 @RequestMapping("/admins")
 public class AdminController {
 
@@ -29,12 +24,14 @@ public class AdminController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Set<AdminDto> getAdmins() {
 
         return adminServiceSearch.getAllAdmins();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public AdminDto getAdminById(@PathVariable Long id) {
 
         return adminServiceSearch.findById(id);
@@ -47,19 +44,18 @@ public class AdminController {
         adminServiceRemove.adminDelete(id);
     }
 
-//    @GetMapping("/{login}")
-//    public AdminDto getAdminByLogin(@PathVariable String login) {
-//
-//        Admin admin = adminServiceSearch.findByLogin(login);
-//        return adminMapper.mapAdminObjectToDto(admin);
-//    }
-//
-//    @GetMapping("/{email}")
-//    public AdminDto getAdminByEmail(@PathVariable String email) {
-//
-//        Admin admin = adminServiceSearch.findByEmail(email);
-//        return adminMapper.mapAdminObjectToDto(admin);
-//
-//    }
+    @GetMapping("/login/{login}")
+    @ResponseStatus(HttpStatus.OK)
+    public AdminDto getAdminByLogin(@PathVariable String login) {
+
+        return adminServiceSearch.findByLogin(login);
+    }
+
+    @GetMapping("/email/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    public AdminDto getAdminByEmail(@PathVariable String email) {
+
+        return adminServiceSearch.findByEmail(email);
+    }
 
 }

@@ -25,7 +25,7 @@ public class AdminServiceSearch {
         new HashSet<>(all);
 
         return all.stream()
-                .map(adminMapper::mapAdminObjectToDto)
+                .map(adminMapper::mapAdminDto)
                 .collect(Collectors.toSet());
     }
 
@@ -33,17 +33,24 @@ public class AdminServiceSearch {
 
         Optional<Admin> byId = adminRepository.findById(id);
 
-        return adminMapper.mapAdminObjectToDto(byId
+        return adminMapper.mapAdminDto(byId
                 .orElseThrow(() -> new NotFoundException("Not found Admin with ID: " + id)));
     }
 
-//    public Admin findByLogin(String login) {
-//        return adminRepository.findAdminByLogin(login);
-//    }
-//
-//    public Admin findByEmail(String email) {
-//        return adminRepository.findAdminByEmail(email);
-//    }
+    public AdminDto findByLogin(String login) {
 
-    //TODO find by login and find by email
+        Optional<Admin> adminByLogin = adminRepository.findAdminByLogin(login);
+
+        return adminMapper.mapAdminDto(adminByLogin
+                .orElseThrow(() -> new NotFoundException("Not found Admin with Login: " + login)));
+    }
+
+    public AdminDto findByEmail(String email) {
+
+        Optional<Admin> adminByEmail = adminRepository.findAdminByEmail(email);
+
+        return adminMapper.mapAdminDto(adminByEmail
+                .orElseThrow(() -> new NotFoundException("Not found Admin with Email: " + email)));
+    }
+
 }
