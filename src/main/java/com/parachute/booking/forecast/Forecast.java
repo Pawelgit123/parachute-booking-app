@@ -1,6 +1,7 @@
 package com.parachute.booking.forecast;
 
 import com.sun.istack.Nullable;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
