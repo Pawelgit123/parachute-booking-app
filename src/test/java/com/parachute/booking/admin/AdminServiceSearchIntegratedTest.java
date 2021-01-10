@@ -29,6 +29,8 @@ class AdminServiceSearchIntegratedTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    private final String requestMappingUrl = "/admins";
+
     private Admin createNewAdminForTestA() {
         Admin admin = new Admin.AdminBuilder()
                 .login("Admin2")
@@ -67,7 +69,7 @@ class AdminServiceSearchIntegratedTest {
         adminRepository.save(createNewAdminForTestA());
         adminRepository.save(createNewAdminForTestB());
         adminRepository.save(createNewAdminForTestC());
-        MockHttpServletRequestBuilder request = get("/admin");
+        MockHttpServletRequestBuilder request = get(requestMappingUrl);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -81,7 +83,7 @@ class AdminServiceSearchIntegratedTest {
     @Test
     void getAllAdmins_andReturnsStatusCode200_noAdmins() throws Exception {
         //given
-        MockHttpServletRequestBuilder request = get("/admin");
+        MockHttpServletRequestBuilder request = get(requestMappingUrl);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -99,7 +101,7 @@ class AdminServiceSearchIntegratedTest {
         adminRepository.save(createNewAdminForTestB());
         adminRepository.save(createNewAdminForTestC());
         Long id = savedAdmin.getId();
-        MockHttpServletRequestBuilder request = get("/admin/{id}", id);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/{id}", id);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -116,7 +118,7 @@ class AdminServiceSearchIntegratedTest {
     @Test
     void findById_andReturnsStatusCode400_adminDoesntExists() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get("/admin/{id}", 100);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/{id}", 100);
 
         // when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -128,7 +130,7 @@ class AdminServiceSearchIntegratedTest {
     @Test
     void findById_andReturnsStatusCode400_adminIdIsNegative() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get("/admin/{id}", -1);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/{id}", -1);
 
         // when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();

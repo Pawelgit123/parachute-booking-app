@@ -2,17 +2,23 @@ package com.parachute.booking.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminServiceCreate {
 
     private final AdminRepository adminRepository;
+    private final AdminDataValidate adminDataValidate;
 
-    Admin createNewAdmin(AdminDto adminDto, AdminDataValidate adminDataValidate) {
+    private final AdminMapper adminMapper;
+
+    public AdminDto createNewAdmin(AdminDto adminDto) {
 
         adminDataValidate.validateData(adminDto);
-        // check if exists login/mail pass is ok
+
+        //TODO check if exists login/mail is not doubled - password is ok
 
         Admin admin = new Admin();
 
@@ -20,6 +26,8 @@ public class AdminServiceCreate {
         admin.setLogin(adminDto.getLogin());
         admin.setEmail(adminDto.getEmail());
 
-        return adminRepository.save(admin);
+        adminRepository.save(admin);
+
+        return adminMapper.mapAdminObjectToDto(admin);
     }
 }

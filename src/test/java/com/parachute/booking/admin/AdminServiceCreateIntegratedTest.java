@@ -29,6 +29,8 @@ class AdminServiceCreateIntegratedTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    private final String requestMappingUrl = "/admins";
+
     @BeforeEach
     void setup(){
         adminRepository.deleteAll();
@@ -48,7 +50,7 @@ class AdminServiceCreateIntegratedTest {
         //given
         AdminDto newAdminDtoForTest = createNewAdminDtoForTest();
         String requestBody = objectMapper.writeValueAsString(newAdminDtoForTest);
-        MockHttpServletRequestBuilder post = post("/admin")
+        MockHttpServletRequestBuilder post = post(requestMappingUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
@@ -77,7 +79,7 @@ class AdminServiceCreateIntegratedTest {
                 .build();
 
         String requestBody = objectMapper.writeValueAsString(adminDto);
-        MockHttpServletRequestBuilder post = post("/admin")
+        MockHttpServletRequestBuilder post = post(requestMappingUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
@@ -101,7 +103,7 @@ class AdminServiceCreateIntegratedTest {
                 .build();
 
         String requestBody = objectMapper.writeValueAsString(adminDto);
-        MockHttpServletRequestBuilder post = post("/admin")
+        MockHttpServletRequestBuilder post = post(requestMappingUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
@@ -125,7 +127,7 @@ class AdminServiceCreateIntegratedTest {
                 .build();
 
         String requestBody = objectMapper.writeValueAsString(adminDto);
-        MockHttpServletRequestBuilder post = post("/admin")
+        MockHttpServletRequestBuilder post = post(requestMappingUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
