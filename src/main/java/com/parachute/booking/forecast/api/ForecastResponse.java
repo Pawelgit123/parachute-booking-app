@@ -8,12 +8,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-class ForecastResponse {
+public class ForecastResponse {
     @JsonProperty("list")
     private List<SingleForecast> singleForecastList;
 
     @Data
-    static class SingleForecast {
+    public static class SingleForecast {
         @JsonProperty("main")
         private General general;
         private Weather weather;
@@ -28,7 +28,7 @@ class ForecastResponse {
 
         @Data
         @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-        static class General {
+        public static class General {
             private float temp;
             private float feelsLike;
             private int seaLevel;
@@ -37,29 +37,29 @@ class ForecastResponse {
         }
 
         @Data
-        static class Weather {
+        public static class Weather {
             private String description;
         }
 
         @Data
-        static class Clouds {
+        public static class Clouds {
             private int all;
         }
 
         @Data
-        static class Wind {
+        public static class Wind {
             private float speed;
             private int deg;
         }
 
         @Data
-        static class Rain {
+        public static class Rain {
             @JsonProperty("3h")
             private float precipitationHeight;
         }
 
         @Data
-        static class Snow {
+        public static class Snow {
             @JsonProperty("3h")
             private float precipitationHeight;
         }
