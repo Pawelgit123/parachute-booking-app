@@ -5,7 +5,7 @@ import lombok.*;
 @Builder
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class ForecastDto {
 
 
