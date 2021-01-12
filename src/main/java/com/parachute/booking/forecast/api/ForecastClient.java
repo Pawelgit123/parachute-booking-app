@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -45,15 +46,10 @@ public class ForecastClient {
                 .toUriString();
 
         try {
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            String body = response.getBody();
+            ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
+            ForecastResponse body = response.getBody();
 
-            if (response.getStatusCode().isError()) {
-                log.error("Connection error with url: " + url + ", status code: " + response.getStatusCode().value());
-                return Optional.empty();
-            }
-            ForecastResponse forecastResponse = objectMapper.readValue(body, ForecastResponse.class);
-        } catch (JsonProcessingException e) {
+        } catch (HttpStatusCodeException e) {
             log.error("Forecast data could not be retrieved.", e);
             return Optional.empty();
         } catch (RestClientException e) {
