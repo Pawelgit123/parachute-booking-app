@@ -1,5 +1,6 @@
 package com.parachute.booking.pilot;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -25,10 +26,14 @@ class PilotServiceRemoveTest {
                 .build();
     }
 
+    @BeforeEach
+    void setup(){
+        pilotRepository.deleteAll();
+    }
+
     @Test
     void removePilotById() {
         //given
-        pilotRepository.save(createPilotForTest());
 
         //when
         pilotServiceRemove.removePilotById(createPilotForTest().getId());

@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,32 +18,35 @@ class FlightServiceRemoveTest {
 
     @Mock
     FlightRepository flightRepository;
-    @InjectMocks
+    @Mock
     FlightServiceRemove flightServiceRemove;
+    LocalDateTime localDateTime;
+
+    private Flight createFlightForTest() {
+        return Flight.builder()
+                .id(1L)
+                .planeNumber(22L)
+                .pilotLicenseNumber(222L)
+                .localDateTime(localDateTime)
+                .build();
+    }
 
     @BeforeEach
     void setup() {
         flightRepository.deleteAll();
+        flightRepository.save(createFlightForTest());
     }
 
-    public Flight createNeWFlightForTest() {
-
-        Flight flight = new Flight();
-        flight.setId(1L);
-        flightRepository.save(flight);
-        return flight;
-    }
 
     @Test
     void removeFlightById() {
         //given
-        Flight neWFlightForTest = createNeWFlightForTest();
 
         //when
-        flightServiceRemove.removeFlightById(neWFlightForTest.getId());
+        flightServiceRemove.removeFlightById(createFlightForTest().getId());
 
         //tnen
         assertThat(flightRepository.findAll()).isEmpty();
-        verify(flightRepository, times(1)).deleteById(neWFlightForTest.getId());
+        verify(flightServiceRemove, times(1)).removeFlightById(createFlightForTest().getId());
     }
 }

@@ -1,5 +1,6 @@
 package com.parachute.booking.plane;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -24,10 +25,14 @@ class PlaneServiceRemoveTest {
                 .build();
     }
 
+    @BeforeEach
+    void setup(){
+        planeRepository.deleteAll();
+    }
+
     @Test
     void removePlaneById() {
         //given
-       planeRepository.save(createPlaneForTest());
 
         //when
         planeServiceRemove.removePlaneById(createPlaneForTest().getId());
