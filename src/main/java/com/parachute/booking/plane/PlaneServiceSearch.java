@@ -25,13 +25,25 @@ public class PlaneServiceSearch {
         new HashSet<>(all);
 
         return all.stream()
-                .map(planeMapper::mapPlaneToDto)
+                .map(planeMapper::mapPlaneDto)
                 .collect(Collectors.toSet());
     }
 
     public PlaneDto findPlaneById(Long id) {
         Optional<Plane> byId = planeRepository.findById(id);
-        return planeMapper.mapPlaneToDto(byId
-                .orElseThrow(() -> new InternalServerException("No found plane with ID: " + id)));
+        return planeMapper.mapPlaneDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found plane with ID: " + id)));
+    }
+
+    public PlaneDto findPlaneByPlaneNumber(Long number) {
+        Optional<Plane> byId = planeRepository.findByPlaneNumber(number);
+        return planeMapper.mapPlaneDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found plane with number: " + number)));
+    }
+
+    public PlaneDto findPlaneByPlaneModel(String planeModel) {
+        Optional<Plane> byId = planeRepository.findByPlaneModel(planeModel);
+        return planeMapper.mapPlaneDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found plane by model: " + planeModel)));
     }
 }

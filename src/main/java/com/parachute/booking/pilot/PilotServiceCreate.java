@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PilotServiceCreate {
 
     private final PilotRepository pilotRepository;
+    private final PilotMapper pilotMapper;
 
     public PilotDto createNewPilot(PilotDto pilotDto) {
 
@@ -21,6 +22,6 @@ public class PilotServiceCreate {
 
         pilotRepository.save(pilot);
 
-        return pilotDto;
+        return pilotMapper.mapPilotDto(pilot);
     }
 }

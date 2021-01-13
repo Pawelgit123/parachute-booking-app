@@ -2,16 +2,13 @@ package com.parachute.booking.flight;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/flights")
-@Validated
 public class FlightController {
 
     private final FlightServiceCreate flightServiceCreate;
@@ -27,12 +24,14 @@ public class FlightController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Set<FlightDto> getAllFlights() {
 
         return flightServiceFind.getAllFlights();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public FlightDto getFlightById(@PathVariable Long id) {
 
         return flightServiceFind.getFlightById(id);
@@ -45,37 +44,22 @@ public class FlightController {
         flightServiceRemove.removeFlightById(id);
     }
 
-    //TODO updates
+    @GetMapping("/plane/{plane}")
+    @ResponseStatus(HttpStatus.OK)
+    public FlightDto getFlightByPlane(@PathVariable Long plane) {
 
-    @PostMapping("/{id}/update/plane/{planeId}")
-    public FlightDto updateFlightPlane(@PathVariable Long id, @PathVariable Long planeId) {
-
-
-        return null;
+        return flightServiceFind.getFlightByPlaneNumber(plane);
     }
 
-    @PostMapping("/{id}/update/pilot/{pilotId}")
-    public FlightDto updateFlightPilot(@PathVariable Long id, @PathVariable Long pilotId) {
+    @GetMapping("/pilot/{pilot}")
+    @ResponseStatus(HttpStatus.OK)
+    public FlightDto getFlightByPilotLicense(@PathVariable Long pilot) {
 
-
-        return null;
-    }
-
-    @PostMapping("/{id}/update/hour/{hour}")
-    public FlightDto updateFlightHour(@PathVariable Long id, @PathVariable Integer hour) {
-
-
-        return null;
-    }
-
-    @PostMapping("/{id}/update/date/{date}")
-    public FlightDto updateFlightDate(@PathVariable Long id, @PathVariable Date date) {
-
-
-        return null;
+        return flightServiceFind.getFlightByPilotLicenseNumber(pilot);
     }
 
     @PostMapping("/{id}/{clientId}")
+    @ResponseStatus(HttpStatus.OK)
     public FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId) {
 
 
@@ -83,10 +67,12 @@ public class FlightController {
     }
 
     @DeleteMapping("/{id}/{clientId}")
+    @ResponseStatus(HttpStatus.OK)
     public FlightDto removeClientFromFlight(@PathVariable Long id, @PathVariable Long clientId) {
 
 
         return null;
     }
 
+    //TODO updates
 }

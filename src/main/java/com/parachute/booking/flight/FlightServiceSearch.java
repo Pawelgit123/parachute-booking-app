@@ -25,15 +25,29 @@ public class FlightServiceSearch {
         new HashSet<>(all);
 
         return all.stream()
-                .map(flightMapper::mapFlightToDto)
+                .map(flightMapper::mapFlightDto)
                 .collect(Collectors.toSet());
     }
 
-    FlightDto getFlightById(Long id) {
+    public FlightDto getFlightById(Long id) {
         Optional<Flight> byId = flightRepository.findById(id);
 
-        return flightMapper.mapFlightToDto(byId
-                .orElseThrow(() -> new InternalServerException("No found flight with ID: " + id)));
+        return flightMapper.mapFlightDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found flight with ID: " + id)));
+    }
+
+    public FlightDto getFlightByPlaneNumber(Long plane) {
+        Optional<Flight> byId = flightRepository.findAllByPlaneNumber(plane);
+
+        return flightMapper.mapFlightDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found flight with Plane Number: " + plane)));
+    }
+
+    public FlightDto getFlightByPilotLicenseNumber(Long pilot) {
+        Optional<Flight> byId = flightRepository.findAllByPilotLicenseNumber(pilot);
+
+        return flightMapper.mapFlightDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found flight with Pilot License Number: " + pilot)));
     }
 
 }

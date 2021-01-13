@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -26,10 +27,8 @@ public class Flight {
     private Long planeNumber;
     @Column(name = "pilotLicenseNumber")
     private Long pilotLicenseNumber;
-    @Column(name = "date")
-    private Date date;
-    @Column(name = "hour")
-    private Integer hour;
+    @Column(name= "localdatetime")
+    private LocalDateTime localDateTime;
 
     @OneToMany
     public Set<Client> clientSet;

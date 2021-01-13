@@ -5,13 +5,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class PilotMapper {
 
-    PilotDto mapPilotToDto(Pilot pilot){
+    public PilotDto mapPilotDto(Pilot pilot) {
 
         return PilotDto.builder()
                 .firstName(pilot.getFirstName())
                 .surName(pilot.getSurName())
                 .pilotLicenseNumber(pilot.getPilotLicenseNumber())
                 .id(pilot.getId())
+                .build();
+    }
+
+    public Pilot mapPilot(PilotDto pilotDto) {
+
+        return Pilot.builder()
+                .firstName(pilotDto.getFirstName())
+                .surName(pilotDto.getSurName())
+                .pilotLicenseNumber(pilotDto.getPilotLicenseNumber())
+                .id(pilotDto.getId())
                 .build();
     }
 }

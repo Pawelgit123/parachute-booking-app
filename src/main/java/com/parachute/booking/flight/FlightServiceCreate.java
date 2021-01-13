@@ -11,8 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class FlightServiceCreate {
 
     private final FlightRepository flightRepository;
+    private final FlightMapper flightMapper;
 
-    FlightDto createNewFlight(FlightDto flightDto) {
+    public FlightDto createNewFlight(FlightDto flightDto) {
 
         if (flightDto == null) {
             throw new InternalServerException("No data to create Flight");
@@ -20,16 +21,15 @@ public class FlightServiceCreate {
 
         Flight flight = new Flight();
 
-        flight.setDate(flightDto.getDate());
-        flight.setHour(flightDto.getHour());
+        flight.setLocalDateTime(flightDto.getLocalDateTime());
         flight.setPilotLicenseNumber(flightDto.getPilotLicenseNumber());
         flight.setPlaneNumber(flightDto.getPlaneNumber());
 
-        //TODO czy nie powinien robić pustego flightu a potem Admin robi mu update??
+//        flightMapper.mapFlight(flightDto);
 
         flightRepository.save(flight);
 
-        return flightDto;
+        return flightMapper.mapFlightDto(flight);
 
     }
 }

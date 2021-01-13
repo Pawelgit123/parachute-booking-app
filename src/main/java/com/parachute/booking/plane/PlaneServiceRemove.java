@@ -11,7 +11,7 @@ public class PlaneServiceRemove {
 
     private final PlaneRepository planeRepository;
 
-    void removePlaneById(Long id) {
+    public void removePlaneById(Long id) {
         planeRepository.deleteById(id);
     }
 

@@ -11,7 +11,7 @@ public class PilotServiceRemove {
 
     private final PilotRepository pilotRepository;
 
-    void removePilotById(Long id) {
+    public void removePilotById(Long id) {
         pilotRepository.deleteById(id);
     }
 }

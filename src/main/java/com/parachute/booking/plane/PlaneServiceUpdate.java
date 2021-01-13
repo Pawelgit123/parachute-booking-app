@@ -8,4 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class PlaneServiceUpdate {
+
+    private final PlaneRepository planeRepository;
+    private final PlaneMapper planeMapper;
 }

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 public class FlightServiceUpdate {
 
     private final FlightRepository flightRepository;
+    private final FlightMapper flightMapper;
 
     //TODO update - plane, pilot, date, hour, clients, forecast
-    //block update for finished flights?
+    //TODO block update for finished flights?
 }

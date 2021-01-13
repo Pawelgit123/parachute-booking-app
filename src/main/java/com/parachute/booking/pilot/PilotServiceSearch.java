@@ -25,13 +25,31 @@ public class PilotServiceSearch {
         new HashSet<>(all);
 
         return all.stream()
-                .map(pilotMapper::mapPilotToDto)
+                .map(pilotMapper::mapPilotDto)
                 .collect(Collectors.toSet());
     }
 
     public PilotDto findPilotById(Long id) {
         Optional<Pilot> byId = pilotRepository.findById(id);
-        return pilotMapper.mapPilotToDto(byId
-                .orElseThrow(() -> new InternalServerException("No found pilot with ID: " + id)));
+        return pilotMapper.mapPilotDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found pilot with ID: " + id)));
+    }
+
+    public PilotDto findPilotByLicenseNumber(Long licenseNumber) {
+        Optional<Pilot> byId = pilotRepository.findByPilotLicenseNumber(licenseNumber);
+        return pilotMapper.mapPilotDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found pilot with License: " + licenseNumber)));
+    }
+
+    public PilotDto findPilotByFirstName(String name) {
+        Optional<Pilot> byId = pilotRepository.findByFirstName(name);
+        return pilotMapper.mapPilotDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found pilot with name: " + name)));
+    }
+
+    public PilotDto findPilotBySurNamee(String surName) {
+        Optional<Pilot> byId = pilotRepository.findBySurName(surName);
+        return pilotMapper.mapPilotDto(byId
+                .orElseThrow(() -> new InternalServerException("Not found pilot with surname: " + surName)));
     }
 }
