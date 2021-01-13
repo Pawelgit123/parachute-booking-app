@@ -1,5 +1,6 @@
 package com.parachute.booking.pilot;
 
+import com.parachute.booking.exceptions.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,10 @@ public class PilotServiceCreate {
     private final PilotMapper pilotMapper;
 
     public PilotDto createNewPilot(PilotDto pilotDto) {
+
+        if (pilotDto == null) {
+            throw new InternalServerException("No data to create Pilot");
+        }
 
         Pilot pilot = new Pilot();
 
