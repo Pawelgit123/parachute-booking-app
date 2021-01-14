@@ -1,6 +1,7 @@
 package com.parachute.booking.flight;
 
 import com.parachute.booking.exceptions.InternalServerException;
+import com.parachute.booking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,21 +34,21 @@ public class FlightServiceSearch {
         Optional<Flight> byId = flightRepository.findById(id);
 
         return flightMapper.mapFlightDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found flight with ID: " + id)));
+                .orElseThrow(() -> new NotFoundException("Not found flight with ID: " + id)));
     }
 
     public FlightDto getFlightByPlaneNumber(Long plane) {
-        Optional<Flight> byId = flightRepository.findAllByPlaneNumber(plane);
+        Optional<Flight> byId = flightRepository.findByPlaneNumber(plane);
 
         return flightMapper.mapFlightDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found flight with Plane Number: " + plane)));
+                .orElseThrow(() -> new NotFoundException("Not found flight with Plane Number: " + plane)));
     }
 
     public FlightDto getFlightByPilotLicenseNumber(Long pilot) {
-        Optional<Flight> byId = flightRepository.findAllByPilotLicenseNumber(pilot);
+        Optional<Flight> byId = flightRepository.findByPilotLicenseNumber(pilot);
 
         return flightMapper.mapFlightDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found flight with Pilot License Number: " + pilot)));
+                .orElseThrow(() -> new NotFoundException("Not found flight with Pilot License Number: " + pilot)));
     }
 
 }

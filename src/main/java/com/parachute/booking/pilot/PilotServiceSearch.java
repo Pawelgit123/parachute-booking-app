@@ -1,6 +1,7 @@
 package com.parachute.booking.pilot;
 
 import com.parachute.booking.exceptions.InternalServerException;
+import com.parachute.booking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,24 +33,25 @@ public class PilotServiceSearch {
     public PilotDto findPilotById(Long id) {
         Optional<Pilot> byId = pilotRepository.findById(id);
         return pilotMapper.mapPilotDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found pilot with ID: " + id)));
+                .orElseThrow(() -> new NotFoundException("Not found pilot with ID: " + id)));
     }
 
     public PilotDto findPilotByLicenseNumber(Long licenseNumber) {
         Optional<Pilot> byId = pilotRepository.findByPilotLicenseNumber(licenseNumber);
         return pilotMapper.mapPilotDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found pilot with License: " + licenseNumber)));
+                .orElseThrow(() -> new NotFoundException("Not found pilot with License: " + licenseNumber)));
     }
 
     public PilotDto findPilotByFirstName(String name) {
         Optional<Pilot> byId = pilotRepository.findByFirstName(name);
         return pilotMapper.mapPilotDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found pilot with name: " + name)));
+                .orElseThrow(() -> new NotFoundException("Not found pilot with name: " + name)));
     }
 
-    public PilotDto findPilotBySurNamee(String surName) {
+    public PilotDto findPilotBySurName(String surName) {
         Optional<Pilot> byId = pilotRepository.findBySurName(surName);
         return pilotMapper.mapPilotDto(byId
-                .orElseThrow(() -> new InternalServerException("Not found pilot with surname: " + surName)));
+                .orElseThrow(() -> new NotFoundException("Not found pilot with surname: " + surName)));
     }
+
 }

@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
-    Optional<Flight> findAllByPilotLicenseNumber(Long pilotLicenseNumber);
+    Optional<Flight> findByPilotLicenseNumber(Long pilotLicenseNumber);
 
-    Optional<Flight> findAllByPlaneNumber(Long planeNumber);
+    Optional<Flight> findByPlaneNumber(Long planeNumber);
 
-    Optional<Flight> findAllByLocalDateTime(LocalDateTime localDateTime);
+    Optional<Flight> findByLocalDateTime(LocalDateTime localDateTime);
 }

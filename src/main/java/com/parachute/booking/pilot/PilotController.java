@@ -62,7 +62,7 @@ public class PilotController {
     @ResponseStatus(HttpStatus.OK)
     public PilotDto getPilotBySurName(@PathVariable String surname) {
 
-        return pilotServiceSearch.findPilotBySurNamee(surname);
+        return pilotServiceSearch.findPilotBySurName(surname);
     }
 
 }
