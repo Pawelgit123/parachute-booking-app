@@ -1,8 +1,9 @@
 package com.parachute.booking.forecast.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parachute.booking.forecast.Forecast;
+import com.parachute.booking.forecast.ForecastDto;
 import com.parachute.booking.forecast.ForecastRepository;
+import com.parachute.booking.forecast.ForecastMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -35,19 +36,20 @@ public class ForecastClient {
     private static final String UNITS_METRIC = "metric";
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final ForecastMapper forecastMapper;
     private final ForecastClientProperties forecastClientProperties;
 
-    public List<Forecast> getForecast(String formattedYearMonthDay) {
-        String url = UriComponentsBuilder.newInstance()
-                .scheme(HTTP)
-                .host(HOST)
-                .queryParam(ID_PARAM, CITY_ID)
-                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
-                .queryParam(LANG_PARAM, LANG_PL)
-                .queryParam(UNITS_PARAM, UNITS_METRIC)
-                .build()
-                .toUriString();
+    String url = UriComponentsBuilder.newInstance()
+            .scheme(HTTP)
+            .host(HOST)
+            .queryParam(ID_PARAM, CITY_ID)
+            .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
+            .queryParam(LANG_PARAM, LANG_PL)
+            .queryParam(UNITS_PARAM, UNITS_METRIC)
+            .build()
+            .toUriString();
+
+    public List<ForecastDto> getForecast(String formattedYearMonthDay) {
 
         try {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
@@ -57,7 +59,7 @@ public class ForecastClient {
             return body.getSingleForecastList()
                     .stream()
                     .filter(f -> f.getDateAndTime().matches(formattedYearMonthDay))
-                    .map(this::mapToForecast)
+                    .map(forecastMapper::mapToForecastDto)
                     .collect(Collectors.toList());
 
         } catch (HttpStatusCodeException e) {
@@ -70,15 +72,6 @@ public class ForecastClient {
     }
 
     public void getForecast() {
-        String url = UriComponentsBuilder.newInstance()
-                .scheme(HTTP)
-                .host(HOST)
-                .queryParam(ID_PARAM, CITY_ID)
-                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
-                .queryParam(LANG_PARAM, LANG_PL)
-                .queryParam(UNITS_PARAM, UNITS_METRIC)
-                .build()
-                .toUriString();
 
         try {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
@@ -88,7 +81,7 @@ public class ForecastClient {
             Optional<Forecast> forecast = body.getSingleForecastList()
                     .stream()
                     .findFirst()
-                    .map(this::mapToForecast);
+                    .map(forecastMapper::mapToForecast);
 
             forecastRepository.save(forecast);
 
@@ -97,28 +90,5 @@ public class ForecastClient {
         } catch (RestClientException e) {
             log.error("Connection error with the host", e);
         }
-    }
-//todo: Dowiedzieć się czemu tu widzi mapper a w dedykowanej klasie go nie widzi.
-    public Forecast mapToForecast(ForecastResponse.SingleForecast singleForecast) {
-        Forecast forecast = new Forecast();
-        forecast.setTemp(singleForecast.getGeneral().getTemp());
-        forecast.setTempFeelsLike(singleForecast.getGeneral().getFeelsLike());
-        forecast.setPressureAtSeaLevelhPa(singleForecast.getGeneral().getSeaLevel());
-        forecast.setPressureAtGroundLevelhPa(singleForecast.getGeneral().getGrndLevel());
-        forecast.setRelativeHumidity(singleForecast.getGeneral().getHumidity());
-        forecast.setWeatherDescription(singleForecast.getWeather().getDescription());
-        forecast.setCloudiness(singleForecast.getClouds().getAll());
-        forecast.setWindSpeed(singleForecast.getWind().getSpeed());
-        forecast.setWindDegree(singleForecast.getWind().getDeg());
-        if (singleForecast.getRain() != null) {
-            forecast.setRainPrecipitation(singleForecast.getRain().getPrecipitationHeight());
-        }
-        if (singleForecast.getSnow() != null) {
-            forecast.setSnowPrecipitation(singleForecast.getSnow().getPrecipitationHeight());
-        }
-        forecast.setVisibility(singleForecast.getVisibility());
-        forecast.setProbabilityOfPrecipitation(singleForecast.getPop());
-        forecast.setDateAndTime(singleForecast.getDateAndTime());
-        return forecast;
     }
 }
