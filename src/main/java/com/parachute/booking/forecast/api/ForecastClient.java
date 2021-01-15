@@ -12,6 +12,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.parachute.booking.mappers.ForecastMapper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +55,7 @@ public class ForecastClient {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
             ForecastResponse body = response.getBody();
 
+            assert body != null;
             return body.getSingleForecastList()
                     .stream()
                     .filter(f -> f.getDateAndTime().matches(formattedYearMonthDay))
@@ -69,7 +71,7 @@ public class ForecastClient {
         }
 
     }
-
+//todo: Dowiedzieć się czemu tu widzi mapper a w dedykowanej klasie go nie widzi.
     public Forecast mapToForecast(ForecastResponse.SingleForecast singleForecast) {
         Forecast forecast = new Forecast();
         forecast.setTemp(singleForecast.getGeneral().getTemp());

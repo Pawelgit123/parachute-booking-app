@@ -8,5 +8,5 @@ import lombok.*;
 //@AllArgsConstructor
 public class ForecastDto {
 
-
+private
 }
