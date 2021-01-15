@@ -58,21 +58,27 @@ public class FlightController {
         return flightServiceFind.getFlightByPilotLicenseNumber(pilot);
     }
 
-    @PostMapping("/{id}/{clientId}")
-    @ResponseStatus(HttpStatus.OK)
-    public FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId) {
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateFlightById(@RequestBody FlightDto flightDto, @PathVariable Long id) {
 
-
-        return null;
+        flightServiceUpdate.updateFlightById(flightDto, id);
     }
 
-    @DeleteMapping("/{id}/{clientId}")
-    @ResponseStatus(HttpStatus.OK)
-    public FlightDto removeClientFromFlight(@PathVariable Long id, @PathVariable Long clientId) {
+//    @PostMapping("/{id}/{clientId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId) {
+//
+//
+//        return null;
+//    }
+//
+//    @DeleteMapping("/{id}/{clientId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public FlightDto removeClientFromFlight(@PathVariable Long id, @PathVariable Long clientId) {
+//
+//
+//        return null;
+//    }
 
-
-        return null;
-    }
-
-    //TODO updates
 }
