@@ -2,6 +2,7 @@ package com.parachute.booking;
 
 import com.parachute.booking.admin.Admin;
 import com.parachute.booking.admin.AdminRepository;
+import com.parachute.booking.forecast.api.ForecastClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class BookingApplication implements CommandLineRunner {
 
     private final AdminRepository adminRepository;
+    private final ForecastClient forecastClient;
 
     public static void main(String[] args) {
         SpringApplication.run(BookingApplication.class, args);
@@ -23,7 +25,7 @@ public class BookingApplication implements CommandLineRunner {
 
     @Scheduled(cron = "5 2-23/3 * * *")
     public void getCurrentForecastAndSaveToDatabase(){
-        //todo
+        forecastClient.getForecast();
     }
 
     @Override

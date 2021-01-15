@@ -1,8 +1,8 @@
 package com.parachute.booking.forecast.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parachute.booking.forecast.Forecast;
+import com.parachute.booking.forecast.ForecastRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,17 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.parachute.booking.mappers.ForecastMapper;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class ForecastClient {
+
+    private final ForecastRepository forecastRepository;
 
     private static final String HTTP = "http";
     private static final String HOST = "api.openweathermap.org/data/2.5/forecast";
@@ -69,7 +67,36 @@ public class ForecastClient {
             log.error("Connection error with the host", e);
             return Collections.emptyList();
         }
+    }
 
+    public void getForecast() {
+        String url = UriComponentsBuilder.newInstance()
+                .scheme(HTTP)
+                .host(HOST)
+                .queryParam(ID_PARAM, CITY_ID)
+                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
+                .queryParam(LANG_PARAM, LANG_PL)
+                .queryParam(UNITS_PARAM, UNITS_METRIC)
+                .build()
+                .toUriString();
+
+        try {
+            ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
+            ForecastResponse body = response.getBody();
+
+            assert body != null;
+            Optional<Forecast> forecast = body.getSingleForecastList()
+                    .stream()
+                    .findFirst()
+                    .map(this::mapToForecast);
+
+            forecastRepository.save(forecast);
+
+        } catch (HttpStatusCodeException e) {
+            log.error("Forecast data could not be retrieved.", e);
+        } catch (RestClientException e) {
+            log.error("Connection error with the host", e);
+        }
     }
 //todo: Dowiedzieć się czemu tu widzi mapper a w dedykowanej klasie go nie widzi.
     public Forecast mapToForecast(ForecastResponse.SingleForecast singleForecast) {
