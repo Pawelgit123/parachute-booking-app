@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.scheduling.annotation.Scheduled;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class, SecurityFilterAutoConfiguration.class})
 @RequiredArgsConstructor
@@ -18,6 +19,11 @@ public class BookingApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(BookingApplication.class, args);
+    }
+
+    @Scheduled(cron = "5 2-23/3 * * *")
+    public void getCurrentForecastAndSaveToDatabase(){
+        //todo
     }
 
     @Override

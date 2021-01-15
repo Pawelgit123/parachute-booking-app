@@ -13,7 +13,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -34,7 +39,7 @@ public class ForecastClient {
     private final ObjectMapper objectMapper;
     private final ForecastClientProperties forecastClientProperties;
 
-    public Optional<Forecast> getForecast(LocalDateTime localDateTime) {
+    public List<Forecast> getForecast(String formattedYearMonthDay) {
         String url = UriComponentsBuilder.newInstance()
                 .scheme(HTTP)
                 .host(HOST)
@@ -49,15 +54,42 @@ public class ForecastClient {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
             ForecastResponse body = response.getBody();
 
+            return body.getSingleForecastList()
+                    .stream()
+                    .filter(f -> f.getDateAndTime().matches(formattedYearMonthDay))
+                    .map(this::mapToForecast)
+                    .collect(Collectors.toList());
+
         } catch (HttpStatusCodeException e) {
             log.error("Forecast data could not be retrieved.", e);
-            return Optional.empty();
+            return Collections.emptyList();
         } catch (RestClientException e) {
             log.error("Connection error with the host", e);
-            return Optional.empty();
+            return Collections.emptyList();
         }
 
+    }
 
-        return Optional.empty();//todo finish this method
+    public Forecast mapToForecast(ForecastResponse.SingleForecast singleForecast) {
+        Forecast forecast = new Forecast();
+        forecast.setTemp(singleForecast.getGeneral().getTemp());
+        forecast.setTempFeelsLike(singleForecast.getGeneral().getFeelsLike());
+        forecast.setPressureAtSeaLevelhPa(singleForecast.getGeneral().getSeaLevel());
+        forecast.setPressureAtGroundLevelhPa(singleForecast.getGeneral().getGrndLevel());
+        forecast.setRelativeHumidity(singleForecast.getGeneral().getHumidity());
+        forecast.setWeatherDescription(singleForecast.getWeather().getDescription());
+        forecast.setCloudiness(singleForecast.getClouds().getAll());
+        forecast.setWindSpeed(singleForecast.getWind().getSpeed());
+        forecast.setWindDegree(singleForecast.getWind().getDeg());
+        if (singleForecast.getRain() != null) {
+            forecast.setRainPrecipitation(singleForecast.getRain().getPrecipitationHeight());
+        }
+        if (singleForecast.getSnow() != null) {
+            forecast.setSnowPrecipitation(singleForecast.getSnow().getPrecipitationHeight());
+        }
+        forecast.setVisibility(singleForecast.getVisibility());
+        forecast.setProbabilityOfPrecipitation(singleForecast.getPop());
+        forecast.setDateAndTime(singleForecast.getDateAndTime());
+        return forecast;
     }
 }
