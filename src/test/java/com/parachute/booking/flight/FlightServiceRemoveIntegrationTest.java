@@ -24,11 +24,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class FlightServiceRemoveIntegrationTest {
 
     @Autowired
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     LocalDateTime localDateTime;
 
     private final String requestMappingUrl = "/flights";

@@ -1,4 +1,4 @@
-package com.parachute.booking.mappers;
+package com.parachute.booking.forecast;
 
 import com.parachute.booking.forecast.Forecast;
 import com.parachute.booking.forecast.api.ForecastResponse;

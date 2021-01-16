@@ -21,14 +21,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class FlightServiceSearchIntegratedTest {
+class FlightServiceSearchIntegrationTest {
 
     @Autowired
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     LocalDateTime localDateTime;
 
     private final String requestMappingUrl = "/flights";
@@ -79,9 +79,9 @@ class FlightServiceSearchIntegratedTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<FlightDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        FlightDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
-        assertThat(responseBody).hasSize(3);
+        assertThat(responseBody.getFlights()).hasSize(3);
     }
 
     @Test
@@ -94,9 +94,9 @@ class FlightServiceSearchIntegratedTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<FlightDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        FlightDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
-        assertThat(responseBody).hasSize(0);
+        assertThat(responseBody.getFlights()).hasSize(0);
     }
 
     @Test

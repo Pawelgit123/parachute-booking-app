@@ -1,10 +1,8 @@
 package com.parachute.booking.admin;
 
-import com.parachute.booking.exceptions.BlankSpaceException;
+import com.parachute.booking.exceptions.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,17 +10,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 @SpringBootTest
-//@ExtendWith(MockitoExtension.class)
-class AdminServiceCreateTest {
+class AdminServiceCreateBlanksTest {
 
     @Autowired
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
     @Autowired
-    AdminServiceCreate adminServiceCreate;
-    @Autowired
-    AdminMapper adminMapper;
-    @Autowired
-    AdminDataValidate adminDataValidate;
+    private AdminServiceCreate adminServiceCreate;
 
     @BeforeEach
     void setup() {
@@ -39,7 +32,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
+        assertThat(result).isExactlyInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -52,7 +45,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
+        assertThat(result).isExactlyInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -65,7 +58,7 @@ class AdminServiceCreateTest {
 
         Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
-        assertThat(result).isExactlyInstanceOf(BlankSpaceException.class);
+        assertThat(result).isExactlyInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -75,7 +68,6 @@ class AdminServiceCreateTest {
         Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(NullPointerException.class);
-
     }
 
 }

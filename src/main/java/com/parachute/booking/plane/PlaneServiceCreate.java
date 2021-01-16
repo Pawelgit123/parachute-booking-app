@@ -19,10 +19,7 @@ public class PlaneServiceCreate {
             throw new InternalServerException("No data to create Plane");
         }
 
-        Plane plane = new Plane();
-
-        plane.setPlaneModel(planeDto.getPlaneModel());
-        plane.setPlaneNumber(planeDto.getPlaneNumber());
+        final Plane plane = planeMapper.mapPlane(planeDto);
 
         planeRepository.save(plane);
 

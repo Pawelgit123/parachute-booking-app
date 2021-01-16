@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FlightMapperTest {
 
     @Mock
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
     LocalDateTime localDateTime;
 
     private FlightDto createFlightDtoForTest() {

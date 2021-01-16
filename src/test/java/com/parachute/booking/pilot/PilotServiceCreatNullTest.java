@@ -14,9 +14,9 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 class PilotServiceCreatNullTest {
 
     @Mock
-    PilotRepository pilotRepository;
+    private PilotRepository pilotRepository;
     @InjectMocks
-    PilotServiceCreate pilotServiceCreate;
+    private PilotServiceCreate pilotServiceCreate;
 
     private PilotDto createNewPliotDtoWithNullsForTest() {
         return PilotDto.builder().build();

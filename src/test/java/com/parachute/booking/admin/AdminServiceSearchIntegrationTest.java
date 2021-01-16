@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceSearchIntegratedTest {
+class AdminServiceSearchIntegrationTest {
 
     @Autowired
     AdminRepository adminRepository;
@@ -33,30 +32,27 @@ class AdminServiceSearchIntegratedTest {
     private final String requestMappingUrl = "/admins";
 
     private Admin createNewAdminForTestA() {
-        Admin admin = new Admin.AdminBuilder()
+        return Admin.builder()
                 .login("Admin2")
                 .password("Admin pass")
                 .email("admin@gmail.com")
                 .build();
-        return admin;
     }
 
     private Admin createNewAdminForTestB() {
-        Admin admin = new Admin.AdminBuilder()
+        return Admin.builder()
                 .login("Admin3")
                 .password("Admin is stupid")
                 .email("lololo@gmail.com")
                 .build();
-        return admin;
     }
 
     private Admin createNewAdminForTestC() {
-        Admin admin = new Admin.AdminBuilder()
+        return Admin.builder()
                 .login("Admin4")
                 .password("Admin secret code")
                 .email("admin@wp.plm")
                 .build();
-        return admin;
     }
 
     @BeforeEach
@@ -77,8 +73,9 @@ class AdminServiceSearchIntegratedTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<AdminDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {});
-        assertThat(responseBody).hasSize(3);
+        AdminDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        });
+        assertThat(responseBody.getAdmins()).hasSize(3);
     }
 
     @Test
@@ -91,8 +88,9 @@ class AdminServiceSearchIntegratedTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<AdminDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {});
-        assertThat(responseBody).hasSize(0);
+        AdminDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        });
+        assertThat(responseBody.getAdmins()).hasSize(0);
     }
 
     @Test
@@ -102,7 +100,7 @@ class AdminServiceSearchIntegratedTest {
         adminRepository.save(createNewAdminForTestB());
         adminRepository.save(createNewAdminForTestC());
         Long id = savedAdmin.getId();
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/{id}", id);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/{id}", id);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -119,7 +117,7 @@ class AdminServiceSearchIntegratedTest {
     @Test
     void findById_andReturnsStatusCode400_adminDoesntExists() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/{id}", 100);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/{id}", 100);
 
         // when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -131,7 +129,7 @@ class AdminServiceSearchIntegratedTest {
     @Test
     void findById_andReturnsStatusCode400_adminIdIsNegative() throws Exception {
         // given
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/{id}", -1);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/{id}", -1);
 
         // when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -147,14 +145,14 @@ class AdminServiceSearchIntegratedTest {
         adminRepository.save(createNewAdminForTestB());
         adminRepository.save(createNewAdminForTestC());
         String login = savedAdmin.getLogin();
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/login/{login}", login);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/login/{login}", login);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        AdminDto respondeBody =objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
+        AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
         assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
@@ -165,7 +163,7 @@ class AdminServiceSearchIntegratedTest {
         //given
         Admin newAdminForTestA = createNewAdminForTestA();
         String login = newAdminForTestA.getLogin();
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/login/{login}", login);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/login/{login}", login);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -179,18 +177,17 @@ class AdminServiceSearchIntegratedTest {
         //given
         Admin save = adminRepository.save(createNewAdminForTestA());
         String email = save.getEmail();
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/email/{email}", email);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/email/{email}", email);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        AdminDto respondeBody =objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
+        AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
         assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
-
     }
 
     @Test
@@ -198,7 +195,7 @@ class AdminServiceSearchIntegratedTest {
         //given
         Admin newAdminForTestA = createNewAdminForTestA();
         String email = newAdminForTestA.getEmail();
-        MockHttpServletRequestBuilder request = get(requestMappingUrl+"/email/{email}", email);
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/email/{email}", email);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
