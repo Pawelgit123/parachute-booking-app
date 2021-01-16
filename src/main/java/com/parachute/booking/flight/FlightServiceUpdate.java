@@ -3,11 +3,13 @@ package com.parachute.booking.flight;
 import com.parachute.booking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FlightServiceUpdate {
 
     private final FlightRepository flightRepository;
@@ -20,7 +22,10 @@ public class FlightServiceUpdate {
         Optional<Flight> byId = flightRepository.findById(id);
 
         if (byId.isPresent()) {
-            Flight flight = new Flight();
+            Flight flight = byId.get();
+//            flight.setPlaneNumber(flightDto.getPlaneNumber());
+//            flight.setPilotLicenseNumber(flightDto.getPlaneNumber());
+//            flight.set(flightDto.getPlaneNumber());
             if (flightDto.getPlaneNumber() != null) {
                 flight.setPlaneNumber(flightDto.getPlaneNumber());
             }
@@ -30,10 +35,7 @@ public class FlightServiceUpdate {
             if (flightDto.getLocalDateTime() != null) {
                 flight.setLocalDateTime(flightDto.getLocalDateTime());
             }
-            flight.setId(id);
-
-            flightRepository.save(flight);
-
+            //flightRepository.save(flight);
         } else {
             throw new NotFoundException("Not found flight to update with ID: " + id);
         }

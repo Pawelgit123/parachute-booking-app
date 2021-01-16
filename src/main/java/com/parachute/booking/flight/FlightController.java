@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/flights")
@@ -58,12 +60,18 @@ public class FlightController {
         return flightServiceFind.getFlightByPilotLicenseNumber(pilot);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateFlightById(@RequestBody FlightDto flightDto, @PathVariable Long id) {
+    public void updateFlightById(@Valid @RequestBody FlightDto flightDto, @PathVariable Long id) {
 
         flightServiceUpdate.updateFlightById(flightDto, id);
     }
+
+//    @PatchMapping("/{id}")
+//    public void updatePariallyFlightById(@RequestBody FlightDto flightDto, @PathVariable Long id) {
+//
+//        flightServiceUpdate.updateFlightById(flightDto, id);
+//    }
 
 //    @PostMapping("/{id}/{clientId}")
 //    @ResponseStatus(HttpStatus.OK)
