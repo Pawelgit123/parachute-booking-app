@@ -2,8 +2,8 @@ package com.parachute.booking.forecast.api;
 
 import com.parachute.booking.forecast.Forecast;
 import com.parachute.booking.forecast.ForecastDto;
-import com.parachute.booking.forecast.ForecastRepository;
 import com.parachute.booking.forecast.ForecastMapper;
+import com.parachute.booking.forecast.ForecastRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Component
@@ -39,17 +39,17 @@ public class ForecastClient {
     private final ForecastMapper forecastMapper;
     private final ForecastClientProperties forecastClientProperties;
 
-    String url = UriComponentsBuilder.newInstance()
-            .scheme(HTTP)
-            .host(HOST)
-            .queryParam(ID_PARAM, CITY_ID)
-            .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
-            .queryParam(LANG_PARAM, LANG_PL)
-            .queryParam(UNITS_PARAM, UNITS_METRIC)
-            .build()
-            .toUriString();
-
     public List<ForecastDto> getForecast(String formattedYearMonthDay) {
+
+        String url = UriComponentsBuilder.newInstance()
+                .scheme(HTTP)
+                .host(HOST)
+                .queryParam(ID_PARAM, CITY_ID)
+                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
+                .queryParam(LANG_PARAM, LANG_PL)
+                .queryParam(UNITS_PARAM, UNITS_METRIC)
+                .build()
+                .toUriString();
 
         try {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
@@ -73,18 +73,27 @@ public class ForecastClient {
 
     public void getForecast() {
 
+        String url = UriComponentsBuilder.newInstance()
+                .scheme(HTTP)
+                .host(HOST)
+                .queryParam(ID_PARAM, CITY_ID)
+                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
+                .queryParam(LANG_PARAM, LANG_PL)
+                .queryParam(UNITS_PARAM, UNITS_METRIC)
+                .build()
+                .toUriString();
+
         try {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
             ForecastResponse body = response.getBody();
 
             assert body != null;
-            Optional<Forecast> forecast = body.getSingleForecastList()
+            Forecast forecast = body.getSingleForecastList()
                     .stream()
                     .findFirst()
-                    .map(forecastMapper::mapToForecast);
+                    .map(forecastMapper::mapToForecast).orElseThrow(() -> new NoSuchElementException("Optional is empty"));
 
             forecastRepository.save(forecast);
-
         } catch (HttpStatusCodeException e) {
             log.error("Forecast data could not be retrieved.", e);
         } catch (RestClientException e) {

@@ -10,10 +10,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class, SecurityFilterAutoConfiguration.class})
 @RequiredArgsConstructor
+@EnableJpaAuditing
+@EnableScheduling
 public class BookingApplication implements CommandLineRunner {
 
     private final AdminRepository adminRepository;
@@ -23,7 +27,7 @@ public class BookingApplication implements CommandLineRunner {
         SpringApplication.run(BookingApplication.class, args);
     }
 
-    @Scheduled(cron = "5 2-23/3 * * *")
+    @Scheduled(cron = "* 5 2-23/3 * * *")
     public void getCurrentForecastAndSaveToDatabase(){
         forecastClient.getForecast();
     }
