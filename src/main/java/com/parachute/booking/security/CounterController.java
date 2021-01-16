@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class CounterController extends WebSecurityConfigurerAdapter {
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -28,6 +28,8 @@ public class CounterController extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .logout()
+                .and()
+                .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
                 .httpBasic();
