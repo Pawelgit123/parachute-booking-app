@@ -3,10 +3,14 @@ package com.parachute.booking.forecast.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ForecastResponse {
     @JsonProperty("list")
@@ -16,7 +20,7 @@ public class ForecastResponse {
     public static class SingleForecast {
         @JsonProperty("main")
         private General general;
-        private Weather weather;
+        private List<Weather> weather;
         private Clouds clouds;
         private Wind wind;
         private Integer visibility;

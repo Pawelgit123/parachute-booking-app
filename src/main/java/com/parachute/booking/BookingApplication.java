@@ -27,7 +27,7 @@ public class BookingApplication implements CommandLineRunner {
         SpringApplication.run(BookingApplication.class, args);
     }
 
-    @Scheduled(cron = "* 5 2-23/3 * * *")
+    @Scheduled(cron = "0 5 2-23/3 * * *")
     public void getCurrentForecastAndSaveToDatabase(){
         forecastClient.getForecast();
     }

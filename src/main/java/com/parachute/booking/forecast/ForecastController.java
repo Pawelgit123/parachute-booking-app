@@ -23,10 +23,9 @@ public class ForecastController {
 
     @GetMapping("/{year}-{month}-{day}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ForecastDto> getListOfForecastsForDay(@PathVariable int year,@PathVariable int month,@PathVariable int day){
+    public Forecasts getListOfForecastsForDay(@PathVariable int year,@PathVariable int month,@PathVariable int day){
 
-        return forecastClient.getForecast(dayCreator.
-                createCalendarDayFromNumbers(year, month, day));
+        return new Forecasts(forecastClient.getForecast(dayCreator.createCalendarDayFromNumbers(year, month, day)));
     }
 
 
