@@ -1,13 +1,18 @@
 package com.parachute.booking.admin;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class AdminMapperTest {
+
+    @Mock
+    private AdminRepository adminRepository;
 
     private AdminDto createNewAdminDtoForTest() {
         AdminDto adminDto = new AdminDto.AdminDtoBuilder()
@@ -25,6 +30,11 @@ class AdminMapperTest {
                 .email("admin@gmail.com")
                 .build();
         return admin;
+    }
+
+    @BeforeEach
+    void setup() {
+        adminRepository.deleteAll();
     }
 
     @Test

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class FlightController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<FlightDto> getAllFlights() {
+    public FlightDtoListed getAllFlights() {
 
         return flightServiceFind.getAllFlights();
     }

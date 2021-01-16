@@ -25,7 +25,7 @@ public class AdminController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<AdminDto> getAdmins() {
+    public AdminDtoListed getAdmins() {
 
         return adminServiceSearch.getAllAdmins();
     }

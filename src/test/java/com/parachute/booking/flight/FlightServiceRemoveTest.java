@@ -17,9 +17,9 @@ import static org.mockito.Mockito.verify;
 class FlightServiceRemoveTest {
 
     @Mock
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
     @Mock
-    FlightServiceRemove flightServiceRemove;
+    private FlightServiceRemove flightServiceRemove;
     LocalDateTime localDateTime;
 
     private Flight createFlightForTest() {

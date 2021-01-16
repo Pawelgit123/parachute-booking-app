@@ -6,16 +6,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class AdminServiceRemoveTest {
 
     @Mock
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
     @Mock
-    AdminServiceRemove adminServiceRemove;
+    private AdminServiceRemove adminServiceRemove;
     @Mock
-    Admin admin;
+    private Admin admin;
 
     @Test
     void removeAdmin_adminIsRemoved(){

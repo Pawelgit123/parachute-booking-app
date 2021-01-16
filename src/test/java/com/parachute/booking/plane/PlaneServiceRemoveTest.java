@@ -13,9 +13,9 @@ import static org.mockito.Mockito.verify;
 class PlaneServiceRemoveTest {
 
     @Mock
-    PlaneRepository planeRepository;
+    private PlaneRepository planeRepository;
     @Mock
-    PlaneServiceRemove planeServiceRemove;
+    private PlaneServiceRemove planeServiceRemove;
 
     private Plane createPlaneForTest(){
         return Plane.builder()

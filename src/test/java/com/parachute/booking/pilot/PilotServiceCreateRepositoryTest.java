@@ -1,6 +1,5 @@
 package com.parachute.booking.pilot;
 
-import com.parachute.booking.flight.FlightDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,11 +16,11 @@ import static org.mockito.Mockito.when;
 class PilotServiceCreateRepositoryTest {
 
     @Mock
-    PilotRepository pilotRepository;
+    private PilotRepository pilotRepository;
     @InjectMocks
-    PilotServiceCreate pilotServiceCreate;
+    private PilotServiceCreate pilotServiceCreate;
     @Mock
-    PilotMapper pilotMapper;
+    private PilotMapper pilotMapper;
 
     private PilotDto createNewPilotDtoForTest() {
 

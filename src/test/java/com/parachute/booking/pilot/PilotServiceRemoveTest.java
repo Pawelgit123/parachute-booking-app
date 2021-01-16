@@ -13,9 +13,9 @@ import static org.mockito.Mockito.verify;
 class PilotServiceRemoveTest {
 
     @Mock
-    PilotRepository pilotRepository;
+    private PilotRepository pilotRepository;
     @Mock
-    PilotServiceRemove pilotServiceRemove;
+    private PilotServiceRemove pilotServiceRemove;
 
     private Pilot createPilotForTest(){
         return Pilot.builder()

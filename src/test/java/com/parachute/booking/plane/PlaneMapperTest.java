@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PlaneMapperTest {
 
     @Mock
-    PlaneRepository planeRepository;
+    private PlaneRepository planeRepository;
 
     private PlaneDto createNewPlaneDtoForTest() {
         return PlaneDto.builder()

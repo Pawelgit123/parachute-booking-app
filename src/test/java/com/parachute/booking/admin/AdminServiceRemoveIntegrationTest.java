@@ -20,14 +20,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceRemoveIntegratedTest {
+class AdminServiceRemoveIntegrationTest {
 
     @Autowired
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     private final String requestMappingUrl = "/admins";
 
@@ -68,7 +68,6 @@ class AdminServiceRemoveIntegratedTest {
     @Test
     void deleteAdmin_andReturnStatusCode400() throws Exception {
         //given
-
         Admin savedAdmin = adminRepository.save(createNewAdminForTestA());
         int fakeId = 1;
         String requestParam = objectMapper.writeValueAsString(savedAdmin.getId()+fakeId);

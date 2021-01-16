@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceSearchIntegratedTest {
+class AdminServiceSearchIntegrationTest {
 
     @Autowired
     AdminRepository adminRepository;
@@ -190,7 +190,6 @@ class AdminServiceSearchIntegratedTest {
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
         assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
-
     }
 
     @Test

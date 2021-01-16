@@ -1,12 +1,10 @@
 package com.parachute.booking.flight;
 
-import com.parachute.booking.exceptions.InternalServerException;
 import com.parachute.booking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,14 +18,15 @@ public class FlightServiceSearch {
     private final FlightRepository flightRepository;
     private final FlightMapper flightMapper;
 
-    public Set<FlightDto> getAllFlights() {
+    public FlightDtoListed getAllFlights() {
 
         List<Flight> all = flightRepository.findAll();
-        new HashSet<>(all);
+        FlightDtoListed flightDtoListed = new FlightDtoListed();
 
-        return all.stream()
-                .map(flightMapper::mapFlightDto)
-                .collect(Collectors.toSet());
+        Set<FlightDto> collect = all.stream().map(flightMapper::mapFlightDto).collect(Collectors.toSet());
+        flightDtoListed.setFlights(collect);
+
+        return flightDtoListed;
     }
 
     public FlightDto getFlightById(Long id) {

@@ -20,14 +20,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PilotServiceSearchIntegratedTest {
+class PilotServiceSearchIntegrationTest {
 
     @Autowired
-    PilotRepository pilotRepository;
+    private PilotRepository pilotRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     private final String requestMappingUrl = "/pilots";
 

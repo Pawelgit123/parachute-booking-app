@@ -16,9 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FlightServiceSearchTest {
 
     @Autowired
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
     @Autowired
-    FlightServiceSearch flightServiceSearch;
+    private FlightServiceSearch flightServiceSearch;
 
     @BeforeEach
     void setup(){
@@ -40,10 +40,10 @@ class FlightServiceSearchTest {
         flightRepository.save(createFlightsForTest());
 
         //when
-        Set<FlightDto> allFlights = flightServiceSearch.getAllFlights();
+        FlightDtoListed allFlights = flightServiceSearch.getAllFlights();
 
         //then
-        assertThat(allFlights).size().isEqualTo(3);
+        assertThat(allFlights.getFlights()).size().isEqualTo(3);
     }
 
     @Test

@@ -16,11 +16,11 @@ import static org.mockito.Mockito.*;
 class FlightServiceCreateRepositoryTest {
 
     @Mock
-    FlightRepository flightRepository;
+    private FlightRepository flightRepository;
     @InjectMocks
-    FlightServiceCreate flightServiceCreate;
+    private FlightServiceCreate flightServiceCreate;
     @Mock
-    FlightMapper flightMapper;
+    private FlightMapper flightMapper;
 
     @Test
     void createNewFlight_saveFlightToRepository() {

@@ -1,12 +1,10 @@
 package com.parachute.booking.pilot;
 
-import com.parachute.booking.exceptions.InternalServerException;
 import com.parachute.booking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,14 +18,14 @@ public class PilotServiceSearch {
     private final PilotRepository pilotRepository;
     private final PilotMapper pilotMapper;
 
-    public Set<PilotDto> getAllPilots() {
+    public PilotDtoListed getAllPilots() {
 
         List<Pilot> all = pilotRepository.findAll();
-        new HashSet<>(all);
+        PilotDtoListed pilotDtoListed = new PilotDtoListed();
 
-        return all.stream()
-                .map(pilotMapper::mapPilotDto)
-                .collect(Collectors.toSet());
+        Set<PilotDto> collect = all.stream().map(pilotMapper::mapPilotDto).collect(Collectors.toSet());
+        pilotDtoListed.setPilots(collect);
+        return pilotDtoListed;
     }
 
     public PilotDto findPilotById(Long id) {
