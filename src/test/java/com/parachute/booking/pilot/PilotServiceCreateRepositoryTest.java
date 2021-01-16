@@ -1,5 +1,7 @@
 package com.parachute.booking.pilot;
 
+import com.parachute.booking.exceptions.InternalServerException;
+import com.parachute.booking.flight.Flight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,9 +10,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PilotServiceCreateRepositoryTest {
@@ -22,16 +24,6 @@ class PilotServiceCreateRepositoryTest {
     @Mock
     private PilotMapper pilotMapper;
 
-    private PilotDto createNewPilotDtoForTest() {
-
-        return PilotDto.builder()
-                .pilotLicenseNumber(444L)
-                .firstName("Mariusz")
-                .surName("Janowski")
-                .id(1L)
-                .build();
-    }
-
     @BeforeEach
     void setup() {
         pilotRepository.deleteAll();
@@ -41,6 +33,7 @@ class PilotServiceCreateRepositoryTest {
     void createPilot_savePilotToRepository() {
         //given
         when(pilotRepository.save(any(Pilot.class))).thenReturn(new Pilot());
+        when(pilotMapper.mapPilot(new PilotDto())).thenReturn(new Pilot());
         when(pilotMapper.mapPilotDto(new Pilot())).thenReturn(new PilotDto());
 
         //when
@@ -49,6 +42,16 @@ class PilotServiceCreateRepositoryTest {
         //then
         assertThat(pilotdto).isExactlyInstanceOf(PilotDto.class);
         verify(pilotRepository).save(any(Pilot.class));
+    }
+
+    @Test
+    void createNewPilot_InternalServerError_byNull() {
+        //when
+        Throwable throwable = catchThrowable(() -> pilotServiceCreate.createNewPilot(null));
+
+        //then
+        assertThat(throwable).isInstanceOf(InternalServerException.class);
+        verify(pilotRepository, times(0)).save(any(Pilot.class));
     }
 
 }

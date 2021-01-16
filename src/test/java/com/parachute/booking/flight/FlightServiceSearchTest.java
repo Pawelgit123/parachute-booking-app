@@ -7,8 +7,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -44,6 +42,7 @@ class FlightServiceSearchTest {
 
         //then
         assertThat(allFlights.getFlights()).size().isEqualTo(3);
+        assertThat(allFlights).isExactlyInstanceOf(FlightDtoListed.class);
     }
 
     @Test

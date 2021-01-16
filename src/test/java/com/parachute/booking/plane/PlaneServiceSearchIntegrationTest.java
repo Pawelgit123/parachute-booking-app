@@ -71,9 +71,9 @@ class PlaneServiceSearchIntegrationTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<PlaneDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        PlaneDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
-        assertThat(responseBody).hasSize(3);
+        assertThat(responseBody.getPlanes()).hasSize(3);
     }
 
     @Test
@@ -86,9 +86,9 @@ class PlaneServiceSearchIntegrationTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<PlaneDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        PlaneDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
-        assertThat(responseBody).hasSize(0);
+        assertThat(responseBody.getPlanes()).hasSize(0);
     }
 
     @Test

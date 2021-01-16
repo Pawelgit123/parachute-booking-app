@@ -37,12 +37,11 @@ class AdminServiceCreateIntegrationTest {
     }
 
     private AdminDto createNewAdminDtoForTest() {
-        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+        return AdminDto.builder()
                 .login("Admin2")
                 .password("Admin pass")
                 .email("admin@gmail.com")
                 .build();
-        return adminDto;
     }
 
     @Test

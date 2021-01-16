@@ -1,7 +1,6 @@
 package com.parachute.booking.admin;
 
 import com.parachute.booking.exceptions.BadRequestException;
-import com.parachute.booking.exceptions.InternalServerException;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +10,6 @@ public class AdminDataValidate {
 
     void validateData(AdminDto adminDto) {
 
-        if (adminDto == null) {
-            throw new InternalServerException("No data to create Admin");
-        }
         if (adminDto.getPassword().isEmpty()) {
             throw new BadRequestException("Password is empty");
         }

@@ -77,9 +77,9 @@ class PilotServiceSearchIntegrationTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<PilotDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        PilotDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
-        assertThat(responseBody).hasSize(3);
+        assertThat(responseBody.getPilots()).hasSize(3);
     }
 
     @Test
@@ -92,9 +92,9 @@ class PilotServiceSearchIntegrationTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        List<PilotDto> responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
+        PilotDtoListed responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
-        assertThat(responseBody).hasSize(0);
+        assertThat(responseBody.getPilots()).hasSize(0);
 
     }
 

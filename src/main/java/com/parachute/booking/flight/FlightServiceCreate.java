@@ -19,13 +19,7 @@ public class FlightServiceCreate {
             throw new InternalServerException("No data to create Flight");
         }
 
-        Flight flight = new Flight();
-
-        flight.setLocalDateTime(flightDto.getLocalDateTime());
-        flight.setPilotLicenseNumber(flightDto.getPilotLicenseNumber());
-        flight.setPlaneNumber(flightDto.getPlaneNumber());
-
-//        flightMapper.mapFlight(flightDto);
+        final Flight flight = flightMapper.mapFlight(flightDto);
 
         flightRepository.save(flight);
 

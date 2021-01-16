@@ -1,5 +1,6 @@
 package com.parachute.booking.admin;
 
+import com.parachute.booking.exceptions.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,15 @@ public class AdminServiceCreate {
 
     public AdminDto createNewAdmin(AdminDto adminDto) {
 
+        if (adminDto == null) {
+            throw new InternalServerException("No data to create Admin");
+        }
+
         adminDataValidate.validateData(adminDto);
 
         //TODO check if exists login/mail is not doubled - password is ok
 
-        Admin admin = new Admin();
-
-        admin.setPassword(adminDto.getPassword());
-        admin.setLogin(adminDto.getLogin());
-        admin.setEmail(adminDto.getEmail());
-
-//        Admin admin = adminMapper.mapAdmin(adminDto);
+        final Admin admin = adminMapper.mapAdmin(adminDto);
 
         Admin save = adminRepository.save(admin);
 

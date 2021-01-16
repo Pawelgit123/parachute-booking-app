@@ -37,12 +37,11 @@ class AdminServiceRemoveIntegrationTest {
     }
 
     private Admin createNewAdminForTestA() {
-        Admin admin = new Admin.AdminBuilder()
+        return Admin.builder()
                 .login("Admin2")
                 .password("Admin pass")
                 .email("admin@gmail.com")
                 .build();
-        return admin;
     }
 
     @Test
