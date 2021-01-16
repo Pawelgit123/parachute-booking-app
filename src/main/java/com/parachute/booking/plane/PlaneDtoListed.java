@@ -1,4 +1,4 @@
-package com.parachute.booking.admin;
+package com.parachute.booking.plane;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import java.util.Set;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class AdminDtoListed {
+@AllArgsConstructor
+public class PlaneDtoListed {
 
-    private Set<AdminDto> admins;
+    private Set<PlaneDto> planes;
 }

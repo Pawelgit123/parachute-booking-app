@@ -12,7 +12,7 @@ public class AdminServiceRemove {
 
     private final AdminRepository adminRepository;
 
-    public void adminDelete(Long id){
+    public void removeAdminById(Long id){
 
         if(adminRepository.findById(id).isPresent()){
             adminRepository.deleteById(id);

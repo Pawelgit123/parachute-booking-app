@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class AdminController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<AdminDto> getAdmins() {
+    public AdminDtoListed getAdmins() {
 
         return adminServiceSearch.getAllAdmins();
     }
@@ -41,7 +40,7 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAdminById(@PathVariable Long id) {
 
-        adminServiceRemove.adminDelete(id);
+        adminServiceRemove.removeAdminById(id);
     }
 
     @GetMapping("/login/{login}")

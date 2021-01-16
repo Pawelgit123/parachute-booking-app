@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @ExtendWith(MockitoExtension.class)
 class PlaneServiceCreateNullTest {
 
-    PlaneServiceCreate planeServiceCreate;
+    private PlaneServiceCreate planeServiceCreate;
 
     @Test
     void createNewPlane_whenIsNull() {

@@ -1,4 +1,4 @@
-package com.parachute.booking.mappers;
+package com.parachute.booking.client;
 
 import com.parachute.booking.client.Client;
 import com.parachute.booking.client.ClientDto;

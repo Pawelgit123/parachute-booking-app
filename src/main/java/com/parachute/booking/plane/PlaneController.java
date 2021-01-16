@@ -25,7 +25,7 @@ public class PlaneController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<PlaneDto> getAllPlanes() {
+    public PlaneDtoListed getAllPlanes() {
 
         return planeServiceSearch.getAllPlanes();
     }

@@ -19,11 +19,7 @@ public class PilotServiceCreate {
             throw new InternalServerException("No data to create Pilot");
         }
 
-        Pilot pilot = new Pilot();
-
-        pilot.setFirstName(pilotDto.getFirstName());
-        pilot.setSurName(pilotDto.getSurName());
-        pilot.setPilotLicenseNumber(pilotDto.getPilotLicenseNumber());
+        final Pilot pilot = pilotMapper.mapPilot(pilotDto);
 
         pilotRepository.save(pilot);
 

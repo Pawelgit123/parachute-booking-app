@@ -6,7 +6,6 @@ import lombok.*;
 @Builder
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ForecastDto {
 
     private Long id;

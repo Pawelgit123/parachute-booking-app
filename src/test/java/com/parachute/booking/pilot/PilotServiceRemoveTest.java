@@ -1,28 +1,34 @@
 package com.parachute.booking.pilot;
 
+import com.parachute.booking.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PilotServiceRemoveTest {
 
+    private static final Long ID = 1L;
+
     @Mock
-    PilotRepository pilotRepository;
-    @Mock
-    PilotServiceRemove pilotServiceRemove;
+    private PilotRepository pilotRepository;
+    @InjectMocks
+    private PilotServiceRemove pilotServiceRemove;
 
     private Pilot createPilotForTest(){
         return Pilot.builder()
                 .pilotLicenseNumber(333L)
                 .firstName("Jarosław")
                 .surName("Adamski")
-                .id(1L)
+                .id(ID)
                 .build();
     }
 
@@ -32,13 +38,28 @@ class PilotServiceRemoveTest {
     }
 
     @Test
-    void removePilotById() {
+    void removePilotById_whenPilotExists() {
         //given
+        when(pilotRepository.findById(ID)).thenReturn(Optional.of(createPilotForTest()));
 
         //when
-        pilotServiceRemove.removePilotById(createPilotForTest().getId());
+        pilotServiceRemove.removePilotById(ID);
 
         //then
-        verify(pilotServiceRemove, times(1)).removePilotById(createPilotForTest().getId());
+        verify(pilotRepository, times(1)).deleteById(ID);
     }
+
+    @Test
+    void removePilotById_whenPilotDoesntExist() {
+        //given
+        when(pilotRepository.findById(ID)).thenReturn(Optional.empty());
+
+        //when
+
+        //then
+        assertThatExceptionOfType(NotFoundException.class)
+                .isThrownBy(() -> pilotServiceRemove.removePilotById(ID));
+        verify(pilotRepository, never()).deleteById(ID);
+    }
+
 }

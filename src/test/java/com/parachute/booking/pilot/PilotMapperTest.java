@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PilotMapperTest {
 
     @Mock
-    PilotRepository pilotRepository;
+    private PilotRepository pilotRepository;
 
     private PilotDto createPilotDtoForTest() {
         return PilotDto.builder()

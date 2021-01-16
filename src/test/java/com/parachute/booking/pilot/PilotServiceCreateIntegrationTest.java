@@ -23,11 +23,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class PilotServiceCreateIntegrationTest {
 
     @Autowired
-    PilotRepository pilotRepository;
+    private PilotRepository pilotRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     private final String requestMappingUrl = "/pilots";
 

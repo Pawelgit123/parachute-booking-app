@@ -25,7 +25,7 @@ public class PilotController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<PilotDto> getAllPilots() {
+    public PilotDtoListed getAllPilots() {
 
         return pilotServiceSearch.getAllPilots();
     }

@@ -10,17 +10,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 @SpringBootTest
-//@ExtendWith(MockitoExtension.class)
-class AdminServiceCreateTest {
+class AdminServiceCreateBlanksTest {
 
     @Autowired
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
     @Autowired
-    AdminServiceCreate adminServiceCreate;
-    @Autowired
-    AdminMapper adminMapper;
-    @Autowired
-    AdminDataValidate adminDataValidate;
+    private AdminServiceCreate adminServiceCreate;
 
     @BeforeEach
     void setup() {
@@ -73,7 +68,6 @@ class AdminServiceCreateTest {
         Throwable result = catchThrowable(() -> adminServiceCreate.createNewAdmin(adminDto));
 
         assertThat(result).isExactlyInstanceOf(NullPointerException.class);
-
     }
 
 }
