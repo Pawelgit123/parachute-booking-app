@@ -41,24 +41,16 @@ public class ForecastClient {
 
     public List<ForecastDto> getForecast(String formattedYearMonthDay) {
 
-        String url = UriComponentsBuilder.newInstance()
-                .scheme(HTTP)
-                .host(HOST)
-                .queryParam(ID_PARAM, CITY_ID)
-                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
-                .queryParam(LANG_PARAM, LANG_PL)
-                .queryParam(UNITS_PARAM, UNITS_METRIC)
-                .build()
-                .toUriString();
+        String url = getForecastConnectionUrl();
 
         try {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
             ForecastResponse body = response.getBody();
 
-            assert body != null;
+            //assert body != null;
             return body.getSingleForecastList()
                     .stream()
-                    .filter(f -> f.getDateAndTime().matches(formattedYearMonthDay))
+                    .filter(f -> f.getDateAndTime().startsWith(formattedYearMonthDay))
                     .map(forecastMapper::mapToForecastDto)
                     .collect(Collectors.toList());
 
@@ -71,17 +63,21 @@ public class ForecastClient {
         }
     }
 
+    private String getForecastConnectionUrl() {
+        return UriComponentsBuilder.newInstance()
+            .scheme(HTTP)
+            .host(HOST)
+            .queryParam(ID_PARAM, CITY_ID)
+            .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
+            .queryParam(LANG_PARAM, LANG_PL)
+            .queryParam(UNITS_PARAM, UNITS_METRIC)
+            .build()
+            .toUriString();
+    }
+
     public void getForecast() {
 
-        String url = UriComponentsBuilder.newInstance()
-                .scheme(HTTP)
-                .host(HOST)
-                .queryParam(ID_PARAM, CITY_ID)
-                .queryParam(APPID_PARAM, forecastClientProperties.getApiKey())
-                .queryParam(LANG_PARAM, LANG_PL)
-                .queryParam(UNITS_PARAM, UNITS_METRIC)
-                .build()
-                .toUriString();
+        String url = getForecastConnectionUrl();
 
         try {
             ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
@@ -100,4 +96,27 @@ public class ForecastClient {
             log.error("Connection error with the host", e);
         }
     }
+
+//    public Forecast mapToForecast(ForecastResponse.SingleForecast singleForecast) {
+//        Forecast forecast = new Forecast();
+//        forecast.setTemp(singleForecast.getGeneral().getTemp());
+//        forecast.setTempFeelsLike(singleForecast.getGeneral().getFeelsLike());
+//        forecast.setPressureAtSeaLevelhPa(singleForecast.getGeneral().getSeaLevel());
+//        forecast.setPressureAtGroundLevelhPa(singleForecast.getGeneral().getGrndLevel());
+//        forecast.setRelativeHumidity(singleForecast.getGeneral().getHumidity());
+//        forecast.setWeatherDescription(singleForecast.getWeather().getDescription());
+//        forecast.setCloudiness(singleForecast.getClouds().getAll());
+//        forecast.setWindSpeed(singleForecast.getWind().getSpeed());
+//        forecast.setWindDegree(singleForecast.getWind().getDeg());
+//        if (singleForecast.getRain() != null) {
+//            forecast.setRainPrecipitation(singleForecast.getRain().getPrecipitationHeight());
+//        }
+//        if (singleForecast.getSnow() != null) {
+//            forecast.setSnowPrecipitation(singleForecast.getSnow().getPrecipitationHeight());
+//        }
+//        forecast.setVisibility(singleForecast.getVisibility());
+//        forecast.setProbabilityOfPrecipitation(singleForecast.getPop());
+//        forecast.setDateAndTime(singleForecast.getDateAndTime());
+//        return forecast;
+//    }
 }

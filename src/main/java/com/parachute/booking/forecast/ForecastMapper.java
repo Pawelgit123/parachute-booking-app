@@ -21,9 +21,7 @@ public class ForecastMapper {
         forecast.setCloudiness(singleForecast.getClouds().getAll());
         forecast.setWindSpeed(singleForecast.getWind().getSpeed());
         forecast.setWindDegree(singleForecast.getWind().getDeg());
-        if (singleForecast.getRain() != null) {
-            forecast.setRainPrecipitation(singleForecast.getRain().getPrecipitationHeight());
-        }
+        setRainIfPresent(singleForecast, forecast);
         if (singleForecast.getSnow() != null) {
             forecast.setSnowPrecipitation(singleForecast.getSnow().getPrecipitationHeight());
         }
@@ -32,6 +30,14 @@ public class ForecastMapper {
         forecast.setDateAndTime(singleForecast.getDateAndTime());
         return forecast;
     }
+
+    private void setRainIfPresent(ForecastResponse.SingleForecast singleForecast, Forecast forecast) {
+        if (singleForecast.getRain() != null) {
+            forecast.setRainPrecipitation(singleForecast.getRain().getPrecipitationHeight());
+        }
+    }
+
+
     public Forecast mapToForecast(ForecastDto forecastDto){
         Forecast forecast = new Forecast();
         forecast.setTemp(forecastDto.getTemp());

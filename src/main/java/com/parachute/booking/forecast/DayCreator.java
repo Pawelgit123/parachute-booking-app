@@ -1,5 +1,7 @@
 package com.parachute.booking.forecast;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class DayCreator {
 
-    public String createCalendarDayFromNumbers(int year, int month, int day){
+    public String createCalendarDayFromNumbers(int year, int month, int day) {
+        //input type="date"
         return year+"-"+month+"-"+day;
     }
 }
