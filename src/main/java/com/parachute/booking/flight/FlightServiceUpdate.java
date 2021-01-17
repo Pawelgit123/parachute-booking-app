@@ -11,8 +11,6 @@ import java.util.Optional;
 public class FlightServiceUpdate {
 
     private final FlightRepository flightRepository;
-    private final FlightMapper flightMapper;
-
     //TODO block update for finished flights?
 
     public void updateFlightById(FlightDto flightDto, Long id) {

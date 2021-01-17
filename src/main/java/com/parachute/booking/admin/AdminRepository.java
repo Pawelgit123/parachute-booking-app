@@ -10,5 +10,4 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Optional<Admin> findAdminByEmail(String email);
 
-    // Request processing failed; nested exception is java.lang.IllegalStateException
 }
