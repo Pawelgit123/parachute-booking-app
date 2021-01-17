@@ -1,6 +1,7 @@
 package com.parachute.booking.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,7 +42,7 @@ public class ExceptionHandlerController {
         final List<String> errors = methodArgumentNotValidException
                 .getAllErrors()
                 .stream()
-                .map(x->x.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
         return new ErrorMessage(errors);
     }
