@@ -3,10 +3,14 @@ package com.parachute.booking.forecast.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ForecastResponse {
     @JsonProperty("list")
@@ -16,11 +20,11 @@ public class ForecastResponse {
     public static class SingleForecast {
         @JsonProperty("main")
         private General general;
-        private Weather weather;
+        private List<Weather> weather;
         private Clouds clouds;
         private Wind wind;
-        private int visibility;
-        private float pop;
+        private Integer visibility;
+        private Float pop;
         private Rain rain;
         private Snow snow;
         @JsonProperty("dt_txt")
@@ -29,11 +33,11 @@ public class ForecastResponse {
         @Data
         @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
         public static class General {
-            private float temp;
-            private float feelsLike;
-            private int seaLevel;
-            private int grndLevel;
-            private int humidity;
+            private Float temp;
+            private Float feelsLike;
+            private Integer seaLevel;
+            private Integer grndLevel;
+            private Integer humidity;
         }
 
         @Data
@@ -43,25 +47,25 @@ public class ForecastResponse {
 
         @Data
         public static class Clouds {
-            private int all;
+            private Integer all;
         }
 
         @Data
         public static class Wind {
-            private float speed;
-            private int deg;
+            private Float speed;
+            private Integer deg;
         }
 
         @Data
         public static class Rain {
             @JsonProperty("3h")
-            private float precipitationHeight;
+            private Float precipitationHeight;
         }
 
         @Data
         public static class Snow {
             @JsonProperty("3h")
-            private float precipitationHeight;
+            private Float precipitationHeight;
         }
     }
 }
