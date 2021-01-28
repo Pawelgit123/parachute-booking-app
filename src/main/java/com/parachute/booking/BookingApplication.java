@@ -31,7 +31,7 @@ public class BookingApplication implements CommandLineRunner {
         adminRepository.deleteAll();
         Admin admin = new Admin();
         admin.setLogin("Admin1");
-        admin.setPassword("12345");
+        admin.setPassword(passwordEncoder.encode("12345"));
         admin.setEmail("adminus@gmail.com");
         admin.setAuthority(Collections.singletonList(Roles.ADMIN::toString));
         adminRepository.save(admin);

@@ -2,6 +2,7 @@ package com.parachute.booking.flight;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,6 +18,7 @@ public class FlightController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public FlightDto createFlight(@RequestBody FlightDto flightDto) {
 
         return flightServiceCreate.createNewFlight(flightDto);
@@ -38,6 +40,7 @@ public class FlightController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public void removeFlightById(@PathVariable Long id) {
 
         flightServiceRemove.removeFlightById(id);
@@ -59,6 +62,7 @@ public class FlightController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public void updateFlightById(@RequestBody FlightDto flightDto, @PathVariable Long id) {
 
         flightServiceUpdate.updateFlightById(flightDto, id);

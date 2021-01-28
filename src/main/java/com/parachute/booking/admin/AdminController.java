@@ -26,6 +26,7 @@ public class AdminController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public AdminDtoListed getAdmins() {
 
         return adminServiceSearch.getAllAdmins();
@@ -33,6 +34,7 @@ public class AdminController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public AdminDto getAdminById(@PathVariable Long id) {
 
         return adminServiceSearch.findById(id);
@@ -40,6 +42,7 @@ public class AdminController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public void deleteAdminById(@PathVariable Long id) {
 
         adminServiceRemove.removeAdminById(id);
@@ -47,6 +50,7 @@ public class AdminController {
 
     @GetMapping("/login/{login}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public AdminDto getAdminByLogin(@PathVariable String login) {
 
         return adminServiceSearch.findByLogin(login);
@@ -54,6 +58,7 @@ public class AdminController {
 
     @GetMapping("/email/{email}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public AdminDto getAdminByEmail(@PathVariable String email) {
 
         return adminServiceSearch.findByEmail(email);
