@@ -2,6 +2,7 @@ package com.parachute.booking.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ public class AdminController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public AdminDto createNewAdmin(@Valid @RequestBody AdminDto adminDto) {
 
         return adminServiceCreate.createNewAdmin(adminDto);
