@@ -1,8 +1,6 @@
 package com.parachute.booking.admin;
 
 import com.parachute.booking.exceptions.BadRequestException;
-import com.parachute.booking.exceptions.BlankSpaceException;
-import com.parachute.booking.exceptions.InternalServerException;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +10,6 @@ public class AdminDataValidate {
 
     void validateData(AdminDto adminDto) {
 
-        if (adminDto == null) {
-            throw new InternalServerException("No data to create Admin");
-        }
         if (adminDto.getPassword().isEmpty()) {
             throw new BadRequestException("Password is empty");
         }
@@ -25,13 +20,13 @@ public class AdminDataValidate {
             throw new BadRequestException("Email is empty");
         }
         if (adminDto.getLogin().isBlank()) {
-            throw new BlankSpaceException("Login is blank");
+            throw new BadRequestException("Login is blank");
         }
         if (adminDto.getPassword().isBlank()) {
-            throw new BlankSpaceException("Password is blank");
+            throw new BadRequestException("Password is blank");
         }
         if (adminDto.getEmail().isBlank()) {
-            throw new BlankSpaceException("Email is blank");
+            throw new BadRequestException("Email is blank");
         }
         if (adminDto.getLogin().length() <= 5) {
             throw new BadRequestException("Login must have more than 5 letters");

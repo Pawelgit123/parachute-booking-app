@@ -1,4 +1,4 @@
-package com.parachute.booking.admin;
+package com.parachute.booking.pilot;
 
 import com.parachute.booking.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,52 +14,52 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AdminServiceRemoveTest {
+class PilotServiceRemoveTest {
 
     private static final Long ID = 1L;
 
     @Mock
-    private AdminRepository adminRepository;
+    private PilotRepository pilotRepository;
     @InjectMocks
-    private AdminServiceRemove adminServiceRemove;
+    private PilotServiceRemove pilotServiceRemove;
 
-    private Admin createNewAdminForTest() {
-        return  Admin.builder()
-                .login("Admin2")
-                .password("Admin pass")
-                .email("admin@gmail.com")
+    private Pilot createPilotForTest(){
+        return Pilot.builder()
+                .pilotLicenseNumber(333L)
+                .firstName("Jarosław")
+                .surName("Adamski")
                 .id(ID)
                 .build();
     }
 
     @BeforeEach
-    void setup() {
-        adminRepository.deleteAll();
+    void setup(){
+        pilotRepository.deleteAll();
     }
 
     @Test
     void removePilotById_whenPilotExists() {
         //given
-        when(adminRepository.findById(ID)).thenReturn(Optional.of(createNewAdminForTest()));
+        when(pilotRepository.findById(ID)).thenReturn(Optional.of(createPilotForTest()));
 
         //when
-        adminServiceRemove.removeAdminById(ID);
+        pilotServiceRemove.removePilotById(ID);
 
         //then
-        verify(adminRepository, times(1)).deleteById(ID);
+        verify(pilotRepository, times(1)).deleteById(ID);
     }
 
     @Test
     void removePilotById_whenPilotDoesntExist() {
         //given
-        when(adminRepository.findById(ID)).thenReturn(Optional.empty());
+        when(pilotRepository.findById(ID)).thenReturn(Optional.empty());
 
         //when
 
         //then
         assertThatExceptionOfType(NotFoundException.class)
-                .isThrownBy(() -> adminServiceRemove.removeAdminById(ID));
-        verify(adminRepository, never()).deleteById(ID);
+                .isThrownBy(() -> pilotServiceRemove.removePilotById(ID));
+        verify(pilotRepository, never()).deleteById(ID);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.parachute.booking.admin;
+package com.parachute.booking.flight;
 
 import com.parachute.booking.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,58 +8,60 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AdminServiceRemoveTest {
+class FlightServiceRemoveTest {
 
     private static final Long ID = 1L;
 
     @Mock
-    private AdminRepository adminRepository;
+    private FlightRepository flightRepository;
     @InjectMocks
-    private AdminServiceRemove adminServiceRemove;
+    private FlightServiceRemove flightServiceRemove;
+    LocalDateTime localDateTime;
 
-    private Admin createNewAdminForTest() {
-        return  Admin.builder()
-                .login("Admin2")
-                .password("Admin pass")
-                .email("admin@gmail.com")
+    private Flight createFlightForTest() {
+        return Flight.builder()
                 .id(ID)
+                .planeNumber(22L)
+                .pilotLicenseNumber(222L)
+                .localDateTime(localDateTime)
                 .build();
     }
 
     @BeforeEach
     void setup() {
-        adminRepository.deleteAll();
+        flightRepository.deleteAll();
     }
 
     @Test
     void removePilotById_whenPilotExists() {
         //given
-        when(adminRepository.findById(ID)).thenReturn(Optional.of(createNewAdminForTest()));
+        when(flightRepository.findById(ID)).thenReturn(Optional.of(createFlightForTest()));
 
         //when
-        adminServiceRemove.removeAdminById(ID);
+        flightServiceRemove.removeFlightById(ID);
 
         //then
-        verify(adminRepository, times(1)).deleteById(ID);
+        verify(flightRepository, times(1)).deleteById(ID);
     }
 
     @Test
     void removePilotById_whenPilotDoesntExist() {
         //given
-        when(adminRepository.findById(ID)).thenReturn(Optional.empty());
+        when(flightRepository.findById(ID)).thenReturn(Optional.empty());
 
         //when
 
         //then
         assertThatExceptionOfType(NotFoundException.class)
-                .isThrownBy(() -> adminServiceRemove.removeAdminById(ID));
-        verify(adminRepository, never()).deleteById(ID);
+                .isThrownBy(() -> flightServiceRemove.removeFlightById(ID));
+        verify(flightRepository, never()).deleteById(ID);
     }
 
 }

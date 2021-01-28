@@ -1,9 +1,10 @@
-package com.parachute.booking.mappers;
+package com.parachute.booking.client;
 
 import com.parachute.booking.client.Client;
 import com.parachute.booking.client.ClientDto;
 
 public class ClientMapper {
+
     ClientDto mapClientToClientDto(Client client){
         return ClientDto.builder()
                 .firstName(client.getFirstName())

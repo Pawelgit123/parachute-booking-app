@@ -1,4 +1,4 @@
-package com.parachute.booking.admin;
+package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,38 +21,39 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceRemoveIntegratedTest {
+class FlightServiceRemoveIntegrationTest {
 
     @Autowired
-    AdminRepository adminRepository;
+    private FlightRepository flightRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+    LocalDateTime localDateTime;
 
-    private final String requestMappingUrl = "/admins";
+    private final String requestMappingUrl = "/flights";
 
     @BeforeEach
-    void setup(){
-        adminRepository.deleteAll();
+    void setup() {
+        flightRepository.deleteAll();
     }
 
-    private Admin createNewAdminForTestA() {
-        Admin admin = new Admin.AdminBuilder()
-                .login("Admin2")
-                .password("Admin pass")
-                .email("admin@gmail.com")
+    private Flight createFlightForTest() {
+        return Flight.builder()
+                .id(1L)
+                .planeNumber(44L)
+                .pilotLicenseNumber(444L)
+                .localDateTime(localDateTime)
                 .build();
-        return admin;
     }
 
     @Test
-    void deleteAdmin_andReturnStatusCode200() throws Exception {
+    void deleteFlight_andReturnStatusCode200() throws Exception {
         //given
-        Admin savedAdmin = adminRepository.save(createNewAdminForTestA());
-        String requestParam = objectMapper.writeValueAsString(savedAdmin.getId());
+        Flight flight = flightRepository.save(createFlightForTest());
+        String requestParam = objectMapper.writeValueAsString(flight.getId());
 
-        MockHttpServletRequestBuilder delete = delete(requestMappingUrl+"/{id}", requestParam)
+        MockHttpServletRequestBuilder delete = delete(requestMappingUrl + "/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
@@ -61,19 +63,18 @@ class AdminServiceRemoveIntegratedTest {
         //then
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
-        List<Admin> admins = adminRepository.findAll();
-        assertThat(admins.size()).isEqualTo(0);
+        List<Flight> flights = flightRepository.findAll();
+        assertThat(flights.size()).isEqualTo(0);
     }
 
     @Test
-    void deleteAdmin_andReturnStatusCode400() throws Exception {
+    void deleteFlight_andReturnStatusCode400() throws Exception {
         //given
-
-        Admin savedAdmin = adminRepository.save(createNewAdminForTestA());
+        Flight flight = flightRepository.save(createFlightForTest());
         int fakeId = 1;
-        String requestParam = objectMapper.writeValueAsString(savedAdmin.getId()+fakeId);
+        String requestParam = objectMapper.writeValueAsString(flight.getId() + fakeId);
 
-        MockHttpServletRequestBuilder delete = delete(requestMappingUrl+"/{id}", requestParam)
+        MockHttpServletRequestBuilder delete = delete(requestMappingUrl + "/{id}", requestParam)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 

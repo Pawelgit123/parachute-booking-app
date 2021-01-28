@@ -20,14 +20,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminServiceCreateIntegratedTest {
+class AdminServiceCreateIntegrationTest {
 
     @Autowired
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     private final String requestMappingUrl = "/admins";
 
@@ -37,12 +37,11 @@ class AdminServiceCreateIntegratedTest {
     }
 
     private AdminDto createNewAdminDtoForTest() {
-        AdminDto adminDto = new AdminDto.AdminDtoBuilder()
+        return AdminDto.builder()
                 .login("Admin2")
                 .password("Admin pass")
                 .email("admin@gmail.com")
                 .build();
-        return adminDto;
     }
 
     @Test
