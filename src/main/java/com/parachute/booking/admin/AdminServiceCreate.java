@@ -15,7 +15,7 @@ public class AdminServiceCreate {
 
     private final AdminMapper adminMapper;
 
-    public AdminDto createNewAdmin(AdminDto adminDto) {
+    public AdminDto createNewAdmin(AdminDto adminDto){
 
         if (adminDto == null) {
             throw new InternalServerException("No data to create Admin");
