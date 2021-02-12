@@ -65,7 +65,6 @@ class AdminServiceCreateIntegrationTest {
         assertThat(admins.size()).isEqualTo(1);
         assertThat(admins.get(0)).satisfies(admin -> {
             assertThat(admin.getLogin()).isEqualTo("Admin2");
-            assertThat(admin.getPassword()).isEqualTo("Admin pass");
             assertThat(admin.getEmail()).isEqualTo("admin@gmail.com");
         });
     }

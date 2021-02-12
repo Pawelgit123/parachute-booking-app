@@ -111,7 +111,6 @@ class AdminServiceSearchIntegrationTest {
         AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getId()).isEqualTo(id);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
-        assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
     }
 
@@ -155,7 +154,6 @@ class AdminServiceSearchIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
-        assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
     }
 
@@ -187,7 +185,6 @@ class AdminServiceSearchIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
-        assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
     }
 
