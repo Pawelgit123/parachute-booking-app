@@ -1,5 +1,6 @@
 package com.parachute.booking.admin;
 
+import com.parachute.booking.confirmation.Confirmation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +25,8 @@ public class Admin {
     private String password;
     @Column(name = "email")
     private String email;
+
+    @OneToOne (mappedBy = "flight")
+    private Confirmation confirmation;
 
 }
