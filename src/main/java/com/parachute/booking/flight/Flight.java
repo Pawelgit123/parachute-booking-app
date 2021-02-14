@@ -1,7 +1,6 @@
 package com.parachute.booking.flight;
 
 
-import com.parachute.booking.client.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Data
@@ -26,14 +24,12 @@ public class Flight {
     private Long planeNumber;
     @Column(name = "pilotLicenseNumber")
     private Long pilotLicenseNumber;
-    @Column(name= "localdatetime")
-    private LocalDateTime localDateTime;
 
-    @OneToMany
-    public Set<Client> clientSet;
+    @Column(name = "localdatetime")
+    private LocalDateTime localDateTime;
+    @Column(name = "status")
+    private FlightStatus flightStatus;
 
     //TODO tu będzie forecast jeszcze
-    //TODO boolean flight accept?
-    //TODO columns title?
 
 }

@@ -21,5 +21,7 @@ public class Plane {
     private Long planeNumber;
     @Column(name = "planeModel")
     private String planeModel;
+    @Column(name = "seats")
+    private int seats;
 
 }
