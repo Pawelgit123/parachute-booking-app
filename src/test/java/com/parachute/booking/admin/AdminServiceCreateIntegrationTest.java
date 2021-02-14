@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 class AdminServiceCreateIntegrationTest {
 
     @Autowired
@@ -63,7 +65,6 @@ class AdminServiceCreateIntegrationTest {
         assertThat(admins.size()).isEqualTo(1);
         assertThat(admins.get(0)).satisfies(admin -> {
             assertThat(admin.getLogin()).isEqualTo("Admin2");
-            assertThat(admin.getPassword()).isEqualTo("Admin pass");
             assertThat(admin.getEmail()).isEqualTo("admin@gmail.com");
         });
     }
