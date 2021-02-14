@@ -1,8 +1,8 @@
 package com.parachute.booking.client;
 
-import com.parachute.booking.client.Client;
-import com.parachute.booking.client.ClientDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientMapper {
 
     public ClientDto mapClient(Client client){

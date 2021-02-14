@@ -4,15 +4,10 @@ import com.parachute.booking.client.Client;
 import com.parachute.booking.client.ClientDto;
 import com.parachute.booking.client.ClientMapper;
 import com.parachute.booking.client.ClientRepository;
-import com.parachute.booking.exceptions.BadRequestException;
-import com.parachute.booking.exceptions.InternalServerException;
-import com.parachute.booking.flight.Flight;
-import com.parachute.booking.flight.FlightDto;
-import com.parachute.booking.flight.FlightMapper;
-import com.parachute.booking.flight.FlightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +18,6 @@ public class BookingServiceSubmit {
 
     private final BookingFormRepository bookingFormRepository;
     private final ClientRepository clientRepository;
-    private final BookingFormMapper bookingFormMapper;
     private final ClientMapper clientMapper;
 
     public void persistClientIfUniqueAndBookFlightByDateTIme(ClientDto clientDto, LocalDateTime localDateTime) {
@@ -35,10 +29,9 @@ public class BookingServiceSubmit {
             final Client client = clientMapper.mapClientDto(clientDto);
             clientRepository.save(client);
         }
-
-
+        BookingForm bookingForm = BookingForm.builder()
+                .plannedFlightDateTime(localDateTime)
+                .client(clientMapper.mapClientDto(clientDto)).build();
+        bookingFormRepository.save(bookingForm);
     }
-
-}
-
 }

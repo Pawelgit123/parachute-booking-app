@@ -5,26 +5,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/forecast")
 public class ForecastController {
 
-    private final DayCreator dayCreator;
     private final ForecastClient forecastClient;
+    private final String UNIVERSALSYMBOL = "-";
+    private final DateTimeFormatter DATETIMEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void getForecasts(){
-
+    public List<ForecastDto> getForecasts() {
+        return forecastClient.getForecast(UNIVERSALSYMBOL);
     }
 
-    @GetMapping("/{year}-{month}-{day}")
+    @PostMapping("/daily")
     @ResponseStatus(HttpStatus.OK)
-    public Forecasts getListOfForecastsForDay(@PathVariable int year,@PathVariable int month,@PathVariable int day){
-
-        return new Forecasts(forecastClient.getForecast(dayCreator.createCalendarDayFromNumbers(year, month, day)));
+    public List<ForecastDto> getListOfForecastsForDay2(@RequestBody LocalDateTime localDateTime) {
+        return forecastClient.getForecast(localDateTime.format(DATETIMEFORMATTER));
     }
-
-
 }
