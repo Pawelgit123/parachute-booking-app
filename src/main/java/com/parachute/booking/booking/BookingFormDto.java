@@ -14,5 +14,5 @@ import java.time.LocalDateTime;
 @Builder
 public class BookingFormDto {
     private LocalDateTime plannedFlightDateTime;
-    private transient Client client;
+    private String clientPesel;
 }

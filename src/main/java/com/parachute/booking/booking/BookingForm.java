@@ -23,6 +23,6 @@ public class BookingForm {
     @Column
     @NotBlank(message = "Date is mandatory")
     private LocalDateTime plannedFlightDateTime;
-    @Column(name = "client_details")
-    private transient Client client;
+    @ManyToOne
+    private Client client;
 }

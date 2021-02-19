@@ -1,5 +1,6 @@
 package com.parachute.booking.client;
 
+import com.parachute.booking.booking.BookingForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity(name = "client")
 @Data
@@ -32,5 +34,7 @@ public class Client {
     @Column
     @NotBlank(message = "E-mail is mandatory")
     private String email;
+    @OneToMany(mappedBy = "client")
+    private List<BookingForm> bookingForms;
 
 }

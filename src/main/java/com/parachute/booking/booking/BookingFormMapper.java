@@ -4,14 +4,14 @@ public class BookingFormMapper {
     public BookingFormDto mapBookingForm(BookingForm bookingForm){
         return BookingFormDto.builder()
                 .plannedFlightDateTime(bookingForm.getPlannedFlightDateTime())
-                .client(bookingForm.getClient())
+                .clientPesel(bookingForm.getClientPesel())
                 .build();
     }
 
     public BookingForm mapBookingFormDto(BookingFormDto bookingFormDto){
         return BookingForm.builder()
                 .plannedFlightDateTime(bookingFormDto.getPlannedFlightDateTime())
-                .client(bookingFormDto.getClient())
+                .clientPesel(bookingFormDto.getClientPesel())
                 .build();
     }
 }

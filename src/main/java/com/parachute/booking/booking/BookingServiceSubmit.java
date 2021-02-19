@@ -31,7 +31,7 @@ public class BookingServiceSubmit {
         }
         BookingForm bookingForm = BookingForm.builder()
                 .plannedFlightDateTime(localDateTime)
-                .client(clientMapper.mapClientDto(clientDto)).build();
+                .clientPesel(clientDto.getPesel()).build();
         bookingFormRepository.save(bookingForm);
     }
 }
