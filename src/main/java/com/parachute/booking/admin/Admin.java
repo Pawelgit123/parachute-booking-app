@@ -1,6 +1,7 @@
 package com.parachute.booking.admin;
 
-import com.parachute.booking.confirmation.Confirmation;
+import com.parachute.booking.security.AdminAdapter;
+import com.parachute.booking.security.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin {
+public class Admin extends AdminAdapter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +26,5 @@ public class Admin {
     private String password;
     @Column(name = "email")
     private String email;
-
-    @OneToOne (mappedBy = "flight")
-    private Confirmation confirmation;
 
 }
