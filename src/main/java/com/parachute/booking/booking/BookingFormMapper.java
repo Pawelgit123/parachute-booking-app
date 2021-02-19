@@ -1,17 +1,26 @@
 package com.parachute.booking.booking;
 
+import com.parachute.booking.client.ClientMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
 public class BookingFormMapper {
-    public BookingFormDto mapBookingForm(BookingForm bookingForm){
+
+    private final ClientMapper clientmapper;
+
+    public BookingFormDto mapBookingForm(BookingForm bookingForm) {
         return BookingFormDto.builder()
                 .plannedFlightDateTime(bookingForm.getPlannedFlightDateTime())
-                .clientPesel(bookingForm.getClientPesel())
+                .clientDto(clientmapper.mapClient(bookingForm.getClient()))
                 .build();
     }
 
-    public BookingForm mapBookingFormDto(BookingFormDto bookingFormDto){
+    public BookingForm mapBookingFormDto(BookingFormDto bookingFormDto) {
         return BookingForm.builder()
                 .plannedFlightDateTime(bookingFormDto.getPlannedFlightDateTime())
-                .clientPesel(bookingFormDto.getClientPesel())
+                .client(clientmapper.mapClientDto(bookingFormDto.getClientDto()))
                 .build();
     }
 }

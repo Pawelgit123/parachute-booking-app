@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
 @Entity(name = "client")
 @Data
@@ -35,6 +35,6 @@ public class Client {
     @NotBlank(message = "E-mail is mandatory")
     private String email;
     @OneToMany(mappedBy = "client")
-    private List<BookingForm> bookingForms;
+    private Set<BookingForm> bookingForms;
 
 }

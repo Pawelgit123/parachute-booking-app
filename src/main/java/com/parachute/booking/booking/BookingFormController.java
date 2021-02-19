@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class BookingFormController {
 
     private final BookingServiceSubmit bookingServiceSubmit;
+    private final BookingServiceDelete bookingServiceDelete;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -20,6 +21,15 @@ public class BookingFormController {
 
         bookingServiceSubmit.persistClientIfUniqueAndBookFlightByDateTIme(clientDto, localDateTime);
 
-        return "Booking form was sent successfully.";
+        return "Booking form was sent.";
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public String deleteBookingForm(@RequestBody ClientDto clientDto, LocalDateTime localDateTime) {
+
+       bookingServiceDelete.deleteExistingBookingForm(clientDto, localDateTime);
+
+        return "Booking form was deleted.";
     }
 }

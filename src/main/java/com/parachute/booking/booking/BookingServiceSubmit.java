@@ -7,7 +7,6 @@ import com.parachute.booking.client.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +30,7 @@ public class BookingServiceSubmit {
         }
         BookingForm bookingForm = BookingForm.builder()
                 .plannedFlightDateTime(localDateTime)
-                .clientPesel(clientDto.getPesel()).build();
+                .client(clientMapper.mapClientDto(clientDto)).build();
         bookingFormRepository.save(bookingForm);
     }
 }

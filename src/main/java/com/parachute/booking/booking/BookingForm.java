@@ -1,7 +1,6 @@
 package com.parachute.booking.booking;
 
 import com.parachute.booking.client.Client;
-import com.parachute.booking.client.ClientDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +24,6 @@ public class BookingForm {
     private LocalDateTime plannedFlightDateTime;
     @ManyToOne
     private Client client;
+//1-sided relationship with Flight
+//2-sided relationship with Client
 }
