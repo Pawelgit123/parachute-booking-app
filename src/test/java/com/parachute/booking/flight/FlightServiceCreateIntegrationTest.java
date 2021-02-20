@@ -1,6 +1,8 @@
 package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.plane.Plane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +43,8 @@ class FlightServiceCreateIntegrationTest {
     }
 
     private FlightDto createFlightDtoForTest() {
+
         return FlightDto.builder()
-                .id(1L)
-                .planeNumber(99L)
-                .pilotLicenseNumber(999L)
                 .localDateTime(localDateTime)
                 .build();
     }
@@ -52,7 +52,7 @@ class FlightServiceCreateIntegrationTest {
     @Test
     void createFlight_andReturnStatusCode200() throws Exception {
         //given
-        FlightDto flightDto = createFlightDtoForTest();
+        FlightDto flightDto = new FlightDto();
         String requestbody = objectMapper.writeValueAsString(flightDto);
         MockHttpServletRequestBuilder request = post(requestMappingUrl)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -68,8 +68,8 @@ class FlightServiceCreateIntegrationTest {
         assertThat(flights.size()).isEqualTo(1);
         assertThat(flights.get(0)).satisfies(flight -> {
             assertThat(flight.getId()).isEqualTo(1L);
-            assertThat(flight.getPlaneNumber()).isEqualTo(99L);
-            assertThat(flight.getPilotLicenseNumber()).isEqualTo(999L);
+            assertThat(flight.getPlaneNumber().getPlaneNumber()).isEqualTo(99L);
+            assertThat(flight.getPilotLicenseNumber().getPilotLicenseNumber()).isEqualTo(999L);
             assertThat(flight.getLocalDateTime()).isEqualTo(localDateTime);
         });
     }

@@ -1,6 +1,10 @@
 package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.pilot.PilotRepository;
+import com.parachute.booking.plane.Plane;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +32,10 @@ class FlightServiceRemoveIntegrationTest {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
+    private PlaneRepository planeRepository;
+    @Autowired
+    private PilotRepository pilotRepository;
+    @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -41,18 +49,30 @@ class FlightServiceRemoveIntegrationTest {
     }
 
     private Flight createFlightForTest() {
-        return Flight.builder()
+        Plane plane = new Plane();
+        plane.setPlaneNumber(11L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(111L);
+
+        Flight flight = Flight.builder()
                 .id(1L)
-                .planeNumber(44L)
-                .pilotLicenseNumber(444L)
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
+        return flight;
     }
 
     @Test
     void deleteFlight_andReturnStatusCode200() throws Exception {
         //given
-        Flight flight = flightRepository.save(createFlightForTest());
+        Flight flight = createFlightForTest();
         String requestParam = objectMapper.writeValueAsString(flight.getId());
 
         MockHttpServletRequestBuilder delete = delete(requestMappingUrl + "/{id}", requestParam)

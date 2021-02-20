@@ -1,11 +1,10 @@
 package com.parachute.booking.pilot;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.parachute.booking.flight.Flight;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -17,10 +16,14 @@ public class Pilot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "firstName")
+    @Column(name = "first_Name")
     private String firstName;
-    @Column(name = "surName")
+    @Column(name = "surname")
     private String surName;
-    @Column(name = "pilotLicenseNumber")
+    @Column(name = "pilot_License_Number")
     private Long pilotLicenseNumber;
+
+    @OneToMany(mappedBy = "pilotLicenseNumber", cascade = CascadeType.PERSIST)
+    @EqualsAndHashCode.Exclude
+    private Set<Flight> pilotFlightSet;
 }

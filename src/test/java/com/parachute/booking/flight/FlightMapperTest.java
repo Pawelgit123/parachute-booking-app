@@ -1,5 +1,9 @@
 package com.parachute.booking.flight;
 
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.pilot.PilotRepository;
+import com.parachute.booking.plane.Plane;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,19 +22,23 @@ class FlightMapperTest {
     LocalDateTime localDateTime;
 
     private FlightDto createFlightDtoForTest() {
+
         return FlightDto.builder()
-                .id(1L)
-                .planeNumber(11L)
-                .pilotLicenseNumber(111L)
                 .localDateTime(localDateTime)
                 .build();
     }
 
     private Flight createFlightForTest() {
+        Plane plane = new Plane();
+        plane.setPlaneNumber(22L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(222L);
+
         return Flight.builder()
                 .id(2L)
-                .planeNumber(22L)
-                .pilotLicenseNumber(222L)
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
     }
@@ -65,10 +73,7 @@ class FlightMapperTest {
         Flight flight = flightMapper.mapFlight(createFlightDtoForTest());
 
         //then
-        assertThat(flight).isExactlyInstanceOf(Flight.class);
-        assertThat(flight.getId()).isEqualTo(1L);
-        assertThat(flight.getPlaneNumber()).isEqualTo(11L);
-        assertThat(flight.getPilotLicenseNumber()).isEqualTo(111L);
+        assertThat(flight).isExactlyInstanceOf(Flight.class);;
         assertThat(flight.getLocalDateTime()).isEqualTo(localDateTime);
     }
 }

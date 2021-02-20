@@ -24,7 +24,7 @@ class FlightServiceCreateRepositoryTest {
     private FlightMapper flightMapper;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         flightRepository.deleteAll();
     }
 

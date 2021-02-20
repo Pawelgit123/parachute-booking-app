@@ -2,6 +2,10 @@ package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.pilot.PilotRepository;
+import com.parachute.booking.plane.Plane;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,6 +31,10 @@ class FlightServiceSearchIntegrationTest {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
+    private PlaneRepository planeRepository;
+    @Autowired
+    private PilotRepository pilotRepository;
+    @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -36,43 +43,82 @@ class FlightServiceSearchIntegrationTest {
     private final String requestMappingUrl = "/flights";
 
     private Flight createFlightForTestA() {
-        return Flight.builder()
+        Plane plane = new Plane();
+        plane.setPlaneNumber(11L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(111L);
+
+        Flight flight = Flight.builder()
                 .id(1L)
-                .planeNumber(11L)
-                .pilotLicenseNumber(111L)
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
+        return flight;
     }
 
     private Flight createFlightForTestB() {
-        return Flight.builder()
+        Plane plane = new Plane();
+        plane.setPlaneNumber(22L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(222L);
+
+        Flight flight = Flight.builder()
                 .id(2L)
-                .planeNumber(22L)
-                .pilotLicenseNumber(222L)
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
+        return flight;
     }
 
     private Flight createFlightForTestC() {
-        return Flight.builder()
+        Plane plane = new Plane();
+        plane.setPlaneNumber(33L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(333L);
+
+        Flight flight = Flight.builder()
                 .id(3L)
-                .planeNumber(33L)
-                .pilotLicenseNumber(333L)
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
+        return flight;
     }
 
     @BeforeEach
     void setup() {
         flightRepository.deleteAll();
+        planeRepository.deleteAll();
+        ;
+        pilotRepository.deleteAll();
     }
 
     @Test
     void getAllFlights_andReturnsStatusCode200() throws Exception {
         //given
-        flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
+        createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
 
         MockHttpServletRequestBuilder request = get(requestMappingUrl);
 
@@ -152,7 +198,7 @@ class FlightServiceSearchIntegrationTest {
         Flight flight = flightRepository.save(createFlightForTestA());
         flightRepository.save(createFlightForTestB());
         flightRepository.save(createFlightForTestC());
-        Long plane = flight.getPlaneNumber();
+        Long plane = flight.getPlaneNumber().getPlaneNumber();
         MockHttpServletRequestBuilder request = get(requestMappingUrl + "/plane/{plane}", plane);
 
         //when
@@ -162,7 +208,7 @@ class FlightServiceSearchIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         FlightDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), FlightDto.class);
         assertThat(respondeBody.getPlaneNumber()).isEqualTo(plane);
-        assertThat(respondeBody.getPilotLicenseNumber()).isEqualTo(flight.getPilotLicenseNumber());
+        assertThat(respondeBody.getPilotLicenseNumber()).isEqualTo(flight.getPilotLicenseNumber().getPilotLicenseNumber());
         assertThat(respondeBody.getLocalDateTime()).isEqualTo(localDateTime);
 
     }
@@ -188,7 +234,7 @@ class FlightServiceSearchIntegrationTest {
         Flight flight = flightRepository.save(createFlightForTestA());
         flightRepository.save(createFlightForTestB());
         flightRepository.save(createFlightForTestC());
-        Long pilot = flight.getPilotLicenseNumber();
+        Long pilot = flight.getPilotLicenseNumber().getPilotLicenseNumber();
         MockHttpServletRequestBuilder request = get(requestMappingUrl + "/pilot/{pilot}", pilot);
 
         //when
@@ -197,7 +243,7 @@ class FlightServiceSearchIntegrationTest {
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         FlightDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), FlightDto.class);
-        assertThat(respondeBody.getPlaneNumber()).isEqualTo(createFlightForTestA().getPlaneNumber());
+        assertThat(respondeBody.getPlaneNumber()).isEqualTo(createFlightForTestA().getPlaneNumber().getPlaneNumber());
         assertThat(respondeBody.getPilotLicenseNumber()).isEqualTo(pilot);
         assertThat(respondeBody.getLocalDateTime()).isEqualTo(localDateTime);
 
@@ -221,7 +267,7 @@ class FlightServiceSearchIntegrationTest {
     //TODO date time
 
     @Test
-    void findByLocalDateTime_andReturnsStatusCode200(){
+    void findByLocalDateTime_andReturnsStatusCode200() {
 
     }
 

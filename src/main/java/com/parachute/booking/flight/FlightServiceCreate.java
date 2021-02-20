@@ -20,7 +20,7 @@ public class FlightServiceCreate {
         }
 
         final Flight flight = flightMapper.mapFlight(flightDto);
-        flight.setFlightStatus(FlightStatus.FLIGHT_CREATED);
+//        flight.setFlightStatus(FlightStatus.FLIGHT_CREATED);
 
         flightRepository.save(flight);
 

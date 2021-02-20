@@ -1,13 +1,14 @@
 package com.parachute.booking.flight;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.parachute.booking.booking.BookingForm;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.plane.Plane;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,16 +21,20 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "planeNumber")
-    private Long planeNumber;
-    @Column(name = "pilotLicenseNumber")
-    private Long pilotLicenseNumber;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "plane_Assigned")
+    private Plane planeNumber;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "pilot_Assigned")
+    private Pilot pilotLicenseNumber;
+    @OneToMany(mappedBy = "flight",fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @EqualsAndHashCode.Exclude
+    private Set<BookingForm> bookingFormSet;
 
-    @Column(name = "localdatetime")
+    @Column(name = "local_date_time")
     private LocalDateTime localDateTime;
     @Column(name = "status")
     private FlightStatus flightStatus;
 
-    //TODO tu będzie forecast jeszcze
 
 }

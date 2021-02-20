@@ -14,5 +14,5 @@ public class PlaneDto {
     private Long id;
     private Long planeNumber;
     private String planeModel;
-    private int seats;
+    private Integer seats;
 }
