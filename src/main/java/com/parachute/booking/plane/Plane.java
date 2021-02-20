@@ -23,7 +23,7 @@ public class Plane {
     @Column(name = "seats")
     private Integer seats;
 
-    @OneToMany(mappedBy = "planeNumber", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "planeNumber", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private Set<Flight> planeFlightSet;
 

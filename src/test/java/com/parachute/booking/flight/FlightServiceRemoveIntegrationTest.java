@@ -56,7 +56,6 @@ class FlightServiceRemoveIntegrationTest {
         pilot.setPilotLicenseNumber(111L);
 
         Flight flight = Flight.builder()
-                .id(1L)
                 .planeNumber(plane)
                 .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)

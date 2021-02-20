@@ -48,14 +48,14 @@ public class FlightController {
 
     @GetMapping("/plane/{plane}")
     @ResponseStatus(HttpStatus.OK)
-    public FlightDto getFlightByPlane(@PathVariable Long plane) {
+    public FlightDtoListed getFlightByPlane(@PathVariable Long plane) {
 
-        return flightServiceFind.getFlightByPlaneNumber(plane);
+        return flightServiceFind.getAllFlightsByPlaneNumber(plane);
     }
 
     @GetMapping("/pilot/{pilot}")
     @ResponseStatus(HttpStatus.OK)
-    public FlightDto getFlightByPilotLicense(@PathVariable Long pilot) {
+    public FlightDtoListed getFlightByPilotLicense(@PathVariable Long pilot) {
 
         return flightServiceFind.getFlightByPilotLicenseNumber(pilot);
     }

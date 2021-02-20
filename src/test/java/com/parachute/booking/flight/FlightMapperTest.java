@@ -1,9 +1,7 @@
 package com.parachute.booking.flight;
 
 import com.parachute.booking.pilot.Pilot;
-import com.parachute.booking.pilot.PilotRepository;
 import com.parachute.booking.plane.Plane;
-import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,7 +71,7 @@ class FlightMapperTest {
         Flight flight = flightMapper.mapFlight(createFlightDtoForTest());
 
         //then
-        assertThat(flight).isExactlyInstanceOf(Flight.class);;
+        assertThat(flight).isExactlyInstanceOf(Flight.class);
         assertThat(flight.getLocalDateTime()).isEqualTo(localDateTime);
     }
 }

@@ -27,7 +27,7 @@ public class Flight {
     @ManyToOne
     @JoinColumn(columnDefinition = "pilot_Assigned")
     private Pilot pilotLicenseNumber;
-    @OneToMany(mappedBy = "flight",fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "flight",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private Set<BookingForm> bookingFormSet;
 

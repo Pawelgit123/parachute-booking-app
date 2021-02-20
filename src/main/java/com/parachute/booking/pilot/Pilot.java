@@ -23,7 +23,7 @@ public class Pilot {
     @Column(name = "pilot_License_Number")
     private Long pilotLicenseNumber;
 
-    @OneToMany(mappedBy = "pilotLicenseNumber", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "pilotLicenseNumber", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private Set<Flight> pilotFlightSet;
 }

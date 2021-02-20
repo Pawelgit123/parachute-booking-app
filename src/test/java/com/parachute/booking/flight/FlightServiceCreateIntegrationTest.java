@@ -2,7 +2,9 @@ package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.pilot.PilotRepository;
 import com.parachute.booking.plane.Plane;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,10 @@ class FlightServiceCreateIntegrationTest {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
+    private PlaneRepository planeRepository;
+    @Autowired
+    private PilotRepository pilotRepository;
+    @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -42,9 +48,21 @@ class FlightServiceCreateIntegrationTest {
         flightRepository.deleteAll();
     }
 
-    private FlightDto createFlightDtoForTest() {
+    private void createPlaneAndPilotForTest(){
+        Plane plane = new Plane();
+        plane.setPlaneNumber(11L);
 
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(111L);
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+    }
+
+    private FlightDto createFlightDtoForTest(){
         return FlightDto.builder()
+                .planeNumber(11L)
+                .pilotLicenseNumber(111L)
                 .localDateTime(localDateTime)
                 .build();
     }
@@ -52,7 +70,8 @@ class FlightServiceCreateIntegrationTest {
     @Test
     void createFlight_andReturnStatusCode200() throws Exception {
         //given
-        FlightDto flightDto = new FlightDto();
+        createPlaneAndPilotForTest();
+        FlightDto flightDto = createFlightDtoForTest();
         String requestbody = objectMapper.writeValueAsString(flightDto);
         MockHttpServletRequestBuilder request = post(requestMappingUrl)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -66,12 +85,6 @@ class FlightServiceCreateIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         List<Flight> flights = flightRepository.findAll();
         assertThat(flights.size()).isEqualTo(1);
-        assertThat(flights.get(0)).satisfies(flight -> {
-            assertThat(flight.getId()).isEqualTo(1L);
-            assertThat(flight.getPlaneNumber().getPlaneNumber()).isEqualTo(99L);
-            assertThat(flight.getPilotLicenseNumber().getPilotLicenseNumber()).isEqualTo(999L);
-            assertThat(flight.getLocalDateTime()).isEqualTo(localDateTime);
-        });
     }
 
     //TODO dorobić więcej

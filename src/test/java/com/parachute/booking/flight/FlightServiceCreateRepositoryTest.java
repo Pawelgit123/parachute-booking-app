@@ -1,6 +1,8 @@
 package com.parachute.booking.flight;
 
 import com.parachute.booking.exceptions.InternalServerException;
+import com.parachute.booking.pilot.PilotRepository;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +20,10 @@ class FlightServiceCreateRepositoryTest {
 
     @Mock
     private FlightRepository flightRepository;
+    @Mock
+    private PlaneRepository planeRepository;
+    @Mock
+    private PilotRepository pilotRepository;
     @InjectMocks
     private FlightServiceCreate flightServiceCreate;
     @Mock
@@ -32,6 +38,7 @@ class FlightServiceCreateRepositoryTest {
     void createNewFlight_saveFlightToRepository() {
         //given
         when(flightRepository.save(any(Flight.class))).thenReturn(new Flight());
+
         when(flightMapper.mapFlight(new FlightDto())).thenReturn(new Flight());
         when(flightMapper.mapFlightDto(new Flight())).thenReturn(new FlightDto());
 
