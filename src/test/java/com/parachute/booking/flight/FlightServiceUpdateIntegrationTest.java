@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @SpringBootTest
@@ -43,7 +44,7 @@ class FlightServiceUpdateIntegrationTest {
 
     private final String requestMappingUrl = "/flights";
 
-    private void createFlightForTest() {
+    private Flight createFlightForTest() {
         Plane plane = new Plane();
         plane.setPlaneNumber(77L);
 
@@ -59,38 +60,44 @@ class FlightServiceUpdateIntegrationTest {
         planeRepository.save(plane);
         pilotRepository.save(pilot);
         flightRepository.save(flight);
+
+        return flight;
     }
 
-    private void createFlightDtoForTest() {
-        FlightDto flightDto = FlightDto.builder()
-                .planeNumber(77L)
-                .pilotLicenseNumber(777L)
+    private FlightDto createFlightDtoForTest(Long id) {
+        return FlightDto.builder()
+                .id(id)
+                .planeNumber(88L)
+                .pilotLicenseNumber(888L)
                 .localDateTime(localDateTime)
                 .build();
     }
 
-    private void createFlightDtoForTestOnlyPlane() {
+    private FlightDto createFlightDtoForTestOnlyPlane(Long id) {
         Plane plane = new Plane();
-        plane.setPlaneNumber(77L);
+        plane.setPlaneNumber(88L);
         planeRepository.save(plane);
 
-        FlightDto flightDto = FlightDto.builder()
-                .planeNumber(77L)
+        return FlightDto.builder()
+                .id(id)
+                .planeNumber(88L)
                 .build();
     }
 
-    private void createFlightDtoForTestOnlyPilot() {
+    private FlightDto createFlightDtoForTestOnlyPilot(Long id) {
         Pilot pilot = new Pilot();
-        pilot.setPilotLicenseNumber(777L);
+        pilot.setPilotLicenseNumber(888L);
         pilotRepository.save(pilot);
 
-        FlightDto flightDto = FlightDto.builder()
-                .pilotLicenseNumber(777L)
+        return FlightDto.builder()
+                .id(id)
+                .pilotLicenseNumber(888L)
                 .build();
     }
 
-    private void createFlightDtoForTestOnlyDate() {
-        FlightDto flightDto = FlightDto.builder()
+    private FlightDto createFlightDtoForTestOnlyDate(Long id) {
+        return FlightDto.builder()
+                .id(id)
                 .localDateTime(localDateTime)
                 .build();
     }
@@ -116,9 +123,10 @@ class FlightServiceUpdateIntegrationTest {
     @Test
     void updateFlight_andReturnsStatusCode200() throws Exception {
         //given
-        Flight save = flightRepository.save(createFlightForTest());
-        FlightDto flightDto = createFlightDtoForTest();
-        Long id = save.getId();
+        Flight flightForTest = createFlightForTest();
+        createPlaneAndPilotForTest();
+        FlightDto flightDto = createFlightDtoForTest(flightForTest.getId());
+        Long id = flightDto.getId();
         String requestbody = objectMapper.writeValueAsString(flightDto);
         MockHttpServletRequestBuilder request = put(requestMappingUrl + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,21 +138,21 @@ class FlightServiceUpdateIntegrationTest {
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
         List<Flight> flights = flightRepository.findAll();
-        assertThat(flights.size()).isEqualTo(1);
         assertThat(flights.get(0)).satisfies(flight -> {
+            assertThat(flight.getPlaneNumber().getPlaneNumber()).isEqualTo(flightDto.getPlaneNumber());
+            assertThat(flight.getPilotLicenseNumber().getPilotLicenseNumber()).isEqualTo(flightDto.getPilotLicenseNumber());
             assertThat(flight.getId()).isEqualTo(id);
-            assertThat(flight.getPlaneNumber()).isEqualTo(flightDto.getPlaneNumber());
-            assertThat(flight.getPilotLicenseNumber()).isEqualTo(flightDto.getPilotLicenseNumber());
-            assertThat(flight.getLocalDateTime()).isEqualTo(flightDto.getLocalDateTime());
         });
     }
 
     @Test
     void updateFlight_andReturnsStatusCode400_noFlight() throws Exception {
         //given
-        FlightDto flightDto = createFlightDtoForTest();
+        Flight flightForTest = createFlightForTest();
+        createPlaneAndPilotForTest();
+        FlightDto flightDto = createFlightDtoForTest(flightForTest.getId());
         String requestbody = objectMapper.writeValueAsString(flightDto);
-        MockHttpServletRequestBuilder request = put(requestMappingUrl + "/{id}", 100L)
+        MockHttpServletRequestBuilder request = put(requestMappingUrl + "/{id}", 1000L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestbody);
         //when
@@ -154,17 +162,17 @@ class FlightServiceUpdateIntegrationTest {
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
         List<Flight> flights = flightRepository.findAll();
-        assertThat(flights.size()).isEqualTo(0);
+        assertThat(flights.size()).isEqualTo(1);
     }
 
     @Test
     void patchFlight_andReturnsStatusCode200_planePatch() throws Exception {
         //given
-        Flight save = flightRepository.save(createFlightForTest());
-        FlightDto flightDto = createFlightDtoForTestOnlyPlane();
-        Long id = save.getId();
+        Flight flightForTest = createFlightForTest();
+        FlightDto flightDto = createFlightDtoForTestOnlyPlane(flightForTest.getId());
+        Long id = flightDto.getId();
         String requestbody = objectMapper.writeValueAsString(flightDto);
-        MockHttpServletRequestBuilder request = put(requestMappingUrl + "/{id}", id)
+        MockHttpServletRequestBuilder request = patch(requestMappingUrl + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestbody);
         //when
@@ -176,19 +184,19 @@ class FlightServiceUpdateIntegrationTest {
         List<Flight> flights = flightRepository.findAll();
         assertThat(flights.size()).isEqualTo(1);
         assertThat(flights.get(0)).satisfies(flight -> {
-            assertThat(flight.getPlaneNumber()).isEqualTo(flightDto.getPlaneNumber());
+            assertThat(flight.getPlaneNumber().getPlaneNumber()).isEqualTo(flightDto.getPlaneNumber());
             assertThat(flight.getId()).isEqualTo(id);
         });
     }
 
     @Test
-    void patchFlight_andReturnsStatusCode200_pilotPatche() throws Exception {
+    void patchFlight_andReturnsStatusCode200_pilotPatch() throws Exception {
         //given
-        Flight save = flightRepository.save(createFlightForTest());
-        FlightDto flightDto = createFlightDtoForTestOnlyPilot();
-        Long id = save.getId();
+        Flight flightForTest = createFlightForTest();
+        FlightDto flightDto = createFlightDtoForTestOnlyPilot(flightForTest.getId());
+        Long id = flightDto.getId();
         String requestbody = objectMapper.writeValueAsString(flightDto);
-        MockHttpServletRequestBuilder request = put(requestMappingUrl + "/{id}", id)
+        MockHttpServletRequestBuilder request = patch(requestMappingUrl + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestbody);
         //when
@@ -201,18 +209,18 @@ class FlightServiceUpdateIntegrationTest {
         assertThat(flights.size()).isEqualTo(1);
         assertThat(flights.get(0)).satisfies(flight -> {
             assertThat(flight.getId()).isEqualTo(id);
-            assertThat(flight.getPilotLicenseNumber()).isEqualTo(flightDto.getPilotLicenseNumber());
+            assertThat(flight.getPilotLicenseNumber().getPilotLicenseNumber()).isEqualTo(flightDto.getPilotLicenseNumber());
         });
     }
 
     @Test
     void patchFlight_andReturnsStatusCode200_datePatch() throws Exception {
         //given
-        Flight save = flightRepository.save(createFlightForTest());
-        FlightDto flightDto = createFlightDtoForTestOnlyDate();
-        Long id = save.getId();
+        Flight flightForTest = createFlightForTest();
+        FlightDto flightDto = createFlightDtoForTestOnlyDate(flightForTest.getId());
+        Long id = flightDto.getId();
         String requestbody = objectMapper.writeValueAsString(flightDto);
-        MockHttpServletRequestBuilder request = put(requestMappingUrl + "/{id}", id)
+        MockHttpServletRequestBuilder request = patch(requestMappingUrl + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestbody);
         //when

@@ -37,7 +37,7 @@ public class FlightServiceUpdate {
                 Optional<Plane> byPlaneNumber = planeRepository.findByPlaneNumber(planeNumber);
                 flightToPatch.setPlaneNumber(byPlaneNumber.get());
                 flightRepository.save(flightToPatch);
-                log.info("Plane for flight with ID: " + id + "has been updated");
+                log.info("Plane for flight with ID: " + id + " has been updated");
             }
             if (flightDto.getPilotLicenseNumber() != null) {
                 Flight flightToPatch = byId.get();
@@ -45,13 +45,13 @@ public class FlightServiceUpdate {
                 Optional<Pilot> byPilotLicenseNumber = pilotRepository.findByPilotLicenseNumber(pilotLicenseNumber);
                 flightToPatch.setPilotLicenseNumber(byPilotLicenseNumber.get());
                 flightRepository.save(flightToPatch);
-                log.info("Pilot for flight with ID: " + id + "has been updated");
+                log.info("Pilot for flight with ID: " + id + " has been updated");
             }
             if (flightDto.getLocalDateTime() != null) {
                 Flight flightToPatch = byId.get();
                 flightToPatch.setLocalDateTime(flightDto.getLocalDateTime());
                 flightRepository.save(flightToPatch);
-                log.info("Date for flight with ID: " + id + "has been updated");
+                log.info("Date for flight with ID: " + id + " has been updated");
             }
 
         } else {
@@ -80,7 +80,7 @@ public class FlightServiceUpdate {
             flightToUpdate.setPilotLicenseNumber(byPilotLicenseNumber.get());
 
             flightRepository.save(flightToUpdate);
-            log.info("Flight with ID: " + id + "has been updated");
+            log.info("Flight with ID: " + id + " has been updated");
 
         } else {
             throw new NotFoundException("Not found flight to update with ID: " + id);
