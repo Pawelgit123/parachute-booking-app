@@ -63,7 +63,7 @@ public class FlightController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
-    public void updateFlightById(@RequestBody FlightDto flightDto, @PathVariable Long id) {
+    public void patchFlight(@RequestBody FlightDto flightDto, @PathVariable Long id) {
 
         flightServiceUpdate.patchFlightById(flightDto, id);
     }
@@ -71,7 +71,7 @@ public class FlightController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
-    public void updated(@RequestBody FlightDto flightDto, @PathVariable Long id) {
+    public void updateFlight(@RequestBody FlightDto flightDto, @PathVariable Long id) {
 
         flightServiceUpdate.updateFlightById(flightDto,id);
     }
