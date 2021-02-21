@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ForecastDto {
 
-    private Long id;
+    private Long id; //TODO field id could (theoretically) be removed
     private Float temp;
     private Float tempFeelsLike;
     private Integer pressureAtSeaLevelhPa;

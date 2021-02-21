@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ public class ForecastResponse {
     @JsonProperty("list")
     private List<SingleForecast> singleForecastList;
 
+    @Builder
     @Data
     public static class SingleForecast {
         @JsonProperty("main")
@@ -30,6 +32,7 @@ public class ForecastResponse {
         @JsonProperty("dt_txt")
         private String dateAndTime;
 
+        @Builder
         @Data
         @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
         public static class General {
@@ -40,28 +43,33 @@ public class ForecastResponse {
             private Integer humidity;
         }
 
+        @Builder
         @Data
         public static class Weather {
             private String description;
         }
 
+        @Builder
         @Data
         public static class Clouds {
             private Integer all;
         }
 
+        @Builder
         @Data
         public static class Wind {
             private Float speed;
             private Integer deg;
         }
 
+        @Builder
         @Data
         public static class Rain {
             @JsonProperty("3h")
             private Float precipitationHeight;
         }
 
+        @Builder
         @Data
         public static class Snow {
             @JsonProperty("3h")
