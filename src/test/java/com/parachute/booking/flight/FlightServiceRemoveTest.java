@@ -1,6 +1,8 @@
 package com.parachute.booking.flight;
 
 import com.parachute.booking.exceptions.NotFoundException;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.plane.Plane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,10 +28,17 @@ class FlightServiceRemoveTest {
     LocalDateTime localDateTime;
 
     private Flight createFlightForTest() {
+
+        Plane plane = new Plane();
+        plane.setPlaneNumber(22L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(222L);
+
         return Flight.builder()
                 .id(ID)
-                .planeNumber(22L)
-                .pilotLicenseNumber(222L)
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
     }

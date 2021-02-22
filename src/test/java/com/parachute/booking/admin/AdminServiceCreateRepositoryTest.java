@@ -20,8 +20,6 @@ class AdminServiceCreateRepositoryTest {
     @InjectMocks
     private AdminServiceCreate adminServiceCreate;
     @Mock
-    private AdminDataValidate adminDataValidate;
-    @Mock
     private AdminMapper adminMapper;
 
     @BeforeEach

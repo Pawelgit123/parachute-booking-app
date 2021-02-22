@@ -44,7 +44,6 @@ class PilotServiceCreateIntegrationTest {
                 .pilotLicenseNumber(555L)
                 .firstName("Julian")
                 .surName("Rak")
-                .id(1L)
                 .build();
     }
 
@@ -66,7 +65,6 @@ class PilotServiceCreateIntegrationTest {
         List<Pilot> pilots = pilotRepository.findAll();
         assertThat(pilots.size()).isEqualTo(1);
         assertThat(pilots.get(0)).satisfies(pilot -> {
-            assertThat(pilot.getId()).isEqualTo(1L);
             assertThat(pilot.getFirstName()).isEqualTo("Julian");
             assertThat(pilot.getSurName()).isEqualTo("Rak");
             assertThat(pilot.getPilotLicenseNumber()).isEqualTo(555L);

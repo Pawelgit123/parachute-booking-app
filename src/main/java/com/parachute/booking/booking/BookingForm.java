@@ -1,6 +1,7 @@
 package com.parachute.booking.booking;
 
 import com.parachute.booking.client.Client;
+import com.parachute.booking.flight.Flight;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,12 @@ public class BookingForm {
     @NotBlank(message = "Date is mandatory")
     private LocalDateTime plannedFlightDateTime;
     @ManyToOne
+    @JoinColumn(columnDefinition = "client")
     private Client client;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "flight")
+    private Flight flight;
+
 //1-sided relationship with Flight
 //2-sided relationship with Client
 }

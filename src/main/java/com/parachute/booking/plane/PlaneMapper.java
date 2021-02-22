@@ -10,6 +10,7 @@ public class PlaneMapper {
         return PlaneDto.builder()
                 .planeModel(plane.getPlaneModel())
                 .planeNumber(plane.getPlaneNumber())
+                .seats(plane.getSeats())
                 .id(plane.getId())
                 .build();
     }
@@ -19,6 +20,7 @@ public class PlaneMapper {
         return Plane.builder()
                 .planeModel(planeDto.getPlaneModel())
                 .planeNumber(planeDto.getPlaneNumber())
+                .seats(planeDto.getSeats())
                 .id(planeDto.getId())
                 .build();
     }

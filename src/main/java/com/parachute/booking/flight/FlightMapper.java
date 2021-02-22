@@ -10,8 +10,9 @@ public class FlightMapper {
         return FlightDto.builder()
                 .localDateTime(flight.getLocalDateTime())
                 .id(flight.getId())
-                .pilotLicenseNumber(flight.getPilotLicenseNumber())
-                .planeNumber(flight.getPlaneNumber())
+                .pilotLicenseNumber(flight.getPilotLicenseNumber().getPilotLicenseNumber())
+                .planeNumber(flight.getPlaneNumber().getPlaneNumber())
+                .flightStatus(flight.getFlightStatus())
                 .build();
     }
 
@@ -19,9 +20,9 @@ public class FlightMapper {
 
         return Flight.builder()
                 .localDateTime(flightDto.getLocalDateTime())
-                .id(flightDto.getId())
-                .pilotLicenseNumber(flightDto.getPilotLicenseNumber())
-                .planeNumber(flightDto.getPlaneNumber())
+//                .id(flightDto.getId())
+//                .pilotLicenseNumber(flightDto.getPilotLicenseNumber())
+//                .planeNumber(flightDto.getPlaneNumber())
                 .build();
     }
 }

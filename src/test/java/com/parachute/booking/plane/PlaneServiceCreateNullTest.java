@@ -16,7 +16,7 @@ class PlaneServiceCreateNullTest {
 
     @Test
     void createNewPlane_whenIsNull() {
-        PlaneDto planeDto = new PlaneDto(null, null, null);
+        PlaneDto planeDto = new PlaneDto(null, null, null, null);
 
         Throwable result = catchThrowable(() -> planeServiceCreate.createNewPlane(planeDto));
 
