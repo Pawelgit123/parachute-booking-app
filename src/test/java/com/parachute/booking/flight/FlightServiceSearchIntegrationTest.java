@@ -2,6 +2,10 @@ package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.pilot.PilotRepository;
+import com.parachute.booking.plane.Plane;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,6 +31,10 @@ class FlightServiceSearchIntegrationTest {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
+    private PlaneRepository planeRepository;
+    @Autowired
+    private PilotRepository pilotRepository;
+    @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -36,43 +43,76 @@ class FlightServiceSearchIntegrationTest {
     private final String requestMappingUrl = "/flights";
 
     private Flight createFlightForTestA() {
-        return Flight.builder()
-                .id(1L)
-                .planeNumber(11L)
-                .pilotLicenseNumber(111L)
+        Plane plane = new Plane();
+        plane.setPlaneNumber(11L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(111L);
+
+        Flight flight = Flight.builder()
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
+        return flight;
     }
 
-    private Flight createFlightForTestB() {
-        return Flight.builder()
-                .id(2L)
-                .planeNumber(22L)
-                .pilotLicenseNumber(222L)
+    private void createFlightForTestB() {
+        Plane plane = new Plane();
+        plane.setPlaneNumber(22L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(222L);
+
+        Flight flight = Flight.builder()
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
     }
 
-    private Flight createFlightForTestC() {
-        return Flight.builder()
-                .id(3L)
-                .planeNumber(33L)
-                .pilotLicenseNumber(333L)
+    private void createFlightForTestC() {
+        Plane plane = new Plane();
+        plane.setPlaneNumber(33L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(333L);
+
+        Flight flight = Flight.builder()
+                .planeNumber(plane)
+                .pilotLicenseNumber(pilot)
                 .localDateTime(localDateTime)
                 .build();
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+        flightRepository.save(flight);
+
     }
 
     @BeforeEach
     void setup() {
         flightRepository.deleteAll();
+        planeRepository.deleteAll();
+        pilotRepository.deleteAll();
     }
 
     @Test
     void getAllFlights_andReturnsStatusCode200() throws Exception {
         //given
-        flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
+        createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
 
         MockHttpServletRequestBuilder request = get(requestMappingUrl);
 
@@ -104,9 +144,9 @@ class FlightServiceSearchIntegrationTest {
     @Test
     void findById_andReturnsStatusCode200() throws Exception {
         //given
-        Flight flight = flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
+        Flight flight = createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
         Long id = flight.getId();
         MockHttpServletRequestBuilder request = get(requestMappingUrl + "/{id}", id);
 
@@ -147,12 +187,12 @@ class FlightServiceSearchIntegrationTest {
     }
 
     @Test
-    void findByPlaneNumber_andReturnsStatusCode200() throws Exception {
+    void findAllByPlaneNumber_andReturnsStatusCode200() throws Exception {
         //given
-        Flight flight = flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
-        Long plane = flight.getPlaneNumber();
+        Flight flight = createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
+        Long plane = flight.getPlaneNumber().getPlaneNumber();
         MockHttpServletRequestBuilder request = get(requestMappingUrl + "/plane/{plane}", plane);
 
         //when
@@ -160,19 +200,16 @@ class FlightServiceSearchIntegrationTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        FlightDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), FlightDto.class);
-        assertThat(respondeBody.getPlaneNumber()).isEqualTo(plane);
-        assertThat(respondeBody.getPilotLicenseNumber()).isEqualTo(flight.getPilotLicenseNumber());
-        assertThat(respondeBody.getLocalDateTime()).isEqualTo(localDateTime);
-
+        FlightDtoListed respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), FlightDtoListed.class);
+        assertThat(respondeBody.getFlights()).allSatisfy(flightDto -> assertThat(flightDto.getPlaneNumber().equals(plane)));
     }
 
     @Test
-    void findByPlanenumber_andReturnsStatusCode400() throws Exception {
+    void findAllByPlanenumber_andReturnsStatusCode400() throws Exception {
         // given
-        flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
+        createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
         MockHttpServletRequestBuilder request = get(requestMappingUrl + "/plane/{plane}", 100L);
 
         // when
@@ -183,12 +220,12 @@ class FlightServiceSearchIntegrationTest {
     }
 
     @Test
-    void findByPilotLicense_andReturnsStatusCode200() throws Exception {
+    void findAllByPilotLicense_andReturnsStatusCode200() throws Exception {
         //given
-        Flight flight = flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
-        Long pilot = flight.getPilotLicenseNumber();
+        Flight flight = createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
+        Long pilot = flight.getPilotLicenseNumber().getPilotLicenseNumber();
         MockHttpServletRequestBuilder request = get(requestMappingUrl + "/pilot/{pilot}", pilot);
 
         //when
@@ -196,20 +233,17 @@ class FlightServiceSearchIntegrationTest {
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        FlightDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), FlightDto.class);
-        assertThat(respondeBody.getPlaneNumber()).isEqualTo(createFlightForTestA().getPlaneNumber());
-        assertThat(respondeBody.getPilotLicenseNumber()).isEqualTo(pilot);
-        assertThat(respondeBody.getLocalDateTime()).isEqualTo(localDateTime);
-
+        FlightDtoListed respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), FlightDtoListed.class);
+        assertThat(respondeBody.getFlights()).allSatisfy(flightDto -> assertThat(flightDto.getPlaneNumber().equals(pilot)));
     }
 
     @Test
-    void findByPilotLicense_andReturnsStatusCode400() throws Exception {
+    void findAllByPilotLicense_andReturnsStatusCode400() throws Exception {
         // given
-        flightRepository.save(createFlightForTestA());
-        flightRepository.save(createFlightForTestB());
-        flightRepository.save(createFlightForTestC());
-        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/pilot/{pilot}", 10L);
+        createFlightForTestA();
+        createFlightForTestB();
+        createFlightForTestC();
+        MockHttpServletRequestBuilder request = get(requestMappingUrl + "/pilot/{pilot}", 999L);
 
         // when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -220,14 +254,14 @@ class FlightServiceSearchIntegrationTest {
 
     //TODO date time
 
-    @Test
-    void findByLocalDateTime_andReturnsStatusCode200(){
-
-    }
-
-    @Test
-    void findByLocalDateTime_andReturnsStatusCode400() {
-
-    }
+//    @Test
+//    void findByLocalDateTime_andReturnsStatusCode200() {
+//
+//    }
+//
+//    @Test
+//    void findByLocalDateTime_andReturnsStatusCode400() {
+//
+//    }
 
 }

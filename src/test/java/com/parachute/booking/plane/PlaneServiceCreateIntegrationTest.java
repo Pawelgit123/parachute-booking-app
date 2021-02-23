@@ -43,7 +43,6 @@ class PlaneServiceCreateIntegrationTest {
         return PlaneDto.builder()
                 .planeNumber(15L)
                 .planeModel("F15")
-                .id(1L)
                 .build();
     }
 
@@ -65,7 +64,6 @@ class PlaneServiceCreateIntegrationTest {
         List<Plane> planes = planeRepository.findAll();
         assertThat(planes.size()).isEqualTo(1);
         assertThat(planes.get(0)).satisfies(plane -> {
-            assertThat(plane.getId()).isEqualTo(1L);
             assertThat(plane.getPlaneModel()).isEqualTo("F15");
             assertThat(plane.getPlaneNumber()).isEqualTo(15L);
         });
