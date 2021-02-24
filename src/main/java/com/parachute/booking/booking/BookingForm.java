@@ -29,7 +29,4 @@ public class BookingForm {
     @ManyToOne
     @JoinColumn(columnDefinition = "flight")
     private Flight flight;
-
-//1-sided relationship with Flight
-//2-sided relationship with Client
 }

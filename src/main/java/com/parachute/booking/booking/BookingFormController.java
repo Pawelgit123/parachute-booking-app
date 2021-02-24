@@ -19,7 +19,7 @@ public class BookingFormController {
     @ResponseStatus(HttpStatus.CREATED)
     public String postBookingForm(@RequestBody ClientDto clientDto, LocalDateTime localDateTime) {
 
-        bookingServiceSubmit.persistClientIfUniqueAndBookFlightByDateTIme(clientDto, localDateTime);
+        bookingServiceSubmit.persistClientIfUniqueAndBookFlight(clientDto, localDateTime);
 
         return "Booking form was sent.";
     }
