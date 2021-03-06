@@ -21,7 +21,7 @@ public class BookingForm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    @NotBlank(message = "Date is mandatory")
+//    @NotBlank(message = "Date is mandatory") TODO <- confirm
     private LocalDateTime plannedFlightDateTime;
     @ManyToOne
     @JoinColumn(columnDefinition = "client")

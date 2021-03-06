@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class BookingFormDataValidatorTest {
@@ -41,10 +42,9 @@ class BookingFormDataValidatorTest {
 
     @Test
     void validateBookingFormData_missingLocalDateTimeTest() {
-        //when
-        Throwable throwable = catchThrowable(() ->
-                bookingFormDataValidator.validateBookingFormData(createBadClientDtoForTest(), null));
-        //then
-        assertThat(throwable).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> bookingFormDataValidator.validateBookingFormData(createBadClientDtoForTest(), null))
+                .isExactlyInstanceOf(BadRequestException.class)
+                .hasMessage("Please, provide time and date of the flight.")
+                .hasNoCause();
     }
 }
