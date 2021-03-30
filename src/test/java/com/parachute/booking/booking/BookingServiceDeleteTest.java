@@ -43,14 +43,13 @@ class BookingServiceDeleteTest {
     private BookingServiceDelete bookingServiceDelete;
 
     private Client createClientForTest() {
-        Client bob = Client.builder()
+        return Client.builder()
                 .firstName("Bob")
                 .lastName("Skywalker")
                 .pesel("90023008655")
                 .email("Bobski@gmail.com")
                 .phoneNumber("+48 943 007 420")
                 .build();
-        return bob;
     }
 
     private Client createWrongClientForTest(){
@@ -114,16 +113,20 @@ class BookingServiceDeleteTest {
 
         bookingFormRepository.save(bookingform);
         when(clientMapper.mapClientDto(any(ClientDto.class))).thenReturn(bob);
-        when(bookingFormRepository.findByClientAndPlannedFlightDateTime(bob, dateTime)).thenReturn(stubList);
+        when(bookingFormRepository.findByClientAndPlannedFlightDateTime(bob.getFirstName(), bob.getLastName()
+                , bob.getEmail(), bob.getPhoneNumber(), bob.getPesel(), dateTime)).thenReturn(stubList);
         //when
         bookingServiceDelete.deleteExistingBookingForm(createClientDtoForTest(), dateTime);
         //then
-        verify(bookingFormRepository, times(1)).deleteBookingFormByClientAndPlannedFlightDateTime(bob, dateTime);
+        verify(bookingFormRepository, times(1))
+                .deleteBookingFormByClientAndPlannedFlightDateTime(bob.getFirstName(), bob.getLastName()
+                , bob.getEmail(), bob.getPhoneNumber(), bob.getPesel(), dateTime);
     }
 
     @Test
     void deleteExistingBookingForm_bookingFormDoesntExist_throwsExceptionTest() {
         //given
+        when(bookingFormDataValidator.validateBookingFormData(null, null)).thenThrow(new BadRequestException("test msg"));
         //when
         Throwable throwable = catchThrowable(() -> bookingServiceDelete.deleteExistingBookingForm(null, null));
         //then
@@ -140,7 +143,8 @@ class BookingServiceDeleteTest {
 
         bookingFormRepository.save(bookingform);
         when(clientMapper.mapClientDto(any(ClientDto.class))).thenReturn(ben);
-        when(bookingFormRepository.findByClientAndPlannedFlightDateTime(ben, dateTime)).thenReturn(stubList);
+        when(bookingFormRepository.findByClientAndPlannedFlightDateTime(ben.getFirstName(), ben.getLastName()
+                , ben.getEmail(), ben.getPhoneNumber(), ben.getPesel(), dateTime)).thenReturn(stubList);
         //when
         Throwable throwable = catchThrowable(() -> bookingServiceDelete.deleteExistingBookingForm(createWrongClientDtoForTest(), dateTime));
         //then
@@ -158,7 +162,8 @@ class BookingServiceDeleteTest {
 
         bookingFormRepository.save(bookingform);
         when(clientMapper.mapClientDto(any(ClientDto.class))).thenReturn(bob);
-        when(bookingFormRepository.findByClientAndPlannedFlightDateTime(bob, wrongDateTime)).thenReturn(stubList);
+        when(bookingFormRepository.findByClientAndPlannedFlightDateTime(bob.getFirstName(), bob.getLastName()
+                , bob.getEmail(), bob.getPhoneNumber(), bob.getPesel(), wrongDateTime)).thenReturn(stubList);
         //when
         Throwable throwable = catchThrowable(() -> bookingServiceDelete.deleteExistingBookingForm(createClientDtoForTest(), wrongDateTime));
         //then

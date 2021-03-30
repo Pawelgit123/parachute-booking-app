@@ -22,8 +22,10 @@ public class BookingServiceDelete {
     public void deleteExistingBookingForm(ClientDto clientDto, LocalDateTime localDateTime) {
         bookingFormDataValidator.validateBookingFormData(clientDto, localDateTime);
         Client client = clientMapper.mapClientDto(clientDto);
-        if (!bookingFormRepository.findByClientAndPlannedFlightDateTime(client, localDateTime).isEmpty()) {
-            bookingFormRepository.deleteBookingFormByClientAndPlannedFlightDateTime(client, localDateTime);
+        if (!bookingFormRepository.findByClientAndPlannedFlightDateTime(client.getFirstName(), client.getLastName()
+                , client.getEmail(), client.getPhoneNumber(), client.getPesel(), localDateTime).isEmpty()) {
+            bookingFormRepository.deleteBookingFormByClientAndPlannedFlightDateTime(client.getFirstName(), client.getLastName()
+                    , client.getEmail(), client.getPhoneNumber(), client.getPesel(), localDateTime);
         }else{
             throw new BadRequestException("Booking doesn't exist. Verify if data provided is correct.");
         }
