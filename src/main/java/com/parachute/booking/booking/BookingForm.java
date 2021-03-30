@@ -11,7 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "bookings")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,10 +23,10 @@ public class BookingForm {
     @Column
 //    @NotBlank(message = "Date is mandatory") TODO <- confirm
     private LocalDateTime plannedFlightDateTime;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(columnDefinition = "client")
     private Client client;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(columnDefinition = "flight")
     private Flight flight;
 }

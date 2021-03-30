@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Component
 public class BookingFormDataValidator {
-    void validateBookingFormData(ClientDto clientDto, LocalDateTime localDateTime) {
+    public void validateBookingFormData(ClientDto clientDto, LocalDateTime localDateTime) {
         if (localDateTime == null) {
             throw new BadRequestException("Please, provide time and date of the flight.");
         }

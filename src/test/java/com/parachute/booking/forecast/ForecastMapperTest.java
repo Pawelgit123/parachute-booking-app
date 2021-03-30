@@ -1,7 +1,5 @@
 package com.parachute.booking.forecast;
 
-import com.parachute.booking.client.ClientDto;
-import com.parachute.booking.client.ClientMapper;
 import com.parachute.booking.forecast.api.ForecastResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)

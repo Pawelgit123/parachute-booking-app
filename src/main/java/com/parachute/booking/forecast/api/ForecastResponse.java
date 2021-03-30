@@ -18,6 +18,8 @@ public class ForecastResponse {
     private List<SingleForecast> singleForecastList;
 
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Data
     public static class SingleForecast {
         @JsonProperty("main")
@@ -33,6 +35,8 @@ public class ForecastResponse {
         private String dateAndTime;
 
         @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
         @Data
         @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
         public static class General {
@@ -44,18 +48,24 @@ public class ForecastResponse {
         }
 
         @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
         @Data
         public static class Weather {
             private String description;
         }
 
         @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
         @Data
         public static class Clouds {
             private Integer all;
         }
 
         @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
         @Data
         public static class Wind {
             private Float speed;
@@ -63,6 +73,8 @@ public class ForecastResponse {
         }
 
         @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
         @Data
         public static class Rain {
             @JsonProperty("3h")
@@ -70,6 +82,8 @@ public class ForecastResponse {
         }
 
         @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
         @Data
         public static class Snow {
             @JsonProperty("3h")
