@@ -9,17 +9,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 class AdminServiceSearchIntegrationTest {
 
     @Autowired
@@ -110,7 +111,6 @@ class AdminServiceSearchIntegrationTest {
         AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getId()).isEqualTo(id);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
-        assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
     }
 
@@ -154,7 +154,6 @@ class AdminServiceSearchIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
-        assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
     }
 
@@ -186,7 +185,6 @@ class AdminServiceSearchIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         AdminDto respondeBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), AdminDto.class);
         assertThat(respondeBody.getLogin()).isEqualTo("Admin2");
-        assertThat(respondeBody.getPassword()).isEqualTo("Admin pass");
         assertThat(respondeBody.getEmail()).isEqualTo("admin@gmail.com");
     }
 

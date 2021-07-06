@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 class PilotServiceCreateIntegrationTest {
 
     @Autowired
@@ -42,7 +44,6 @@ class PilotServiceCreateIntegrationTest {
                 .pilotLicenseNumber(555L)
                 .firstName("Julian")
                 .surName("Rak")
-                .id(1L)
                 .build();
     }
 
@@ -64,7 +65,6 @@ class PilotServiceCreateIntegrationTest {
         List<Pilot> pilots = pilotRepository.findAll();
         assertThat(pilots.size()).isEqualTo(1);
         assertThat(pilots.get(0)).satisfies(pilot -> {
-            assertThat(pilot.getId()).isEqualTo(1L);
             assertThat(pilot.getFirstName()).isEqualTo("Julian");
             assertThat(pilot.getSurName()).isEqualTo("Rak");
             assertThat(pilot.getPilotLicenseNumber()).isEqualTo(555L);

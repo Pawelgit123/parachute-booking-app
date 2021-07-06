@@ -1,6 +1,10 @@
 package com.parachute.booking.flight;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parachute.booking.pilot.Pilot;
+import com.parachute.booking.pilot.PilotRepository;
+import com.parachute.booking.plane.Plane;
+import com.parachute.booking.plane.PlaneRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -21,10 +26,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 class FlightServiceCreateIntegrationTest {
 
     @Autowired
     private FlightRepository flightRepository;
+    @Autowired
+    private PlaneRepository planeRepository;
+    @Autowired
+    private PilotRepository pilotRepository;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -38,11 +48,21 @@ class FlightServiceCreateIntegrationTest {
         flightRepository.deleteAll();
     }
 
-    private FlightDto createFlightDtoForTest() {
+    private void createPlaneAndPilotForTest(){
+        Plane plane = new Plane();
+        plane.setPlaneNumber(11L);
+
+        Pilot pilot = new Pilot();
+        pilot.setPilotLicenseNumber(111L);
+
+        pilotRepository.save(pilot);
+        planeRepository.save(plane);
+    }
+
+    private FlightDto createFlightDtoForTest(){
         return FlightDto.builder()
-                .id(1L)
-                .planeNumber(99L)
-                .pilotLicenseNumber(999L)
+                .planeNumber(11L)
+                .pilotLicenseNumber(111L)
                 .localDateTime(localDateTime)
                 .build();
     }
@@ -50,6 +70,7 @@ class FlightServiceCreateIntegrationTest {
     @Test
     void createFlight_andReturnStatusCode200() throws Exception {
         //given
+        createPlaneAndPilotForTest();
         FlightDto flightDto = createFlightDtoForTest();
         String requestbody = objectMapper.writeValueAsString(flightDto);
         MockHttpServletRequestBuilder request = post(requestMappingUrl)
@@ -64,12 +85,6 @@ class FlightServiceCreateIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         List<Flight> flights = flightRepository.findAll();
         assertThat(flights.size()).isEqualTo(1);
-        assertThat(flights.get(0)).satisfies(flight -> {
-            assertThat(flight.getId()).isEqualTo(1L);
-            assertThat(flight.getPlaneNumber()).isEqualTo(99L);
-            assertThat(flight.getPilotLicenseNumber()).isEqualTo(999L);
-            assertThat(flight.getLocalDateTime()).isEqualTo(localDateTime);
-        });
     }
 
     //TODO dorobić więcej

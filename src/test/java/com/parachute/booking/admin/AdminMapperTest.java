@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +14,8 @@ class AdminMapperTest {
 
     @Mock
     private AdminRepository adminRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     private AdminDto createNewAdminDtoForTest() {
         return AdminDto.builder()
@@ -38,7 +41,7 @@ class AdminMapperTest {
     @Test
     void mapAdminDto() {
         //given
-        AdminMapper adminMapper = new AdminMapper();
+        AdminMapper adminMapper = new AdminMapper(passwordEncoder);
 
         //when
         AdminDto adminDto = adminMapper.mapAdminDto(createNewAdminForTest());
@@ -46,14 +49,13 @@ class AdminMapperTest {
         //then
         assertThat(adminDto).isExactlyInstanceOf(AdminDto.class);
         assertThat(adminDto.getLogin()).isEqualTo(createNewAdminDtoForTest().getLogin());
-        assertThat(adminDto.getPassword()).isEqualTo(createNewAdminDtoForTest().getPassword());
         assertThat(adminDto.getEmail()).isEqualTo(createNewAdminDtoForTest().getEmail());
     }
 
     @Test
     void mapAdmin() {
         //given
-        AdminMapper adminMapper = new AdminMapper();
+        AdminMapper adminMapper = new AdminMapper(passwordEncoder);
 
         //when
         Admin admin = adminMapper.mapAdmin(createNewAdminDtoForTest());
@@ -61,7 +63,6 @@ class AdminMapperTest {
         //then
         assertThat(admin).isExactlyInstanceOf(Admin.class);
         assertThat(admin.getLogin()).isEqualTo(createNewAdminForTest().getLogin());
-        assertThat(admin.getPassword()).isEqualTo(createNewAdminForTest().getPassword());
         assertThat(admin.getEmail()).isEqualTo(createNewAdminForTest().getEmail());
     }
 }

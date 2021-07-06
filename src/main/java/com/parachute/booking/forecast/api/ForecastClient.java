@@ -1,23 +1,27 @@
 package com.parachute.booking.forecast.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.parachute.booking.forecast.Forecast;
+import com.parachute.booking.forecast.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class ForecastClient {
+
+    private final ForecastRepository forecastRepository;
 
     private static final String HTTP = "http";
     private static final String HOST = "api.openweathermap.org/data/2.5/forecast";
@@ -30,11 +34,34 @@ public class ForecastClient {
     private static final String UNITS_METRIC = "metric";
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final ForecastMapper forecastMapper;
     private final ForecastClientProperties forecastClientProperties;
 
-    public Optional<Forecast> getForecast(LocalDateTime localDateTime) {
-        String url = UriComponentsBuilder.newInstance()
+    public List<ForecastDto> getForecast(String formattedYearMonthDay) {
+
+        String url = getForecastConnectionUrl();
+
+        try {
+            ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
+            ForecastResponse body = response.getBody();
+
+            return body.getSingleForecastList()
+                    .stream()
+                    .filter(f -> f.getDateAndTime().contains(formattedYearMonthDay))
+                    .map(forecastMapper::mapToForecastDto)
+                    .collect(Collectors.toList());
+
+        } catch (HttpStatusCodeException e) {
+            log.error("Forecast data could not be retrieved.", e);
+            return Collections.emptyList();
+        } catch (RestClientException e) {
+            log.error("Connection error with the host", e);
+            return Collections.emptyList();
+        }
+    }
+
+    private String getForecastConnectionUrl() {
+        return UriComponentsBuilder.newInstance()
                 .scheme(HTTP)
                 .host(HOST)
                 .queryParam(ID_PARAM, CITY_ID)
@@ -43,25 +70,28 @@ public class ForecastClient {
                 .queryParam(UNITS_PARAM, UNITS_METRIC)
                 .build()
                 .toUriString();
+    }
+
+    @Transactional
+    public void getForecast() {
+
+        String url = getForecastConnectionUrl();
 
         try {
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            String body = response.getBody();
+            ResponseEntity<ForecastResponse> response = restTemplate.getForEntity(url, ForecastResponse.class);
+            ForecastResponse body = response.getBody();
 
-            if (response.getStatusCode().isError()) {
-                log.error("Connection error with url: " + url + ", status code: " + response.getStatusCode().value());
-                return Optional.empty();
-            }
-            ForecastResponse forecastResponse = objectMapper.readValue(body, ForecastResponse.class);
-        } catch (JsonProcessingException e) {
+            Forecast forecast = body.getSingleForecastList()
+                    .stream()
+                    .findFirst()
+                    .map(forecastMapper::mapToForecast).orElseThrow(() -> new NoSuchElementException("Optional is empty"));
+
+            forecastRepository.save(forecast);
+
+        } catch (HttpStatusCodeException e) {
             log.error("Forecast data could not be retrieved.", e);
-            return Optional.empty();
         } catch (RestClientException e) {
             log.error("Connection error with the host", e);
-            return Optional.empty();
         }
-
-
-        return Optional.empty();//todo finish this method
     }
 }

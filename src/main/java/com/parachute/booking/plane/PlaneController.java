@@ -2,9 +2,8 @@ package com.parachute.booking.plane;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +17,7 @@ public class PlaneController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PlaneDto createPlane(@RequestBody PlaneDto planeDto) {
 
         return planeServiceCreate.createNewPlane(planeDto);
@@ -39,6 +39,7 @@ public class PlaneController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public void removePlaneById(@PathVariable Long id) {
 
         planeServiceRemove.removePlaneById(id);
@@ -46,6 +47,7 @@ public class PlaneController {
 
     @GetMapping("/number/{number}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PlaneDto getPlanetByNumber(@PathVariable Long number) {
 
         return planeServiceSearch.findPlaneByPlaneNumber(number);
@@ -53,6 +55,7 @@ public class PlaneController {
 
     @GetMapping("/model/{model}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PlaneDto getPlanetByModel(@PathVariable String model) {
 
         return planeServiceSearch.findPlaneByPlaneModel(model);

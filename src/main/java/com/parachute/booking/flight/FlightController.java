@@ -2,6 +2,7 @@ package com.parachute.booking.flight;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,6 +18,7 @@ public class FlightController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public FlightDto createFlight(@RequestBody FlightDto flightDto) {
 
         return flightServiceCreate.createNewFlight(flightDto);
@@ -38,6 +40,7 @@ public class FlightController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public void removeFlightById(@PathVariable Long id) {
 
         flightServiceRemove.removeFlightById(id);
@@ -45,39 +48,32 @@ public class FlightController {
 
     @GetMapping("/plane/{plane}")
     @ResponseStatus(HttpStatus.OK)
-    public FlightDto getFlightByPlane(@PathVariable Long plane) {
+    public FlightDtoListed getFlightByPlane(@PathVariable Long plane) {
 
-        return flightServiceFind.getFlightByPlaneNumber(plane);
+        return flightServiceFind.getAllFlightsByPlaneNumber(plane);
     }
 
     @GetMapping("/pilot/{pilot}")
     @ResponseStatus(HttpStatus.OK)
-    public FlightDto getFlightByPilotLicense(@PathVariable Long pilot) {
+    public FlightDtoListed getFlightByPilotLicense(@PathVariable Long pilot) {
 
         return flightServiceFind.getFlightByPilotLicenseNumber(pilot);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateFlightById(@RequestBody FlightDto flightDto, @PathVariable Long id) {
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
+    public void patchFlight(@RequestBody FlightDto flightDto, @PathVariable Long id) {
 
-        flightServiceUpdate.updateFlightById(flightDto, id);
+        flightServiceUpdate.patchFlightById(flightDto, id);
     }
 
-//    @PostMapping("/{id}/{clientId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public FlightDto addClientToFlight(@PathVariable Long id, @PathVariable Long clientId) {
-//
-//
-//        return null;
-//    }
-//
-//    @DeleteMapping("/{id}/{clientId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public FlightDto removeClientFromFlight(@PathVariable Long id, @PathVariable Long clientId) {
-//
-//
-//        return null;
-//    }
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
+    public void updateFlight(@RequestBody FlightDto flightDto, @PathVariable Long id) {
+
+        flightServiceUpdate.updateFlightById(flightDto,id);
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.parachute.booking.pilot;
 
 import com.parachute.booking.exceptions.InternalServerException;
-import com.parachute.booking.flight.Flight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

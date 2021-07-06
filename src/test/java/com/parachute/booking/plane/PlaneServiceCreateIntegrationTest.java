@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 class PlaneServiceCreateIntegrationTest {
 
     @Autowired
@@ -41,7 +43,6 @@ class PlaneServiceCreateIntegrationTest {
         return PlaneDto.builder()
                 .planeNumber(15L)
                 .planeModel("F15")
-                .id(1L)
                 .build();
     }
 
@@ -63,7 +64,6 @@ class PlaneServiceCreateIntegrationTest {
         List<Plane> planes = planeRepository.findAll();
         assertThat(planes.size()).isEqualTo(1);
         assertThat(planes.get(0)).satisfies(plane -> {
-            assertThat(plane.getId()).isEqualTo(1L);
             assertThat(plane.getPlaneModel()).isEqualTo("F15");
             assertThat(plane.getPlaneNumber()).isEqualTo(15L);
         });

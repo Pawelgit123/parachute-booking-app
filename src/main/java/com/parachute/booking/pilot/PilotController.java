@@ -2,9 +2,8 @@ package com.parachute.booking.pilot;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +17,7 @@ public class PilotController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PilotDto createPilot(@RequestBody PilotDto pilotDto) {
 
         return pilotServiceCreate.createNewPilot(pilotDto);
@@ -32,6 +32,7 @@ public class PilotController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PilotDto getPilotById(@PathVariable Long id) {
 
         return pilotServiceSearch.findPilotById(id);
@@ -39,6 +40,7 @@ public class PilotController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public void removePilotById(@PathVariable Long id) {
 
         pilotServiceRemove.removePilotById(id);
@@ -46,6 +48,7 @@ public class PilotController {
 
     @GetMapping("/license/{licenseNumber}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PilotDto getPilotByLicense(@PathVariable Long licenseNumber) {
 
         return pilotServiceSearch.findPilotByLicenseNumber(licenseNumber);
@@ -53,6 +56,7 @@ public class PilotController {
 
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PilotDto getPilotByName(@PathVariable String name) {
 
         return pilotServiceSearch.findPilotByFirstName(name);
@@ -60,6 +64,7 @@ public class PilotController {
 
     @GetMapping("/surname/{surname}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole(T(com.parachute.booking.security.Roles).ADMIN.toString())")
     public PilotDto getPilotBySurName(@PathVariable String surname) {
 
         return pilotServiceSearch.findPilotBySurName(surname);

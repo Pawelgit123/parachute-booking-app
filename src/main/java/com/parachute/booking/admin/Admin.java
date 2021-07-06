@@ -1,5 +1,7 @@
 package com.parachute.booking.admin;
 
+import com.parachute.booking.security.AdminAdapter;
+import com.parachute.booking.security.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin {
+public class Admin extends AdminAdapter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
